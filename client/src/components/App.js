@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
+import Game from "./pages/Game.js";
+import Join from "./pages/Join.js";
+import Login from "./pages/Login.js";
+import Lobby from "./pages/Lobby.js";
+import NavBar from './modules/NavBar.js';
 
 import "../utilities.css";
 
@@ -47,15 +52,23 @@ class App extends Component {
   render() {
     return (
       <>
-        <Router>
-          <Skeleton
-            path="/"
-            handleLogin={this.handleLogin}
-            handleLogout={this.handleLogout}
-            userId={this.state.userId}
-          />
-          <NotFound default />
-        </Router>
+        <div className='App-container'>
+          <NavBar/>
+          <Router>
+            {/* <Skeleton
+              path="/"
+              handleLogin={this.handleLogin}
+              handleLogout={this.handleLogout}
+              userId={this.state.userId}
+            /> */}
+            <Login path="/"/>
+            <Join path="/join" setCode={this.setCode} setCodes={this.setCodes} codes={this.state.codes}/>
+            <Lobby code={this.state.code} path="/:gamePin/lobby"/>
+            <Game path="/:gamePin/game"/>
+
+            <NotFound default />
+          </Router>
+        </div>
       </>
     );
   }

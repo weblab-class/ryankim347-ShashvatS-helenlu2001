@@ -1,0 +1,8 @@
+.Canvas-container{
+    margin: 0 auto;
+}
+
+canvas {
+    border: 1px solid black;
+}
+

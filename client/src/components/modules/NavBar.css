@@ -1,0 +1,22 @@
+.NavBar-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 32px 40px;
+
+    background-color: black;
+    color: white;
+}
+
+.NavBar-link {
+    margin: 0 40px;
+    font-size: 24px;
+    text-decoration: none;
+    color:white;
+}
+
+.NavBar-link:hover {
+    border-bottom: 1px solid white;
+    padding-bottom: 4px;
+}
+
+

@@ -1,0 +1,67 @@
+.Lobby-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    color: white;
+}
+
+.Lobby-container {
+    margin: 0 auto; 
+    padding: 8px;
+    max-width: 1100px;
+
+}
+
+.Lobby-header {
+    margin-top: 16px;
+    padding: 0 16px;
+}
+
+.Lobby-heading {
+    font-size: 28px;
+}
+
+.Lobby-code {
+    padding: 0 28px;
+    font-size: 64px;
+}
+
+
+.Lobby-button {
+    margin: 0 auto;
+    padding: 8px;
+    border: 1px solid white;
+    width: 250px;
+    
+    font-family: 'Montserrat';
+    font-size: 28px;
+}
+
+.Lobby-button:hover {
+    animation: button 6s linear infinite alternate;
+    color:rgb(0, 0, 0);
+}
+
+.Lobby-people {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    text-align: center;
+}
+
+.Lobby-username {
+    margin-bottom: 32px;
+    font-size: 24px;
+}
+
+hr {
+    margin: 16px 0 32px;
+    background-color: white;
+    border: 0.5px solid white;
+    stroke-opacity: 50%;
+}
+
+body {
+    background-color: black;
+    color: white;
+}
