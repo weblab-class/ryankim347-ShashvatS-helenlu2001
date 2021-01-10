@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "../../utilities.css";
 import "./Join.css";
 import { get, post } from "../../utilities.js";
+import { currentRoom } from "../../global";
 
 /**
  * @param userId specifies the id of the currently logged in user
@@ -47,7 +48,8 @@ class Join extends Component {
       name: this.state.name,
     });
 
-    navigate(`/lobby/${code}`);
+    currentRoom.room = code;
+    navigate("/lobby");
   }
 
   async onJoin(_e) {
@@ -61,7 +63,8 @@ class Join extends Component {
       });
 
       if (response.success === true) {
-        navigate(`/lobby/${code}`);
+        currentRoom.room = code;
+        navigate("/lobby");
       } else {
         console.log("error in joining room");
         console.log(response.reason);

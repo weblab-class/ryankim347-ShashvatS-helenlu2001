@@ -7,10 +7,12 @@ const endpoint = window.location.hostname + ":" + window.location.port;
 export const socket = socketIOClient(endpoint);
 
 socket.on("connect", () => {
+  console.log("conneting yo");
+
   post("/api/initsocket", { socketid: socket.id });
 
   if (currentRoom.room != undefined) {
-    socket.emit("rejoin-room", {
+    socket.emit("join-room", {
       room: currentRoom.room,
     });
   }

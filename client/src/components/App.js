@@ -6,7 +6,7 @@ import Game from "./pages/Game.js";
 import Join from "./pages/Join.js";
 import Login from "./pages/Login.js";
 import Lobby from "./pages/Lobby.js";
-import NavBar from './modules/NavBar.js';
+import NavBar from "./modules/NavBar.js";
 
 import "../utilities.css";
 
@@ -52,8 +52,8 @@ class App extends Component {
   render() {
     return (
       <>
-        <div className='App-container'>
-          <NavBar/>
+        <div className="App-container">
+          <NavBar />
           <Router>
             {/* <Skeleton
               path="/"
@@ -61,10 +61,16 @@ class App extends Component {
               handleLogout={this.handleLogout}
               userId={this.state.userId}
             /> */}
-            <Login path="/"/>
-            <Join path="/join" setCode={this.setCode} setCodes={this.setCodes} codes={this.state.codes}/>
-            <Lobby code={this.state.code} path="/lobby/:gamePin"/>
-            <Game path="/game/:gamePin"/>
+            <Login path="/" />
+            <Join
+              path="/join"
+              setCode={this.setCode}
+              setCodes={this.setCodes}
+              codes={this.state.codes}
+            />
+            <Lobby code={this.state.code} path="/lobby" />
+            <Lobby code={this.state.code} path="/lobby2" />
+            <Game path="/game" />
 
             <NotFound default />
           </Router>

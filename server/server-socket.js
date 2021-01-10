@@ -1,3 +1,6 @@
+const cookie = require("cookie");
+const { games } = require("./data/games");
+
 let io;
 
 const userToSocketMap = {}; // maps user ID to socket object
@@ -31,9 +34,43 @@ module.exports = {
 
     io.on("connection", (socket) => {
       console.log(`socket has connected ${socket.id}`);
+
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
+      });
+
+      socket.on("join-room", (data) => {
+        console.log("join-room");
+        console.log(data);
+
+        if (socket.request.headers.cookie === undefined) {
+          return;
+        }
+
+        const cookies = cookie.parse(socket.request.headers.cookie);
+        const clientId = cookies["client-id"];
+
+        console.log(clientId);
+
+        addUser(clientId, socket);
+
+        const { room } = data;
+
+        if (games[room] == undefined) {
+          return;
+        }
+
+        const game = games[room];
+
+        if (game.validPlayer(clientId)) {
+          console.log("trying to join ya");
+          socket.join(room);
+
+          game.sendLobbyInformation();
+        } else {
+          console.log("failed to join lol");
+        }
       });
     });
   },

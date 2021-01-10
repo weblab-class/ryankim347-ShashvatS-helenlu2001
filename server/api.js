@@ -83,6 +83,9 @@ router.post("/create", (req, res) => {
   res.json({
     code,
   });
+
+  console.log("I am still here");
+  game.sendLobbyInformation();
 });
 
 router.post("/join", (req, res) => {
@@ -125,6 +128,8 @@ router.post("/join", (req, res) => {
     res.json({
       success: true,
     });
+
+    game.sendLobbyInformation();
 
     return;
   }
