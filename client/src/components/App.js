@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Router } from "@reach/router";
+import { navigate, Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import Game from "./pages/Game.js";
 import Join from "./pages/Join.js";
 import Login from "./pages/Login.js";
 import Lobby from "./pages/Lobby.js";
+import Stats from "./pages/Stats.js";
+
 import NavBar from './modules/NavBar.js';
 
 import "../utilities.css";
@@ -31,6 +33,7 @@ class App extends Component {
       if (user._id) {
         // they are registed in the database, and currently logged in.
         this.setState({ userId: user._id });
+        
       }
     });
   }
@@ -42,6 +45,7 @@ class App extends Component {
       this.setState({ userId: user._id });
       post("/api/initsocket", { socketid: socket.id });
     });
+    navigate("/join");
   };
 
   handleLogout = () => {
@@ -53,19 +57,27 @@ class App extends Component {
     return (
       <>
         <div className='App-container'>
-          <NavBar/>
+          {this.state.userId !== undefined && <NavBar/>}
           <Router>
-            {/* <Skeleton
-              path="/"
+            <Skeleton
+              path="/skeleton"
               handleLogin={this.handleLogin}
               handleLogout={this.handleLogout}
               userId={this.state.userId}
-            /> */}
-            <Login path="/"/>
-            <Join path="/join" setCode={this.setCode} setCodes={this.setCodes} codes={this.state.codes}/>
+            />
+            <Login 
+              path="/"
+              handleLogin={this.handleLogin}
+              handleLogout={this.handleLogout}  
+              userId={this.state.userId}
+            />
+            
+            <Join path="/join" />
             <Lobby code={this.state.code} path="/:gamePin/lobby"/>
             <Game path="/:gamePin/game"/>
 
+            <Stats path='/stats'/>
+            
             <NotFound default />
           </Router>
         </div>

@@ -23,13 +23,17 @@ class Lobby extends Component {
 
 
   render() {
+    let code = '';
+    for(let i = 1; i < 7;i++) {
+      code += window.location.pathname[i] + ' ';
+    }
 
     return (
       <>
         <div className='Lobby-container'>
             <div className='Lobby-header'>
                 <div className='Lobby-heading'> Game Code </div>
-                <div className='Lobby-code'> {window.location.pathname.substring(1,7)} </div>
+                <div className='Lobby-code'> {code} </div>
             </div>
             <hr/>
 

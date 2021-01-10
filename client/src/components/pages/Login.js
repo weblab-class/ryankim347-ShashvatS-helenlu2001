@@ -1,5 +1,6 @@
 import { navigate } from "@reach/router";
 import React, { Component } from "react";
+import GoogleLogin, { GoogleLogout } from "react-google-login";
 
 import "../../utilities.css";
 import "./Login.css";
@@ -7,6 +8,7 @@ import "./Login.css";
  * @param userId specifies the id of the currently logged in user 
  */
 
+const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
 
 class Login extends Component {
   constructor(props) {
@@ -23,7 +25,6 @@ class Login extends Component {
   }
 
   onClick(event) {
-    navigate("/join");
   }
 
 
@@ -32,11 +33,35 @@ class Login extends Component {
 
     return (
       <>
+
+
+
         <div className='Login-container'>
             <div className='Login-titleContainer'>
                 <div className='Login-title'> L A Z E R T A G </div>
-                <div className='Login-buttonContainer'>
-                  <div className='Login-button' onClick={this.onClick}> E N T E R </div>
+                <div className='Login-buttonContainer'>                  
+                  {this.props.userId ? (
+                    <GoogleLogout  
+                      clientId={GOOGLE_CLIENT_ID}
+                      buttonText="Logout"
+                      onLogoutSuccess={this.props.handleLogout}
+                      onFailure={(err) => console.log(err)}
+                    />
+                  ) : (
+                    <GoogleLogin
+                      render={renderProps => (
+                        <div className='Login-button' onClick={renderProps.onClick}> E N T E R </div>
+                      )}
+                      clientId={GOOGLE_CLIENT_ID}
+                      buttonText="E N T E R"
+                      onSuccess={this.props.handleLogin}
+                      onFailure={(err) => console.log(err)}
+                    />
+                  )}
+
+
+
+
                 </div>
             </div>
         </div>
