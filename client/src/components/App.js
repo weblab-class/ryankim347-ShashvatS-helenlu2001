@@ -25,6 +25,8 @@ class App extends Component {
     super(props);
     this.state = {
       userId: undefined,
+      name: '',
+      img: '',
     };
   }
 
@@ -32,8 +34,13 @@ class App extends Component {
     get("/api/whoami").then((user) => {
       if (user._id) {
         // they are registed in the database, and currently logged in.
-        this.setState({ userId: user._id });
-        
+        this.setState({ 
+          userId: user._id,
+          name: user.name,
+          img: user.photo, 
+        });
+        // navigate("/join");
+
       }
     });
   }
@@ -42,7 +49,11 @@ class App extends Component {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user) => {
-      this.setState({ userId: user._id });
+      this.setState({ 
+        userId: user._id,
+        name: res.profileObj.name,
+        img: res.profileObj.imageUrl
+      });
       post("/api/initsocket", { socketid: socket.id });
     });
     navigate("/join");
@@ -51,6 +62,8 @@ class App extends Component {
   handleLogout = () => {
     this.setState({ userId: undefined });
     post("/api/logout");
+    navigate("/");
+
   };
 
   render() {
@@ -76,7 +89,12 @@ class App extends Component {
             <Lobby code={this.state.code} path="/:gamePin/lobby"/>
             <Game path="/:gamePin/game"/>
 
-            <Stats path='/stats'/>
+            <Stats 
+              path='/stats'
+              name={this.state.name}
+              img={this.state.img}
+              handleLogout={this.handleLogout}  
+              />
             
             <NotFound default />
           </Router>

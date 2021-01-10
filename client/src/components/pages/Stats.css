@@ -1,0 +1,57 @@
+.Stats-container {
+    margin: 0 auto;
+    max-width: 880px;
+}
+
+.Stats-picContainer {
+    margin-bottom: 48px;
+    padding-left: 60px;
+    display: flex;
+}
+
+.Stats-profContainer {
+    margin: 0 auto;
+    padding: 40px;
+    text-align: center;
+}
+
+
+.Stats-pic {
+    border: 1px solid white;
+    background-size: cover;
+    width: 220px;
+    height: 220px;
+}
+
+.Stats-user {
+    margin-bottom: 16px;
+    font-size: 56px;
+}
+
+.Stats-name {
+    font-size: 32px;
+}
+
+hr {
+    margin-bottom: 32px;
+}
+
+.Stats-statContainer {
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.Stats-stat {
+    padding: 32px;
+    text-align: center;
+}
+
+.Stats-number {
+    font-family: 'Orbitron';
+    font-size: 48px;
+}
+
+.Stats-category {
+    font-size: 28px;
+}

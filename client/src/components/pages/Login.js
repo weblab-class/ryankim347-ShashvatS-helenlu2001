@@ -33,9 +33,6 @@ class Login extends Component {
 
     return (
       <>
-
-
-
         <div className='Login-container'>
             <div className='Login-titleContainer'>
                 <div className='Login-title'> L A Z E R T A G </div>
@@ -50,7 +47,7 @@ class Login extends Component {
                   ) : (
                     <GoogleLogin
                       render={renderProps => (
-                        <div className='Login-button' onClick={renderProps.onClick}> E N T E R </div>
+                        <div className='u-button' onClick={renderProps.onClick}> E N T E R </div>
                       )}
                       clientId={GOOGLE_CLIENT_ID}
                       buttonText="E N T E R"
