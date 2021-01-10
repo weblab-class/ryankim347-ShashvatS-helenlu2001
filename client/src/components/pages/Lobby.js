@@ -3,16 +3,15 @@ import React, { Component } from "react";
 import "../../utilities.css";
 import "./Lobby.css";
 /**
- * @param userId specifies the id of the currently logged in user 
+ * @param userId specifies the id of the currently logged in user
  */
-
 
 class Lobby extends Component {
   constructor(props) {
     super(props);
     // Initialize Default State
     this.state = {
-        creator: true,
+      creator: true,
     };
   }
 
@@ -20,31 +19,28 @@ class Lobby extends Component {
     // remember -- api calls go here!
   }
 
-
-
   render() {
-
     return (
       <>
-        <div className='Lobby-container'>
-            <div className='Lobby-header'>
-                <div className='Lobby-heading'> Game Code </div>
-                <div className='Lobby-code'> {window.location.pathname.substring(1,7)} </div>
+        <div className="Lobby-container">
+          <div className="Lobby-header">
+            <div className="Lobby-heading"> Game Code </div>
+            <div className="Lobby-code">
+              {" "}
+              {window.location.pathname.substring(window.location.pathname.length - 6)}{" "}
             </div>
-            <hr/>
+          </div>
+          <hr />
 
-            <div className='Lobby-people'>
-                <div className='Lobby-username'> helu </div>
-                <div className='Lobby-username'> helu </div>
-                <div className='Lobby-username'> helu </div>
-                <div className='Lobby-username'> helu </div>
-                <div className='Lobby-username'> helu </div>
-                <div className='Lobby-username'> helu </div>
-
-            </div>
-
+          <div className="Lobby-people">
+            <div className="Lobby-username"> helu </div>
+            <div className="Lobby-username"> helu </div>
+            <div className="Lobby-username"> helu </div>
+            <div className="Lobby-username"> helu </div>
+            <div className="Lobby-username"> helu </div>
+            <div className="Lobby-username"> helu </div>
+          </div>
         </div>
-
       </>
     );
   }

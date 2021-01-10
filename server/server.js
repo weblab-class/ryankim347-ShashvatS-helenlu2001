@@ -24,6 +24,10 @@ const express = require("express"); // backend framework for our node server.
 const session = require("express-session"); // library that stores info about each connected user
 const mongoose = require("mongoose"); // library to connect to MongoDB
 const path = require("path"); // provide utilities for working with file and directory paths
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+
+const { v4: uuidv4 } = require("uuid");
 
 const api = require("./api");
 const auth = require("./auth");
@@ -33,7 +37,8 @@ const socketManager = require("./server-socket");
 
 // Server configuration below
 // TODO change connection URL after setting up your team database
-const mongoConnectionURL = "mongodb+srv://helu:smr-helu@smr-cluster.n7vwr.mongodb.net/test?retryWrites=true&w=majority";
+const mongoConnectionURL =
+  "mongodb+srv://helu:smr-helu@smr-cluster.n7vwr.mongodb.net/test?retryWrites=true&w=majority";
 // TODO change database name to the name you chose
 const databaseName = "test";
 
@@ -54,6 +59,10 @@ app.use(validator.checkRoutes);
 // allow us to process POST requests
 app.use(express.json());
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
 // set up a session, which will persist login data across requests
 app.use(
   session({
@@ -65,6 +74,18 @@ app.use(
 
 // this checks if the user is logged in, and populates "req.user"
 app.use(auth.populateCurrentUser);
+
+const client_id_cookie = "client-id";
+
+app.all("/*", (req, res, next) => {
+  if (req.cookies[client_id_cookie] === undefined) {
+    res.cookie(client_id_cookie, uuidv4(), {
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    });
+  }
+
+  next();
+});
 
 // connect user-defined routes
 app.use("/api", api);

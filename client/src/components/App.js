@@ -63,8 +63,8 @@ class App extends Component {
             /> */}
             <Login path="/"/>
             <Join path="/join" setCode={this.setCode} setCodes={this.setCodes} codes={this.state.codes}/>
-            <Lobby code={this.state.code} path="/:gamePin/lobby"/>
-            <Game path="/:gamePin/game"/>
+            <Lobby code={this.state.code} path="/lobby/:gamePin"/>
+            <Game path="/game/:gamePin"/>
 
             <NotFound default />
           </Router>

@@ -11,7 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
-const Game = require('./models/game');
+const Game = require("./models/game");
 
 // import authentication library
 const auth = require("./auth");
@@ -21,6 +21,7 @@ const router = express.Router();
 
 //initialize socket
 const socketManager = require("./server-socket");
+const { genGamePin } = require("./util");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -35,7 +36,8 @@ router.get("/whoami", (req, res) => {
 
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
-  if (req.user) socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
+  if (req.user)
+    socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
   res.send({});
 });
 
@@ -43,18 +45,21 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
-router.post('/code', (req, res) => {
-  const code = new Game({
-    code: req.body.code
-  });
-  code.save().then((u) => res.send({}));
-})
+router.post("/create", (req, res) => {
+  const code = genGamePin();
 
-router.get('/code', (req, res) => {
-  Game.find({code: req.query.code}).then((codes) => {
-    res.send(codes.map((code) => code.code));
+  // Create an empty game and also check the random code is not currently in use
+
+  res.json({
+    code,
   });
-})
+});
+
+// router.get('/code', (req, res) => {
+//   Game.find({code: req.query.code}).then((codes) => {
+//     res.send(codes.map((code) => code.code));
+//   });
+// })
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
