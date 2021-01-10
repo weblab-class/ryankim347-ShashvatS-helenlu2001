@@ -11,7 +11,6 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
-const Game = require("./models/game");
 
 // import authentication library
 const auth = require("./auth");
@@ -21,7 +20,10 @@ const router = express.Router();
 
 //initialize socket
 const socketManager = require("./server-socket");
-const { genGamePin } = require("./util");
+const { genGamePin, getClientId } = require("./util");
+
+const { games } = require("./data/games");
+const { Game } = require("./data/Game");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -46,20 +48,92 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 
 router.post("/create", (req, res) => {
-  const code = genGamePin();
+  const clientId = getClientId(req);
 
-  // Create an empty game and also check the random code is not currently in use
+  if (clientId === undefined) {
+    res.json({
+      success: false,
+      reason: "no client id cookie",
+    });
+
+    return;
+  }
+
+  const { name } = req.body;
+
+  if (name == undefined) {
+    res.json({
+      success: false,
+      reason: "no name provided",
+    });
+
+    return;
+  }
+
+  let code = genGamePin();
+
+  while (code in games) {
+    code = genGamePin();
+  }
+
+  const game = new Game(code, clientId, name);
+
+  games[code] = game;
 
   res.json({
     code,
   });
 });
 
-// router.get('/code', (req, res) => {
-//   Game.find({code: req.query.code}).then((codes) => {
-//     res.send(codes.map((code) => code.code));
-//   });
-// })
+router.post("/join", (req, res) => {
+  const clientId = getClientId(req);
+
+  if (clientId === undefined) {
+    res.json({
+      success: false,
+      reason: "no client id cookie",
+    });
+
+    return;
+  }
+
+  const { name, code } = req.body;
+
+  if (name == undefined || code == undefined) {
+    res.json({
+      success: false,
+      reason: "either name or code not provided",
+    });
+
+    return;
+  }
+
+  if (!(code in games)) {
+    res.json({
+      success: false,
+      reason: "invalid game code",
+    });
+
+    return;
+  }
+
+  const game = games[code];
+
+  const joined = game.join(clientId, name);
+
+  if (joined) {
+    res.json({
+      success: true,
+    });
+
+    return;
+  }
+
+  res.json({
+    success: false,
+    reason: "unable to join game",
+  });
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

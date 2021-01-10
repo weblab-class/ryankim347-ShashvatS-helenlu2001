@@ -14,11 +14,13 @@ class Join extends Component {
     // Initialize Default State
     this.state = {
       code: "",
+      name: "",
     };
 
     this.onChange = this.onChange.bind(this);
     this.onCreate = this.onCreate.bind(this);
     this.onJoin = this.onJoin.bind(this);
+    this.onNameChange = this.onNameChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,30 +35,49 @@ class Join extends Component {
     this.setState({ code: code.toUpperCase() });
   }
 
+  onNameChange(e) {
+    const name = e.target.value;
+    this.setState({ name: name.toLowerCase() });
+  }
+
   async onCreate(_e) {
-    const { code } = await post("/api/create");
+    if (this.state.name.length == 0) return;
+
+    const { code } = await post("/api/create", {
+      name: this.state.name,
+    });
 
     navigate(`/lobby/${code}`);
   }
 
-  onJoin(e) {
-    let code = this.state.code;
+  async onJoin(_e) {
+    if (this.state.name.length == 0) return;
+
+    const code = this.state.code;
     if (code.length == 6) {
-      get("/api/code", { code: code }).then((res) => {
-        if (res.length != 0) {
-          navigate("/" + code + "/lobby");
-        } else {
-          this.setState({ code: "" });
-        }
+      const response = await post("/api/join", {
+        name: this.state.name,
+        code: this.state.code,
       });
+
+      if (response.success === true) {
+        navigate(`/lobby/${code}`);
+      } else {
+        console.log("error in joining room");
+        console.log(response.reason);
+      }
     }
   }
+
+  // TODO: fix the spacing between the two inputs
 
   render() {
     return (
       <>
         <div className="Join-container">
           <div className="Join-titleContainer">
+            <input placeholder="name" value={this.state.name} onChange={this.onNameChange} />
+            <br></br>
             <input placeholder="enter game code" value={this.state.code} onChange={this.onChange} />
             <div className="Join-button" onClick={this.onJoin}>
               {" "}

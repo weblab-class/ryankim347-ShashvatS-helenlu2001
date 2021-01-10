@@ -9,4 +9,8 @@ function genGamePin() {
   return str;
 }
 
-module.exports = { genGamePin };
+function getClientId(req) {
+  return req.cookies["client-id"];
+}
+
+module.exports = { genGamePin, getClientId };

@@ -24,7 +24,6 @@ const express = require("express"); // backend framework for our node server.
 const session = require("express-session"); // library that stores info about each connected user
 const mongoose = require("mongoose"); // library to connect to MongoDB
 const path = require("path"); // provide utilities for working with file and directory paths
-const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
 const { v4: uuidv4 } = require("uuid");
@@ -58,9 +57,6 @@ app.use(validator.checkRoutes);
 
 // allow us to process POST requests
 app.use(express.json());
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 app.use(cookieParser());
 
 // set up a session, which will persist login data across requests
