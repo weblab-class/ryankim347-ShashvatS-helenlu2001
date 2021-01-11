@@ -2,12 +2,13 @@ import { navigate } from "@reach/router";
 import React, { Component } from "react";
 import cookie from "cookie";
 
+import ColorPicker from "./lobby/ColorPicker";
+
 import "../../utilities.css";
 import "./Lobby.css";
 import { get, post } from "../../utilities.js";
 
 import { socket } from "../../client-socket";
-
 function myId() {
   return cookie.parse(document.cookie)["client-id"];
 }
@@ -25,6 +26,8 @@ class Lobby extends Component {
       initialized: false,
       creator: false,
       players: [],
+      colors: undefined,
+      playerNames: undefined,
     };
 
     this.lobbyData = this.lobbyData.bind(this);
@@ -86,6 +89,8 @@ class Lobby extends Component {
       initialized: true,
       creator: amHost,
       players: players,
+      playerNames: data.playerNames,
+      colors: data.colors,
     });
   }
 
@@ -102,6 +107,8 @@ class Lobby extends Component {
             </div>
             <hr />
 
+            {/* TODO: change the player name color based on the results of the colors (this.state.colors) */}
+
             <div className="Lobby-people">
               {this.state.players.map((value, index) => (
                 <div key={index} className="Lobby-username">
@@ -109,6 +116,13 @@ class Lobby extends Component {
                 </div>
               ))}
             </div>
+
+            {/* TODO: make this look nice */}
+            <ColorPicker
+              code={this.props.code}
+              colorMap={this.state.colors}
+              names={this.state.playerNames}
+            ></ColorPicker>
           </div>
         </>
       );

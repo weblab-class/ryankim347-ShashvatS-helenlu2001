@@ -1,4 +1,5 @@
 const cookie = require("cookie");
+const { numColors } = require("./config");
 const { games } = require("./data/games");
 
 let io;
@@ -66,6 +67,28 @@ module.exports = {
         if (game.validPlayer(clientId)) {
           socket.join(room);
 
+          game.sendLobbyInformation();
+        }
+      });
+
+      socket.on("color-change", (data) => {
+        if (socket.request.headers.cookie === undefined) {
+          return;
+        }
+
+        const cookies = cookie.parse(socket.request.headers.cookie);
+        const clientId = cookies["client-id"];
+
+        const { room, newColor } = data;
+
+        if (games[room] == undefined || isNaN(newColor) || newColor < 0 || newColor >= numColors) {
+          return;
+        }
+
+        const game = games[room];
+
+        if (game.validPlayer(clientId)) {
+          game.changeColor(clientId, newColor);
           game.sendLobbyInformation();
         }
       });
