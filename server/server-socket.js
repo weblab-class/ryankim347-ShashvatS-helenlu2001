@@ -53,7 +53,12 @@ module.exports = {
 
         console.log(clientId);
 
-        addUser(clientId, socket);
+        addUser(
+          {
+            _id: clientId,
+          },
+          socket
+        );
 
         const { room } = data;
 

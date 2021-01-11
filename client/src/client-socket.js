@@ -17,3 +17,7 @@ socket.on("connect", () => {
     });
   }
 });
+
+socket.on("disconnect", () => {
+  console.log("disconnecting...");
+});

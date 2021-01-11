@@ -1,12 +1,27 @@
 import { navigate } from "@reach/router";
 import React, { Component } from "react";
 import cookie from "cookie";
+const EventEmitter = require("events");
 
 import { currentRoom } from "../../global";
 import "../../utilities.css";
 import "./Lobby.css";
 
 import { socket } from "../../client-socket";
+
+const eventEmitter = new EventEmitter();
+
+socket.on("lobby-data", (data) => {
+  eventEmitter.emit("lobby-data", data);
+});
+
+function joinRoom() {
+  console.log("trying to join here");
+  socket.emit("join-room", {
+    room: calculateRoom(),
+  });
+  console.log("should have emitted something");
+}
 
 function calculateRoom() {
   return currentRoom.room;
@@ -45,11 +60,13 @@ class Lobby extends Component {
 
     console.log(socket);
 
-    socket.on("lobby-data", (data) => this.lobbyData(data));
+    // socket.on("lobby-data", (data) => this.lobbyData(data));
 
-    socket.emit("join-room", {
-      room: calculateRoom(),
+    eventEmitter.on("lobby-data", (data) => {
+      this.lobbyData(data);
     });
+
+    joinRoom();
   }
 
   componentWillUnmount() {
@@ -104,6 +121,7 @@ class Lobby extends Component {
       return (
         <>
           <div>Loading the lobby...</div>
+          <button onClick={this.onStart}>Dummy start button</button>
         </>
       );
     }
