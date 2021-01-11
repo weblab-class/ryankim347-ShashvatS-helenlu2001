@@ -5,6 +5,7 @@ import cookie from "cookie";
 import { currentRoom } from "../../global";
 import "../../utilities.css";
 import "./Lobby.css";
+import { get, post } from "../../utilities.js";
 
 import { socket } from "../../client-socket";
 
@@ -32,20 +33,30 @@ class Lobby extends Component {
     };
 
     this.lobbyData = this.lobbyData.bind(this);
-
-    this.onStart = this.onStart.bind(this);
-
-    console.log(calculateRoom());
   }
 
   componentDidMount() {
     // remember -- api calls go here!
 
-    console.log("trying to join room...");
+    socket.on("lobby-data", this.lobbyData);
 
-    console.log(socket);
+    if (calculateRoom() === undefined) {
+      post("/api/curRoom").then((data) => {
+        const { room } = data;
 
-    socket.on("lobby-data", (data) => this.lobbyData(data));
+        if (room === undefined) {
+          navigate("/join");
+        } else {
+          currentRoom.room = room;
+
+          socket.emit("join-room", {
+            room: calculateRoom(),
+          });
+        }
+      });
+
+      return;
+    }
 
     socket.emit("join-room", {
       room: calculateRoom(),
@@ -53,7 +64,7 @@ class Lobby extends Component {
   }
 
   componentWillUnmount() {
-    // socket.off("lobby-data");
+    socket.off("lobby-data", this.lobbyData);
   }
 
   lobbyData(data) {
@@ -71,10 +82,6 @@ class Lobby extends Component {
       creator: amHost,
       players: players,
     });
-  }
-
-  onStart() {
-    navigate("/lobby2");
   }
 
   render() {
@@ -95,8 +102,6 @@ class Lobby extends Component {
                 </div>
               ))}
             </div>
-
-            <button onClick={this.onStart}>Dummy start button</button>
           </div>
         </>
       );
