@@ -1,8 +1,7 @@
-.Canvas-container{
-    margin: 0 auto;
-}
-
 canvas {
-    border: 1px solid black;
+    border: 1px solid white;
 }
 
+.Canvas-container {
+  margin-top: 50px;
+}

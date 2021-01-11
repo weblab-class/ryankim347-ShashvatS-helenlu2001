@@ -1,11 +1,12 @@
 import { navigate } from "@reach/router";
 import React, { Component } from "react";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
+import NavBar from "../modules/NavBar.js";
 
 import "../../utilities.css";
 import "./Stats.css";
 /**
- * @param userId specifies the id of the currently logged in user 
+ * @param userId specifies the id of the currently logged in user
  */
 
 const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
@@ -28,10 +29,11 @@ class Stats extends Component {
   render() {
     return (
       <>
+        <NavBar/>
         <div className='Stats-container'>
           <div className = 'Stats-picContainer'>
             <div className='Stats-pic' style={{backgroundImage: 'url(' + this.props.img + ')'}}> </div>
-            <div className='Stats-profContainer'> 
+            <div className='Stats-profContainer'>
               <div className='Stats-user u-hollow'> H E L U </div>
               <div className='Stats-name'> {this.props.name} </div>
             </div>
@@ -52,10 +54,10 @@ class Stats extends Component {
             </div>
           </div>
 
-          <GoogleLogout  
+          <GoogleLogout
               render={renderProps => (
                 <div className='u-button' onClick={renderProps.onClick}> E X I T </div>
-              )}              
+              )}
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Logout"
               onLogoutSuccess={this.props.handleLogout}

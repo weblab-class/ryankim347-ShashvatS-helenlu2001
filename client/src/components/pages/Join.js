@@ -1,5 +1,6 @@
 import { navigate } from "@reach/router";
 import React, { Component } from "react";
+import NavBar from "../modules/NavBar.js";
 import "../../utilities.css";
 import "./Join.css";
 import { get, post } from "../../utilities.js";
@@ -77,6 +78,7 @@ class Join extends Component {
   render() {
     return (
       <>
+        <NavBar/>
         <div className="Join-container">
           <div className="Join-titleContainer">
             <input placeholder="name" value={this.state.name} onChange={this.onNameChange} />

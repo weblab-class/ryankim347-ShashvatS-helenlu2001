@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import cookie from "cookie";
 
 import ColorPicker from "./lobby/ColorPicker";
+import NavBar from "../modules/NavBar.js";
 
 import "../../utilities.css";
 import "./Lobby.css";
@@ -123,6 +124,7 @@ class Lobby extends Component {
     if (this.state.initialized) {
       return (
         <>
+          <NavBar/>
           <div className="Lobby-container">
             <div className="Lobby-header">
               <div className="Lobby-heading"> Game Code </div>
@@ -156,6 +158,7 @@ class Lobby extends Component {
 
       return (
         <>
+          <NavBar/>
           <div className='Lobby-container'>
             <div className='Lobby-load Lobby-heading u-textCenter'> L O A D I N G . . .</div>
             <div className='Lobby-loading'> </div>

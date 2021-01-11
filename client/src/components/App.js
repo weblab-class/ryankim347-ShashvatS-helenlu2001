@@ -7,7 +7,6 @@ import Join from "./pages/Join.js";
 import Login from "./pages/Login.js";
 import Lobby from "./pages/Lobby.js";
 import Stats from "./pages/Stats.js";
-import NavBar from "./modules/NavBar.js";
 
 import "../utilities.css";
 
@@ -84,8 +83,6 @@ class App extends Component {
     return (
       <>
         <div className="App-container">
-          {/* TODO: Is this going to be permanent? */}
-          {this.state.userId !== undefined && <NavBar />}
           <Router>
             <Skeleton
               path="/skeleton"
