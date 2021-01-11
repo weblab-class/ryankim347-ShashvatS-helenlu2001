@@ -84,6 +84,7 @@ class App extends Component {
     return (
       <>
         <div className="App-container">
+          {/* TODO: Is this going to be permanent? */}
           {this.state.userId !== undefined && <NavBar />}
           <Router>
             <Skeleton
