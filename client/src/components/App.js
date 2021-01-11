@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Router } from "@reach/router";
+import { navigate, Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import Game from "./pages/Game.js";
 import Join from "./pages/Join.js";
 import Login from "./pages/Login.js";
 import Lobby from "./pages/Lobby.js";
+import Stats from "./pages/Stats.js";
 import NavBar from "./modules/NavBar.js";
 
 import "../utilities.css";
@@ -23,6 +24,8 @@ class App extends Component {
     super(props);
     this.state = {
       userId: undefined,
+      name: "",
+      img: "",
     };
   }
 
@@ -30,7 +33,12 @@ class App extends Component {
     get("/api/whoami").then((user) => {
       if (user._id) {
         // they are registed in the database, and currently logged in.
-        this.setState({ userId: user._id });
+        this.setState({
+          userId: user._id,
+          name: user.name,
+          img: user.photo,
+        });
+        // navigate("/join");
       }
     });
   }
@@ -39,38 +47,51 @@ class App extends Component {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user) => {
-      this.setState({ userId: user._id });
+      this.setState({
+        userId: user._id,
+        name: res.profileObj.name,
+        img: res.profileObj.imageUrl,
+      });
       post("/api/initsocket", { socketid: socket.id });
     });
+    navigate("/join");
   };
 
   handleLogout = () => {
     this.setState({ userId: undefined });
     post("/api/logout");
+    navigate("/");
   };
 
   render() {
     return (
       <>
         <div className="App-container">
-          <NavBar />
+          {this.state.userId !== undefined && <NavBar />}
           <Router>
-            {/* <Skeleton
+            <Skeleton
+              path="/skeleton"
+              handleLogin={this.handleLogin}
+              handleLogout={this.handleLogout}
+              userId={this.state.userId}
+            />
+            <Login
               path="/"
               handleLogin={this.handleLogin}
               handleLogout={this.handleLogout}
               userId={this.state.userId}
-            /> */}
-            <Login path="/" />
-            <Join
-              path="/join"
-              setCode={this.setCode}
-              setCodes={this.setCodes}
-              codes={this.state.codes}
             />
+
+            <Join path="/join" />
             <Lobby code={this.state.code} path="/lobby" />
-            <Lobby code={this.state.code} path="/lobby2" />
             <Game path="/game" />
+
+            <Stats
+              path="/stats"
+              name={this.state.name}
+              img={this.state.img}
+              handleLogout={this.handleLogout}
+            />
 
             <NotFound default />
           </Router>

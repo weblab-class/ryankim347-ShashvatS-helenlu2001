@@ -9,6 +9,8 @@
 
 .NavBar-link {
     margin: 0 40px;
+    padding-bottom: 4px;
+
     font-size: 24px;
     text-decoration: none;
     color:white;
@@ -16,7 +18,6 @@
 
 .NavBar-link:hover {
     border-bottom: 1px solid white;
-    padding-bottom: 4px;
 }
 
 
