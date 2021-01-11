@@ -89,6 +89,8 @@ class Lobby extends Component {
     });
   }
 
+  // TODO: the loading page currently should almost never show up, but it still looks ugly
+
   render() {
     if (this.state.initialized) {
       return (
