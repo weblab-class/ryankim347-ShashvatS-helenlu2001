@@ -69,7 +69,6 @@ class App extends Component {
               codes={this.state.codes}
             />
             <Lobby code={this.state.code} path="/lobby" />
-            <Lobby code={this.state.code} path="/lobby2" />
             <Game path="/game" />
 
             <NotFound default />

@@ -32,8 +32,6 @@ class Lobby extends Component {
     };
 
     this.lobbyData = this.lobbyData.bind(this);
-
-    this.onStart = this.onStart.bind(this);
   }
 
   componentDidMount() {
@@ -66,10 +64,6 @@ class Lobby extends Component {
     });
   }
 
-  onStart() {
-    navigate("/lobby2");
-  }
-
   render() {
     if (this.state.initialized) {
       return (
@@ -88,8 +82,6 @@ class Lobby extends Component {
                 </div>
               ))}
             </div>
-
-            <button onClick={this.onStart}>Dummy start button</button>
           </div>
         </>
       );
@@ -97,7 +89,6 @@ class Lobby extends Component {
       return (
         <>
           <div>Loading the lobby...</div>
-          <button onClick={this.onStart}>Dummy start button</button>
         </>
       );
     }
