@@ -41,17 +41,12 @@ module.exports = {
       });
 
       socket.on("join-room", (data) => {
-        console.log("join-room");
-        console.log(data);
-
         if (socket.request.headers.cookie === undefined) {
           return;
         }
 
         const cookies = cookie.parse(socket.request.headers.cookie);
         const clientId = cookies["client-id"];
-
-        console.log(clientId);
 
         addUser(
           {
@@ -69,12 +64,9 @@ module.exports = {
         const game = games[room];
 
         if (game.validPlayer(clientId)) {
-          console.log("trying to join ya");
           socket.join(room);
 
           game.sendLobbyInformation();
-        } else {
-          console.log("failed to join lol");
         }
       });
     });

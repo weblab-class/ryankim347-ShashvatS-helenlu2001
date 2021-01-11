@@ -84,7 +84,6 @@ router.post("/create", (req, res) => {
     code,
   });
 
-  console.log("I am still here");
   game.sendLobbyInformation();
 });
 
