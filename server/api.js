@@ -24,6 +24,7 @@ const { genGamePin, getClientId } = require("./util");
 
 const { games } = require("./data/games");
 const { Game } = require("./data/Game");
+const { clients } = require("./data/client");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -43,18 +44,14 @@ router.post("/initsocket", (req, res) => {
   res.send({});
 });
 
-// |------------------------------|
-// | write your API methods below!|
+// |------------------------------| | write your API methods below!|
 // |------------------------------|
 
 router.post("/create", (req, res) => {
   const clientId = getClientId(req);
 
   if (clientId === undefined) {
-    res.json({
-      success: false,
-      reason: "no client id cookie",
-    });
+    res.json({ success: false, reason: "no client id cookie" });
 
     return;
   }
@@ -62,10 +59,7 @@ router.post("/create", (req, res) => {
   const { name } = req.body;
 
   if (name == undefined) {
-    res.json({
-      success: false,
-      reason: "no name provided",
-    });
+    res.json({ success: false, reason: "no name provided" });
 
     return;
   }
@@ -80,9 +74,15 @@ router.post("/create", (req, res) => {
 
   games[code] = game;
 
-  res.json({
-    code,
-  });
+  if (clientId in clients) {
+    clients[clientId].room = code;
+  } else {
+    clients[clientId] = {
+      room: code,
+    };
+  }
+
+  res.json({ code });
 
   game.sendLobbyInformation();
 });
@@ -91,10 +91,7 @@ router.post("/join", (req, res) => {
   const clientId = getClientId(req);
 
   if (clientId === undefined) {
-    res.json({
-      success: false,
-      reason: "no client id cookie",
-    });
+    res.json({ success: false, reason: "no client id cookie" });
 
     return;
   }
@@ -102,19 +99,13 @@ router.post("/join", (req, res) => {
   const { name, code } = req.body;
 
   if (name == undefined || code == undefined) {
-    res.json({
-      success: false,
-      reason: "either name or code not provided",
-    });
+    res.json({ success: false, reason: "either name or code not provided" });
 
     return;
   }
 
   if (!(code in games)) {
-    res.json({
-      success: false,
-      reason: "invalid game code",
-    });
+    res.json({ success: false, reason: "invalid game code" });
 
     return;
   }
@@ -124,19 +115,42 @@ router.post("/join", (req, res) => {
   const joined = game.join(clientId, name);
 
   if (joined) {
-    res.json({
-      success: true,
-    });
+    if (clientId in clients) {
+      clients[clientId].room = code;
+    } else {
+      clients[clientId] = {
+        room: code,
+      };
+    }
+
+    res.json({ success: true });
 
     game.sendLobbyInformation();
 
     return;
   }
 
-  res.json({
-    success: false,
-    reason: "unable to join game",
-  });
+  res.json({ success: false, reason: "unable to join game" });
+});
+
+router.post("/curRoom", (req, res) => {
+  const clientId = getClientId(req);
+
+  if (clientId === undefined) {
+    res.json({ success: false, reason: "no client id cookie" });
+
+    return;
+  }
+
+  if (clientId in clients && clients[clientId].room != undefined) {
+    res.json({
+      room: clients[clientId].room,
+    });
+    return;
+  }
+
+  res.json({});
+  return;
 });
 
 // anything else falls to this "not found" case

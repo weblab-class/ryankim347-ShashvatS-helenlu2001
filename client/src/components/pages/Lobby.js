@@ -5,6 +5,7 @@ import cookie from "cookie";
 import { currentRoom } from "../../global";
 import "../../utilities.css";
 import "./Lobby.css";
+import { get, post } from "../../utilities.js";
 
 import { socket } from "../../client-socket";
 
@@ -36,7 +37,26 @@ class Lobby extends Component {
 
   componentDidMount() {
     // remember -- api calls go here!
+
     socket.on("lobby-data", this.lobbyData);
+
+    if (calculateRoom() === undefined) {
+      post("/api/curRoom").then((data) => {
+        const { room } = data;
+
+        if (room === undefined) {
+          navigate("/join");
+        } else {
+          currentRoom.room = room;
+
+          socket.emit("join-room", {
+            room: calculateRoom(),
+          });
+        }
+      });
+
+      return;
+    }
 
     socket.emit("join-room", {
       room: calculateRoom(),
