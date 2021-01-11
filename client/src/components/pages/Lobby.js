@@ -28,6 +28,7 @@ class Lobby extends Component {
     };
 
     this.lobbyData = this.lobbyData.bind(this);
+    // this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
@@ -72,6 +73,12 @@ class Lobby extends Component {
     }
   }
 
+  // onChange() {
+  //   // Test that socket.io reconnecting rejoins room
+  //   socket.disconnect();
+  //   socket.connect();
+  // }
+
   lobbyData(data) {
     const host = data.host_id;
     const amHost = host === myId();
@@ -93,6 +100,8 @@ class Lobby extends Component {
     if (this.state.initialized) {
       return (
         <>
+          {/* <button onClick={this.onChange}></button> */}
+
           <div className="Lobby-container">
             <div className="Lobby-header">
               <div className="Lobby-heading"> Game Code </div>

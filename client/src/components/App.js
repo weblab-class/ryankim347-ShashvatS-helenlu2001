@@ -48,7 +48,7 @@ class App extends Component {
     socket.on("connect", () => {
       if (this.state.code !== "") {
         socket.emit("join-room", {
-          room: currentRoom.room,
+          room: this.state.code,
         });
       }
     });
