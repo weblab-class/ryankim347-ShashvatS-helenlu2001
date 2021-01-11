@@ -26,7 +26,10 @@ class App extends Component {
       userId: undefined,
       name: "",
       img: "",
+      code: "",
     };
+
+    this.changeRoom = this.changeRoom.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +42,14 @@ class App extends Component {
           img: user.photo,
         });
         // navigate("/join");
+      }
+    });
+
+    socket.on("connect", () => {
+      if (this.state.code !== "") {
+        socket.emit("join-room", {
+          room: currentRoom.room,
+        });
       }
     });
   }
@@ -63,6 +74,12 @@ class App extends Component {
     navigate("/");
   };
 
+  changeRoom(room) {
+    this.setState({
+      code: room,
+    });
+  }
+
   render() {
     return (
       <>
@@ -82,9 +99,9 @@ class App extends Component {
               userId={this.state.userId}
             />
 
-            <Join path="/join" />
-            <Lobby code={this.state.code} path="/lobby" />
-            <Game path="/game" />
+            <Join path="/join" changeRoom={this.changeRoom} />
+            <Lobby code={this.state.code} changeRoom={this.changeRoom} path="/lobby" />
+            <Game code={this.state.code} path="/game" />
 
             <Stats
               path="/stats"

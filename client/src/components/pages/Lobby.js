@@ -2,16 +2,11 @@ import { navigate } from "@reach/router";
 import React, { Component } from "react";
 import cookie from "cookie";
 
-import { currentRoom } from "../../global";
 import "../../utilities.css";
 import "./Lobby.css";
 import { get, post } from "../../utilities.js";
 
 import { socket } from "../../client-socket";
-
-function calculateRoom() {
-  return currentRoom.room;
-}
 
 function myId() {
   return cookie.parse(document.cookie)["client-id"];
@@ -40,18 +35,20 @@ class Lobby extends Component {
 
     socket.on("lobby-data", this.lobbyData);
 
-    if (calculateRoom() === undefined) {
+    console.log(this.props.code);
+    console.log("here");
+    console.log(typeof this.props.code);
+    console.log(this.props.code.length);
+
+    if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
         const { room } = data;
 
         if (room === undefined) {
           navigate("/join");
         } else {
-          currentRoom.room = room;
-
-          socket.emit("join-room", {
-            room: calculateRoom(),
-          });
+          console.log("I am over here");
+          this.props.changeRoom(room);
         }
       });
 
@@ -59,12 +56,20 @@ class Lobby extends Component {
     }
 
     socket.emit("join-room", {
-      room: calculateRoom(),
+      room: this.props.code,
     });
   }
 
   componentWillUnmount() {
     socket.off("lobby-data", this.lobbyData);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.code !== prevProps.code) {
+      socket.emit("join-room", {
+        room: this.props.code,
+      });
+    }
   }
 
   lobbyData(data) {
@@ -91,7 +96,7 @@ class Lobby extends Component {
           <div className="Lobby-container">
             <div className="Lobby-header">
               <div className="Lobby-heading"> Game Code </div>
-              <div className="Lobby-code"> {calculateRoom()} </div>
+              <div className="Lobby-code"> {this.props.code} </div>
             </div>
             <hr />
 
