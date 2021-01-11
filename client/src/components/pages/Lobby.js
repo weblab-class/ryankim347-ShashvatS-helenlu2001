@@ -31,12 +31,15 @@ class Lobby extends Component {
     };
 
     this.lobbyData = this.lobbyData.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.receiveStartGame = this.receiveStartGame.bind(this);
   }
 
   componentDidMount() {
     // remember -- api calls go here!
 
     socket.on("lobby-data", this.lobbyData);
+    socket.on("start-game", this.receiveStartGame);
 
     console.log(this.props.code);
     console.log("here");
@@ -65,6 +68,7 @@ class Lobby extends Component {
 
   componentWillUnmount() {
     socket.off("lobby-data", this.lobbyData);
+    socket.off("start-game", this.receiveStartGame);
   }
 
   componentDidUpdate(prevProps) {
@@ -94,6 +98,18 @@ class Lobby extends Component {
     });
   }
 
+  startGame() {
+    if (this.state.creator) {
+      socket.emit("start-game", {
+        room: this.props.code,
+      });
+    }
+  }
+
+  receiveStartGame() {
+    navigate("/game");
+  }
+
   // TODO: the loading page currently should almost never show up, but it still looks ugly
 
   render() {
@@ -116,6 +132,8 @@ class Lobby extends Component {
                 </div>
               ))}
             </div>
+
+            {this.state.creator && <button onClick={this.startGame}>Start the game</button>}
 
             {/* TODO: make this look nice */}
             <ColorPicker

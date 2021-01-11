@@ -89,7 +89,28 @@ module.exports = {
 
         if (game.validPlayer(clientId)) {
           game.changeColor(clientId, newColor);
-          game.sendLobbyInformation();
+          // game.sendLobbyInformation();
+        }
+      });
+
+      socket.on("start-game", (data) => {
+        if (socket.request.headers.cookie === undefined) {
+          return;
+        }
+
+        const cookies = cookie.parse(socket.request.headers.cookie);
+        const clientId = cookies["client-id"];
+
+        const { room } = data;
+
+        if (games[room] == undefined) {
+          return;
+        }
+
+        const game = games[room];
+
+        if (game.isHost(clientId)) {
+          game.start();
         }
       });
     });

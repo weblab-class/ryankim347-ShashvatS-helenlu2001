@@ -69,8 +69,13 @@ class Game {
     return clientId in this.playerNames;
   }
 
+  isHost(clientId) {
+    return clientId === this.host_id;
+  }
+
   sendLobbyInformation() {
     const io = getIo();
+
     const data = {
       host_id: this.host_id,
       players: this.players,
@@ -80,6 +85,24 @@ class Game {
 
     io.in(this.code).emit("lobby-data", data);
   }
+
+  start() {
+    const io = getIo();
+
+    if (this.mode !== "lobby") return;
+    this.mode = "playing";
+
+    // TODO: Do stuff to actually start playing the game (initialization, etc)
+
+    io.in(this.code).emit("start-game", {});
+  }
+
+  /**
+   * TODO: sends the current game state to the client
+   * Should only be called when a client initially starts playing or when
+   * a client reconnects
+   */
+  currentGameState(socket) {}
 }
 
 module.exports = {

@@ -28,9 +28,6 @@ function changeColor(code, newColor, colorMap) {
 const ColorPicker = (props) => {
   const { code, colorMap, names } = props;
 
-  console.log(colorMap);
-  console.log(names);
-
   const list = [];
   for (let i = 0; i < 12; ++i) {
     list.push(i);
