@@ -4,11 +4,11 @@
 * and can be used to add general styles; variable definitions
 * for colors; and styles to html, body, and other high level
 * DOMs.
-* 
+*
 * All utility classes start with a `u-` and all do
 * one basic CSS thing (for example, making the font-weight
 * 600 for bolding) or are super generic.
-* 
+*
 * This is 𝙉𝙊𝙏 the place to define classes for components or
 * do rigorous styling. You shoud not need to change this file
 * much after initial creation.
@@ -33,11 +33,15 @@
   --l: 24px;
 }
 
+
 body {
   margin: 0;
   padding: 0;
   font-family: "Montserrat";
   font-weight: 300;
+  background-color: black;
+  color: white;
+
 }
 
 form {
@@ -98,7 +102,7 @@ form {
   width: 250px;
 
   text-align: center;
-  
+
   font-family: 'Montserrat';
   font-size: 28px;
 }
@@ -113,7 +117,7 @@ form {
   33%  {background-color: rgb(255, 255, 0);}
   66%  {background-color: rgb(0, 255, 0);}
   100%  {background-color: rgb(0, 208, 255);}
-   
+
 }
 
 .u-hollow {

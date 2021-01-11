@@ -110,20 +110,28 @@ class Lobby extends Component {
     navigate("/game");
   }
 
-  // TODO: the loading page currently should almost never show up, but it still looks ugly
 
   render() {
+
+    // makes the game code look prettier
+    let code = '';
+    for(let i = 0; i < this.props.code.length; i++) {
+      code += this.props.code[i] + ' ';
+    }
+
+
     if (this.state.initialized) {
       return (
         <>
           <div className="Lobby-container">
             <div className="Lobby-header">
               <div className="Lobby-heading"> Game Code </div>
-              <div className="Lobby-code"> {this.props.code} </div>
+              <div className="Lobby-code"> {code} </div>
             </div>
             <hr />
 
             {/* TODO: change the player name color based on the results of the colors (this.state.colors) */}
+            {/* thoughts on doing it like generals.io where player only sees their color in the lobby to make it look cleaner?  */}
 
             <div className="Lobby-people">
               {this.state.players.map((value, index) => (
@@ -133,7 +141,7 @@ class Lobby extends Component {
               ))}
             </div>
 
-            {this.state.creator && <button onClick={this.startGame}>Start the game</button>}
+            {this.state.creator && <div className='u-button' onClick={this.startGame}> S T A R T </div>}
 
             {/* TODO: make this look nice */}
             <ColorPicker
@@ -145,9 +153,13 @@ class Lobby extends Component {
         </>
       );
     } else {
+
       return (
         <>
-          <div>Loading the lobby...</div>
+          <div className='Lobby-container'>
+            <div className='Lobby-load Lobby-heading u-textCenter'> L O A D I N G . . .</div>
+            <div className='Lobby-loading'> </div>
+          </div>
         </>
       );
     }

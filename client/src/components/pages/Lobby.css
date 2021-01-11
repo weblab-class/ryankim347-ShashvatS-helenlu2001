@@ -1,5 +1,5 @@
 .Lobby-container {
-    margin: 0 auto; 
+    margin: 0 auto;
     padding: 8px;
     max-width: 1100px;
 
@@ -15,7 +15,7 @@
 }
 
 .Lobby-code {
-    margin-bottom: 32px; 
+    margin-bottom: 32px;
     padding: 0 28px;
 
     text-align: center;
@@ -32,7 +32,7 @@
     padding: 8px;
     border: 1px solid white;
     width: 250px;
-    
+
     font-family: 'Montserrat';
     font-size: 28px;
 }
@@ -60,7 +60,16 @@ hr {
     stroke-opacity: 50%;
 }
 
-body {
-    background-color: black;
-    color: white;
+.Lobby-load {
+    margin-top: 100px;
+    margin-bottom: 32px;
+}
+
+.Lobby-loading {
+    margin: 0 auto;
+    width: 150px;
+    height: 150px;
+
+    background-image: url('../../public/loading.gif');
+    background-size: cover;
 }
