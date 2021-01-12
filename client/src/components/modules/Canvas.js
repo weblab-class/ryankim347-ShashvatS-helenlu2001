@@ -57,6 +57,12 @@ class Canvas extends Component {
     if(dx != 0 || dy != 0) {
       this.state.player.move(dx, dy);
 
+      for(let i = 0; i < this.state.blocks.length; i++) {
+        let block = this.state.blocks[i];
+        this.state.player.checkBlockCollision(block.topLeft()[0], block.topLeft()[1], block.side());
+      }
+
+
       // TODO: eventually move the drawing outside the movement part!
       const ctx = this.refs.canvas.getContext('2d');
       ctx.fillRect(0,0,2*ctx.canvas.width, 2*ctx.canvas.height);
@@ -65,8 +71,6 @@ class Canvas extends Component {
         this.state.blocks[i].draw(ctx);
       }
     }
-
-
 
   }
 
