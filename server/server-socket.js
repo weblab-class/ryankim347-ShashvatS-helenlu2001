@@ -42,6 +42,7 @@ module.exports = {
       });
 
       socket.on("join-room", (data) => {
+        console.log(data);
         if (socket.request.headers.cookie === undefined) {
           return;
         }

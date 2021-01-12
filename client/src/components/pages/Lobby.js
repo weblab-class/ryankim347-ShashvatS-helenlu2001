@@ -62,9 +62,17 @@ class Lobby extends Component {
       return;
     }
 
-    socket.emit("join-room", {
-      room: this.props.code,
-    });
+    const checkAgain = () => {
+      if (!this.state.initialized) {
+        socket.emit("join-room", {
+          room: this.props.code,
+        });
+
+        setTimeout(checkAgain, 1000);
+      }
+    };
+
+    checkAgain();
   }
 
   componentWillUnmount() {
@@ -111,20 +119,17 @@ class Lobby extends Component {
     navigate("/game");
   }
 
-
   render() {
-
     // makes the game code look prettier
-    let code = '';
-    for(let i = 0; i < this.props.code.length; i++) {
-      code += this.props.code[i] + ' ';
+    let code = "";
+    for (let i = 0; i < this.props.code.length; i++) {
+      code += this.props.code[i] + " ";
     }
-
 
     if (this.state.initialized) {
       return (
         <>
-          <NavBar/>
+          <NavBar />
           <div className="Lobby-container">
             <div className="Lobby-header">
               <div className="Lobby-heading"> Game Code </div>
@@ -143,7 +148,12 @@ class Lobby extends Component {
               ))}
             </div>
 
-            {this.state.creator && <div className='u-button' onClick={this.startGame}> S T A R T </div>}
+            {this.state.creator && (
+              <div className="u-button" onClick={this.startGame}>
+                {" "}
+                S T A R T{" "}
+              </div>
+            )}
 
             {/* TODO: make this look nice */}
             <ColorPicker
@@ -155,13 +165,12 @@ class Lobby extends Component {
         </>
       );
     } else {
-
       return (
         <>
-          <NavBar/>
-          <div className='Lobby-container'>
-            <div className='Lobby-load Lobby-heading u-textCenter'> L O A D I N G . . .</div>
-            <div className='Lobby-loading'> </div>
+          <NavBar />
+          <div className="Lobby-container">
+            <div className="Lobby-load Lobby-heading u-textCenter"> L O A D I N G . . .</div>
+            <div className="Lobby-loading"> </div>
           </div>
         </>
       );
