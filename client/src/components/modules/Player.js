@@ -1,11 +1,11 @@
-const speed = 2;
+const speed = 3;
 
 class Player {
-  constructor() {
+  constructor(color) {
     this.r = 12;
     this.x = 300;
     this.y = 300;
-    this.color = 'pink'
+    this.color = color
   }
 
   move(dx, dy) {

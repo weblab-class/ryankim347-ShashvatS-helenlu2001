@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { socket } from "../../client-socket";
+
 import Player from './Player.js';
 import Block from './Block.js';
 
@@ -19,19 +21,22 @@ class Canvas extends Component {
     super(props);
     // Initialize Default State
     this.state = {
-      player: new Player(),
+      player: new Player('pink'),
+      players: [],
       blocks: [new Block(20, 20), new Block(60,20), new Block(100,20), new Block(20, 60), new Block(20, 100), new Block(20, 140), new Block(400, 400), new Block(440, 400), new Block(400, 440), new Block(360, 400), new Block(400, 360)]
     };
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentDidMount() {
+
     window.addEventListener('keydown', this.handleKeyPress);
     const ctx = this.refs.canvas.getContext('2d');
     this.state.player.draw(ctx);
     for(let i = 0; i < this.state.blocks.length; i ++) {
       this.state.blocks[i].draw(ctx);
     }
+
 
 
   }
