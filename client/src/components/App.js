@@ -74,6 +74,12 @@ class App extends Component {
   };
 
   changeRoom(room) {
+    if (room !== "") {
+      socket.emit("join-room", {
+        room,
+      });
+    }
+
     this.setState({
       code: room,
     });
@@ -99,7 +105,7 @@ class App extends Component {
 
             <Join path="/join" changeRoom={this.changeRoom} />
             <Lobby code={this.state.code} changeRoom={this.changeRoom} path="/lobby" />
-            <Game code={this.state.code} path="/game" />
+            <Game code={this.state.code} changeRoom={this.changeRoom} path="/game" />
 
             <Stats
               path="/stats"

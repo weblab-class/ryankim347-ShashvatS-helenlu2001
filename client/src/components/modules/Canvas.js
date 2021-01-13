@@ -1,84 +1,159 @@
 import React, { Component } from "react";
 
-import Player from './Player.js';
-import Block from './Block.js';
+import Player from "./Player.js";
+import Block from "./Block.js";
 
 import "../../utilities.css";
-import './Canvas.css';
+import "./Canvas.css";
+import { socket } from "../../client-socket.js";
 
 /**
  * @param userId specifies the id of the currently logged in user
  */
 
- // TODO: modularize the code more and maybe make a new component for the person!
+// TODO: modularize the code more and maybe make a new component for the person!
 
- // https://stackoverflow.com/questions/7365436/erasing-previously-drawn-lines-on-an-html5-canvas
+// https://stackoverflow.com/questions/7365436/erasing-previously-drawn-lines-on-an-html5-canvas
 
 class Canvas extends Component {
   constructor(props) {
     super(props);
     // Initialize Default State
-    this.state = {
-      player: new Player(),
-      blocks: [new Block(20, 20), new Block(60,20), new Block(100,20), new Block(20, 60), new Block(20, 100), new Block(20, 140), new Block(400, 400), new Block(440, 400), new Block(400, 440), new Block(360, 400), new Block(400, 360)]
-    };
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+
+    this.running = true;
+    this.events = [];
+
+    this.eventLoop = this.eventLoop.bind(this);
+    this.drawLoop = this.drawLoop.bind(this);
+    this.receiveUpdate = this.receiveUpdate.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+
+    socket.on("game-update", this.receiveUpdate);
+
+    this.playerInfo = undefined;
+    this.gameObjects = undefined;
+
+    this.eventLoop();
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyPress);
-    const ctx = this.refs.canvas.getContext('2d');
-    this.state.player.draw(ctx);
-    for(let i = 0; i < this.state.blocks.length; i ++) {
-      this.state.blocks[i].draw(ctx);
-    }
+    window.addEventListener("keydown", this.handleKeyDown);
+    window.addEventListener("keyup", this.handleKeyUp);
 
-
+    this.drawLoop();
   }
 
-  handleKeyPress(event) {
+  handleKeyDown(event) {
+    // console.log("down");
     const code = event.keyCode;
 
     let dx = 0;
     let dy = 0;
 
     // checks if typed the arrows
-    if(code === 37) { // left
-        dx -= 1;
-    } else if (code === 38) { // up
-        dy -= 1;
-    } else if (code === 39) { // right
-        dx += 1;
-    } else if (code === 40) { // down
-        dy += 1;
+    if (code === 65) {
+      // left
+      dx -= 1;
+    } else if (code === 87) {
+      // up
+      dy -= 1;
+    } else if (code === 68) {
+      // right
+      dx += 1;
+    } else if (code === 83) {
+      // down
+      dy += 1;
     }
 
-    // actually moved
-    if(dx != 0 || dy != 0) {
-      this.state.player.move(dx, dy);
+    if (dx != 0 || dy != 0) {
+      this.events.push({
+        type: "movement",
+        vel: {
+          dx,
+          dy,
+        },
+      });
+    }
+  }
 
-      for(let i = 0; i < this.state.blocks.length; i++) {
-        let block = this.state.blocks[i];
-        this.state.player.checkBlockCollision(block.topLeft()[0], block.topLeft()[1], block.side());
-      }
+  handleKeyUp(event) {
+    console.log("keyup");
+    const code = event.keyCode;
 
+    if (code === 65 || code === 87 || code === 68 || code === 83) {
+      console.log("here");
+      this.events.push({
+        type: "stop",
+      });
+    }
+  }
 
-      // TODO: eventually move the drawing outside the movement part!
-      const ctx = this.refs.canvas.getContext('2d');
-      ctx.fillRect(0,0,2*ctx.canvas.width, 2*ctx.canvas.height);
-      this.state.player.draw(ctx);
-      for(let i = 0; i < this.state.blocks.length; i ++) {
-        this.state.blocks[i].draw(ctx);
-      }
+  eventLoop() {
+    // First, process all of the events
+
+    if (this.events.length > 0) {
+      socket.emit("game-events", {
+        room: this.props.code,
+        events: [...this.events],
+      });
     }
 
+    this.events = [];
+
+    if (this.running) {
+      setTimeout(this.eventLoop, 60);
+    }
+  }
+
+  drawLoop() {
+    const ctx = this.refs.canvas.getContext("2d");
+    ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
+
+    if (this.playerInfo === undefined || this.gameObjects === undefined) {
+      // Do nothing
+    } else {
+      // Do stuff
+
+      for (let player in this.playerInfo) {
+        this.playerInfo[player].draw(ctx);
+      }
+
+      this.gameObjects.blocks.forEach((block) => block.draw(ctx));
+    }
+
+    if (this.running) {
+      setTimeout(this.drawLoop, 1000 / 30);
+    }
+  }
+
+  receiveUpdate(data) {
+    const { playerInfo, gameObjects, playerNames, colors } = data;
+
+    this.playerInfo = {};
+
+    for (const player in playerInfo) {
+      this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, "pink");
+    }
+
+    this.gameObjects = {
+      blocks: [],
+    };
+
+    gameObjects.blocks.forEach((block) => {
+      this.gameObjects.blocks.push(new Block(block.x, block.y));
+    });
+  }
+
+  componentWillUnmount() {
+    socket.off("game-update", this.receiveUpdate);
   }
 
   render() {
     return (
       <>
-        <div className='Canvas-container'>
-            <canvas ref='canvas' width={600} height={600}/>
+        <div className="Canvas-container">
+          <canvas ref="canvas" width={600} height={600} />
         </div>
       </>
     );

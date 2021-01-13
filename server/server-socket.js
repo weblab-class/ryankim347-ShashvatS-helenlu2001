@@ -114,6 +114,27 @@ module.exports = {
           game.start();
         }
       });
+
+      socket.on("game-events", (data) => {
+        if (socket.request.headers.cookie === undefined) {
+          return;
+        }
+
+        const cookies = cookie.parse(socket.request.headers.cookie);
+        const clientId = cookies["client-id"];
+
+        const { room, events } = data;
+
+        if (games[room] == undefined || clientId === undefined || events === undefined) {
+          return;
+        }
+
+        const game = games[room];
+
+        if (game.validPlayer(clientId)) {
+          game.newEvents(clientId, events);
+        }
+      });
     });
   },
 

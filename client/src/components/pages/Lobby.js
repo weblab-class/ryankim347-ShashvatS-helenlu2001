@@ -42,11 +42,6 @@ class Lobby extends Component {
     socket.on("lobby-data", this.lobbyData);
     socket.on("start-game", this.receiveStartGame);
 
-    console.log(this.props.code);
-    console.log("here");
-    console.log(typeof this.props.code);
-    console.log(this.props.code.length);
-
     if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
         const { room } = data;
@@ -54,7 +49,6 @@ class Lobby extends Component {
         if (room === undefined) {
           navigate("/join");
         } else {
-          console.log("I am over here");
           this.props.changeRoom(room);
         }
       });
