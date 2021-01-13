@@ -2,8 +2,8 @@ import React, { Component } from "react";
 
 import { socket } from "../../client-socket";
 
-import Player from './Player.js';
-import Block from './Block.js';
+import Player from './OLD STUFF FOR REF BUT WILL DELETE LATER/Player.js';
+import Block from './OLD STUFF FOR REF BUT WILL DELETE LATER/Block.js';
 
 import "../../utilities.css";
 import './Canvas.css';
