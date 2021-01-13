@@ -1,18 +1,33 @@
-const speed = 3;
+const speed = 2;
 
 class Player {
-  constructor(color) {
+  constructor(posX, posY, color) {
     this.r = 12;
-    this.x = 300;
-    this.y = 300;
-    this.color = color
+    this.x = posX;
+    this.y = posY;
+    this.color = color;
+
+    this.velX = 0;
+    this.velY = 0;
+
+    this.isDead = false;
+    this.ticksUntilAlive = -1;
   }
 
-  move(dx, dy) {
-    this.x += speed*dx;
-    this.y += speed*dy;
+  move(blocks) {
+    this.x += speed * this.velX;
+    this.y += speed * this.velY;
+
+    for (let i = 0; i < blocks.length; i++) {
+      let block = blocks[i];
+      this.checkBlockCollision(block.topLeft()[0], block.topLeft()[1], block.side());
+    }
   }
 
+  setVel(x, y) {
+    this.velX = x;
+    this.velY = y;
+  }
 
   // inspired by http://www.jeffreythompson.org/collision-detection/circle-rect.php
   // TODO: basically done, but small glitch at the corner
@@ -20,13 +35,13 @@ class Player {
     let compX = this.x;
     let compY = this.y;
 
-    if(compX < left) {
+    if (compX < left) {
       compX = left;
     } else if (compX > left + side) {
       compX = left + side;
     }
 
-    if(compY < top) {
+    if (compY < top) {
       compY = top;
     } else if (compY > top + side) {
       compY = top + side;
@@ -36,34 +51,22 @@ class Player {
     let dy = compY - this.y;
 
     // collision if this condition holds
-    if( dx*dx + dy*dy < this.r*this.r) {
-
+    if (dx * dx + dy * dy < this.r * this.r) {
       // adjust x based on which edge we're comparing
-      if(compX == left) {
+      if (compX == left) {
         this.x = compX - this.r;
       } else if (compX == left + side) {
         this.x = compX + this.r;
       }
 
       // adjust y based on which edge we're comparing
-      if(compY == top) {
+      if (compY == top) {
         this.y = compY - this.r;
       } else if (compY == top + side) {
         this.y = compY + this.r;
       }
     }
-
-  }
-
-
-
-  draw(ctx) {
-    ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.fillStyle = 'black';
   }
 }
 
-export default Player;
+module.exports = { Player };
