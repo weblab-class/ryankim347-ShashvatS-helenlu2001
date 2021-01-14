@@ -135,6 +135,13 @@ module.exports = {
           game.newEvents(clientId, events);
         }
       });
+
+      socket.on('move', (dir) => {
+        const user = getUserFromSocketID(socket.id);
+        console.log('user id is ' + user._id);
+        console.log('data is ' + dir);
+      })
+
     });
   },
 

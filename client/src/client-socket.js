@@ -14,3 +14,7 @@ socket.on("connect", () => {
 socket.on("disconnect", () => {
   console.log("disconnecting...");
 });
+
+export function move(dir) {
+  socket.emit("move", dir);
+}

@@ -6,6 +6,7 @@ import Block from "./Block.js";
 import "../../utilities.css";
 import "./Canvas.css";
 import { socket } from "../../client-socket.js";
+import '../../input.js';
 
 /**
  * @param userId specifies the id of the currently logged in user
@@ -45,7 +46,6 @@ class Canvas extends Component {
   }
 
   handleKeyDown(event) {
-    // console.log("down");
     const code = event.keyCode;
 
     let dx = 0;
@@ -78,7 +78,6 @@ class Canvas extends Component {
   }
 
   handleKeyUp(event) {
-    console.log("keyup");
     const code = event.keyCode;
 
     if (code === 65 || code === 87 || code === 68 || code === 83) {

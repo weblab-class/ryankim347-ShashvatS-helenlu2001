@@ -13,4 +13,8 @@ function getClientId(req) {
   return req.cookies["client-id"];
 }
 
-module.exports = { genGamePin, getClientId };
+function genCoordinates(mapWidth, mapHeight) {
+  return {X: Math.floor(Math.random() * mapWidth), Y: Math.floor(Math.random() * mapHeight)};
+}
+
+module.exports = { genGamePin, getClientId, genCoordinates };
