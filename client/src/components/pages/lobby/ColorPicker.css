@@ -1,7 +1,7 @@
 .ColorPicker-container {
   margin: 0 auto;
   padding: 32px;
-  width: 600px;
+  width: 400px;
 
 }
 
@@ -12,8 +12,8 @@
 .ColorPicker-colorContainer {
   margin-top: 16px;
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
-  grid-template-rows: 33% 33% 33%;
+  grid-template-rows: 25% 25% 25% 25%;
+  grid-template-columns: 33% 33% 33%;
 
 }
 
@@ -28,8 +28,4 @@
   color: black;
   font-size: 40px;
 
-}
-
-.ColorPicker-spacer {
-  height: 48px;
 }

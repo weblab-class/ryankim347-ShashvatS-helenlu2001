@@ -125,31 +125,30 @@ class Lobby extends Component {
         <>
           <NavBar />
           <div className="Lobby-container">
-            <div className="Lobby-header">
-              <div className="Lobby-heading"> Game Code </div>
-              <div className="Lobby-code"> {code} </div>
-            </div>
-            <hr />
-
-            {/* TODO: change the player name color based on the results of the colors (this.state.colors) */}
-            {/* thoughts on doing it like generals.io where player only sees their color in the lobby to make it look cleaner?  */}
-
-            <div className="Lobby-people">
-              {this.state.players.map((value, index) => (
-                <div key={index} className="Lobby-username">
-                  {value}
-                </div>
-              ))}
-            </div>
-
-            {this.state.creator && (
-              <div className="u-button" onClick={this.startGame}>
-                {" "}
-                S T A R T{" "}
+            <div className='Lobby-contents'>
+              <div className="Lobby-header">
+                <div className="Lobby-heading"> Game Code </div>
+                <div className="Lobby-code"> {code} </div>
               </div>
-            )}
+              <hr />
 
-            {/* TODO: make this look nice */}
+              {/* TODO: change the player name color based on the results of the colors (this.state.colors) */}
+
+              <div className="Lobby-people">
+                {this.state.players.map((value, index) => (
+                  <div key={index} className="Lobby-username">
+                    {value}
+                  </div>
+                ))}
+              </div>
+
+              {this.state.creator && (
+                <div className="u-button" onClick={this.startGame}>
+                  {" "}
+                  S T A R T{" "}
+                </div>
+              )}
+            </div>
             <ColorPicker
               code={this.props.code}
               colorMap={this.state.colors}

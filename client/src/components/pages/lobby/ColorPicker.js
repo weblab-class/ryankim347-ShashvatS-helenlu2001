@@ -40,25 +40,25 @@ const ColorPicker = (props) => {
 
   return (
     <>
-      <div className='ColorPicker-spacer'> </div>
       <div className='ColorPicker-container u-textCenter'>
         <div className='u-heading'> — PICK YOUR COLOR — </div>
         <div className='ColorPicker-colorContainer'>
           {list.map((i) => (
-              <div
-                key={i}
-                className='ColorPicker-color'
-                style={{ backgroundColor: colorToHex[colors[i]] }}
-                onClick={() => {
-                  changeColor(code, i, colorMap);
-                }}
-              >
-                {colorMap[i] === undefined ? '' : 'X'}
-              </div>
-            ))}
+            <div
+              key={i}
+              className='ColorPicker-color'
+              style={{ backgroundColor: colorToHex[colors[i]] }}
+              onClick={() => {
+                changeColor(code, i, colorMap);
+              }}
+            >
+              {colorMap[i] === undefined ? '' : 'X'}
+            </div>
+          ))}
         </div>
       </div>
     </>
+
   );
 };
 
