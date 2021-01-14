@@ -1,20 +1,25 @@
 import React from "react";
 import { socket } from "../../../client-socket";
+import "./ColorPicker.css";
+import '../../../utilities.css';
 
-const colors = [
-  "silver",
-  "gray",
-  "white",
-  "red",
-  "purple",
-  "fuchsia",
-  "green",
-  "lime",
-  "yellow",
-  "navy",
-  "teal",
-  "aqua",
-];
+const colors = [ 'npink', 'nyellow', 'ngreen', 'nblue', 'norange', 'npurple', 'ppink', 'pyellow', 'pgreen', 'pblue', 'porange', 'grey']
+
+const colorToHex = {
+  'npink': '#FF00D0',
+  'nyellow': '#FFFF00',
+  'ngreen' : '#00FF00',
+  'nblue': '#00D0FF',
+  'norange': '#FFAA00',
+  'npurple': '#BB00FF',
+
+  'ppink': '#FED4FF',
+  'pyellow': '#FFFFAB',
+  'pgreen': '#C4FFC4',
+  'pblue': '#C2F4FF',
+  'porange': '#FFE1A6',
+  'grey': '#D1D1D1'
+}
 
 function changeColor(code, newColor, colorMap) {
   if (colorMap[newColor] === undefined) {
@@ -32,23 +37,28 @@ const ColorPicker = (props) => {
   for (let i = 0; i < 12; ++i) {
     list.push(i);
   }
+
   return (
-    <div>
-      Pick your color lol
-      <div>
-        {list.map((i) => (
-          <button
-            key={i}
-            style={{ color: colors[i] }}
-            onClick={() => {
-              changeColor(code, i, colorMap);
-            }}
-          >
-            {colorMap[i] === undefined ? "Empty" : names[colorMap[i]]}
-          </button>
-        ))}
+    <>
+      <div className='ColorPicker-spacer'> </div>
+      <div className='ColorPicker-container u-textCenter'>
+        <div className='u-heading'> — PICK YOUR COLOR — </div>
+        <div className='ColorPicker-colorContainer'>
+          {list.map((i) => (
+              <div
+                key={i}
+                className='ColorPicker-color'
+                style={{ backgroundColor: colorToHex[colors[i]] }}
+                onClick={() => {
+                  changeColor(code, i, colorMap);
+                }}
+              >
+                {colorMap[i] === undefined ? '' : 'X'}
+              </div>
+            ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

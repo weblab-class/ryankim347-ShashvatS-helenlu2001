@@ -133,3 +133,7 @@ form {
   -webkit-text-stroke: 1px white;
   -webkit-text-fill-color: black;
 }
+
+.u-heading {
+  font-size: 28px;
+}
