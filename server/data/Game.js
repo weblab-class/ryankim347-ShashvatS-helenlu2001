@@ -1,15 +1,20 @@
-const { numColors, maxPlayers, gameDuration, fps } = require("../config");
+const { colors, colorMap, numColors, maxPlayers, gameDuration, fps } = require("../config");
 const { getIo } = require("../server-socket");
 const { Block } = require("./Block");
 const { Player } = require("./Player");
 
 class Game {
-  constructor(code, host_id, name) {
-    this.code = code;
-    this.host_id = host_id;
+  constructor(code, host_id, host_name) {
+    this.code = code; // game code
+    this.host_id = host_id; // id of game creator
+
+    this.mapWidth = 600;
+    this.mapHeight = 600;
+
+
     this.players = [host_id];
     this.playerNames = {
-      [host_id]: name,
+      [host_id]: host_name,
     };
 
     this.id_to_color = {
