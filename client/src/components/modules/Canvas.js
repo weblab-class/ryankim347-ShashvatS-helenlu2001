@@ -81,8 +81,8 @@ class Canvas extends Component {
     let mouseX = event.pageX;
     let mouseY = event.pageY;
 
-    let dx = mouseX - this.me.x;
-    let dy = mouseY - this.me.y;
+    let dx = mouseX - this.me.x - window.innerWidth/2 + 300;
+    let dy = mouseY - this.me.y - 70;
     let mag = Math.sqrt(dx*dx + dy*dy);
     dx = dx / mag;
     dy = dy / mag;
