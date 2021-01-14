@@ -20,12 +20,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
 
 :root {
-  --primary: #396dff;
-  --primary--dim: #6987db;
-  --darkgrey: #d4d4d4;
-  --medgrey: #e0e0e0;
-  --grey: #f7f7f7;
-  --white: #fff;
+  --npink: #FF00D0;
+  --nyellow: #FFFF00;
+  --ngreen: #00FF00;
+  --nblue: #00D0FF;
+  --norange: #FFAA00;
+  --npurple: #BB00FF;
+
+  --ppink: #FED4FF;
+  --pyellow: #FFFFAB;
+  --pgreen: #C4FFC4;
+  --pblue: #C2F4FF;
+  --porange: #FFE1A6;
+  --grey: #D1D1D1;
 
   --xs: 4px;
   --s: 8px;

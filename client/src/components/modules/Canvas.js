@@ -6,7 +6,6 @@ import Block from "./Block.js";
 import "../../utilities.css";
 import "./Canvas.css";
 import { socket } from "../../client-socket.js";
-import '../../input.js';
 
 /**
  * @param userId specifies the id of the currently logged in user
