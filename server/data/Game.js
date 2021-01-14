@@ -115,7 +115,7 @@ class Game {
 
     this.startTime = Date.now();
 
-    io.in(this.code).emit("start-game", {});
+    io.in(this.code).emit("start-game", {startTime: this.startTime});
     this.gameLoop();
   }
 

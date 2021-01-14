@@ -40,7 +40,7 @@ class Lobby extends Component {
     // remember -- api calls go here!
 
     socket.on("lobby-data", this.lobbyData);
-    socket.on("start-game", this.receiveStartGame);
+    socket.on("start-game", (data) => this.receiveStartGame(data.startTime));
 
     if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
@@ -109,8 +109,8 @@ class Lobby extends Component {
     }
   }
 
-  receiveStartGame() {
-    navigate("/game");
+  receiveStartGame(startTime) {
+    navigate("/game", {state: {startTime: startTime}});
   }
 
   render() {

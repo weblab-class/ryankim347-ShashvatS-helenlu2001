@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-
+import Timer from '../modules/Timer.js';
 import Canvas from "../modules/Canvas.js";
 import "../../utilities.css";
 import "./Game.css";
 import { get, post } from "../../utilities.js";
 import { navigate } from "@reach/router";
+import { Route } from "react-router-dom";
 
 /**
  * @param userId specifies the id of the currently logged in user
@@ -14,7 +15,9 @@ class Game extends Component {
   constructor(props) {
     super(props);
     // Initialize Default State
-    this.state = {};
+    this.state = {
+      startTime: this.props.location.state.startTime
+    };
   }
 
   componentDidMount() {
@@ -34,11 +37,17 @@ class Game extends Component {
 
       return;
     }
+
+    console.log('state start time' + this.state.startTime);
+    console.log('now' + Date.now());
+    console.log(this.state.startTime + 5000 - Date.now());
+
   }
 
   render() {
     return (
       <>
+        <Timer startTime={this.state.startTime}/>
         <div className="Game-container">
           <div>game board </div>
           <Canvas code={this.props.code} className="Game-canvas" />
