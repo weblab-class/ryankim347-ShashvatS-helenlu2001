@@ -13,6 +13,14 @@ class Player {
     ctx.fill();
     ctx.fillStyle = "black";
   }
+
+  x() {
+    return this.x;
+  }
+
+  y() {
+    return this.y;
+  }
 }
 
 export default Player;

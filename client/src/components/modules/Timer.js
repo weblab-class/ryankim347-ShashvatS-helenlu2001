@@ -16,7 +16,6 @@ class Timer extends Component {
   }
 
   componentDidMount() {
-    // remember -- api calls go here!
     setInterval(() => {
       this.setState({timeLeft: Math.round((5*60*1000 + this.props.startTime - Date.now()) / 1000)});
     }, 500)
@@ -26,8 +25,8 @@ class Timer extends Component {
 
 
   render() {
-    let minutes = Math.floor(this.state.timeLeft / 60);
-    let seconds = this.state.timeLeft % 60;
+    let minutes = Math.max(0, Math.floor(this.state.timeLeft / 60));
+    let seconds = Math.max(0, this.state.timeLeft % 60);
     if(seconds < 10) {
       seconds = '0' + seconds;
     }

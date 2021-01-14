@@ -26,8 +26,8 @@ class Canvas extends Component {
     this.eventLoop = this.eventLoop.bind(this);
     this.drawLoop = this.drawLoop.bind(this);
     this.receiveUpdate = this.receiveUpdate.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
+    // this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
 
     socket.on("game-update", this.receiveUpdate);
 
@@ -38,32 +38,55 @@ class Canvas extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("keydown", this.handleKeyDown);
-    window.addEventListener("keyup", this.handleKeyUp);
+    // window.addEventListener("keydown", this.handleKeyDown);
+    window.addEventListener('mousemove', this.handleMouseMove);
 
     this.drawLoop();
   }
 
-  handleKeyDown(event) {
-    const code = event.keyCode;
+  // handleKeyDown(event) {
+  //   const code = event.keyCode;
 
-    let dx = 0;
-    let dy = 0;
+  //   let dx = 0;
+  //   let dy = 0;
 
-    // checks if typed the arrows
-    if (code === 65) {
-      // left
-      dx -= 1;
-    } else if (code === 87) {
-      // up
-      dy -= 1;
-    } else if (code === 68) {
-      // right
-      dx += 1;
-    } else if (code === 83) {
-      // down
-      dy += 1;
-    }
+  //   // checks if typed the arrows
+  //   if (code === 65) {
+  //     // left
+  //     dx -= 1;
+  //   } else if (code === 87) {
+  //     // up
+  //     dy -= 1;
+  //   } else if (code === 68) {
+  //     // right
+  //     dx += 1;
+  //   } else if (code === 83) {
+  //     // down
+  //     dy += 1;
+  //   }
+
+  //   if (dx != 0 || dy != 0) {
+  //     this.events.push({
+  //       type: "movement",
+  //       vel: {
+  //         dx,
+  //         dy,
+  //       },
+  //     });
+  //   }
+  // }
+
+  // TODO: fix vector calculation
+  handleMouseMove(event) {
+    let mouseX = event.pageX;
+    let mouseY = event.pageY;
+
+    let dx = mouseX - this.me.x;
+    let dy = mouseY - this.me.y;
+    let mag = Math.sqrt(dx*dx + dy*dy);
+    dx = dx / mag;
+    dy = dy / mag;
+
 
     if (dx != 0 || dy != 0) {
       this.events.push({
@@ -74,18 +97,10 @@ class Canvas extends Component {
         },
       });
     }
+
   }
 
-  handleKeyUp(event) {
-    const code = event.keyCode;
 
-    if (code === 65 || code === 87 || code === 68 || code === 83) {
-      console.log("here");
-      this.events.push({
-        type: "stop",
-      });
-    }
-  }
 
   eventLoop() {
     // First, process all of the events
@@ -131,6 +146,9 @@ class Canvas extends Component {
     this.playerInfo = {};
 
     for (const player in playerInfo) {
+     if(playerInfo[player].color === '#FF00D0') {
+       this.me =  new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
+     }
       this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
     }
 
