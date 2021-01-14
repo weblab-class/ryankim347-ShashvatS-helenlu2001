@@ -149,7 +149,7 @@ class Game {
 
       i += 1;
 
-      this.playerInfo[player] = new Player(posX, posY, this.id_to_color[player]);
+      this.playerInfo[player] = new Player(posX, posY, colorMap[colors[this.id_to_color[player]]]);
     }
   }
 

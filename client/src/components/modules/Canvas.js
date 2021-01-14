@@ -132,7 +132,7 @@ class Canvas extends Component {
     this.playerInfo = {};
 
     for (const player in playerInfo) {
-      this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, "pink");
+      this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
     }
 
     this.gameObjects = {
