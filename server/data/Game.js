@@ -2,6 +2,7 @@ const { colors, colorMap, numColors, maxPlayers, gameDuration, fps } = require("
 const { getIo } = require("../server-socket");
 const { Block } = require("./Block");
 const { Player } = require("./Player");
+const { Map } = require("./Map");
 
 class Game {
   constructor(code, host_id, host_name) {
@@ -10,8 +11,9 @@ class Game {
 
     this.mapWidth = 600;
     this.mapHeight = 600;
-
-
+    this.mapCount = 1;
+    this.mapNum = Math.floor(Math.random()*this.mapCount)
+    this.map = new Map(this.mapNum)
     this.players = [host_id];
     this.playerNames = {
       [host_id]: host_name,
