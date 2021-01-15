@@ -1,11 +1,11 @@
 import { navigate } from "@reach/router";
+import { Link } from '@reach/router';
 import React, { Component } from "react";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
-
 import "../../utilities.css";
 import "./Login.css";
 /**
- * @param userId specifies the id of the currently logged in user 
+ * @param userId specifies the id of the currently logged in user
  */
 
 const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
@@ -36,14 +36,18 @@ class Login extends Component {
         <div className='Login-container'>
             <div className='Login-titleContainer'>
                 <div className='Login-title'> L A Z E R T A G </div>
-                <div className='Login-buttonContainer'>                  
+                <div className='Login-buttonContainer'>
                   {this.props.userId ? (
-                    <GoogleLogout  
-                      clientId={GOOGLE_CLIENT_ID}
-                      buttonText="Logout"
-                      onLogoutSuccess={this.props.handleLogout}
-                      onFailure={(err) => console.log(err)}
-                    />
+                    <Link to='/join' className = "u-button Login-specialLink"> {" "}E N T E R{" "} </Link>
+                    // <GoogleLogout
+                    //   render={renderProps => (
+                    //     <div className='u-button' onClick={renderProps.onClick}> L O G O U T</div>
+                    //   )}
+                    //   clientId={GOOGLE_CLIENT_ID}
+                    //   buttonText="Logout"
+                    //   onLogoutSuccess={this.props.handleLogout}
+                    //   onFailure={(err) => console.log(err)}
+                    // />
                   ) : (
                     <GoogleLogin
                       render={renderProps => (
