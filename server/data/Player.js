@@ -7,11 +7,14 @@ class Player {
     this.y = posY;
     this.color = color;
 
+    this.shot = false;
+
     this.velX = 0;
     this.velY = 0;
 
     this.isDead = false;
     this.ticksUntilAlive = -1;
+
   }
 
   move(blocks) {
@@ -22,6 +25,11 @@ class Player {
       let block = blocks[i];
       this.checkBlockCollision(block.topLeft()[0], block.topLeft()[1], block.side());
     }
+  }
+
+  shoot() {
+    this.shot = true;
+    setTimeout(() => this.shot = false, 250); // shoots for 0.5 sec
   }
 
   setVel(x, y) {

@@ -26,7 +26,7 @@ class Canvas extends Component {
     this.eventLoop = this.eventLoop.bind(this);
     this.drawLoop = this.drawLoop.bind(this);
     this.receiveUpdate = this.receiveUpdate.bind(this);
-    // this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
 
     socket.on("game-update", this.receiveUpdate);
@@ -34,49 +34,33 @@ class Canvas extends Component {
     this.playerInfo = undefined;
     this.gameObjects = undefined;
 
+    this.dx = undefined;
+    this.dy = undefined;
+
     this.eventLoop();
   }
 
   componentDidMount() {
-    // window.addEventListener("keydown", this.handleKeyDown);
+    window.addEventListener("keydown", this.handleKeyDown);
     window.addEventListener('mousemove', this.handleMouseMove);
 
     this.drawLoop();
   }
 
-  // handleKeyDown(event) {
-  //   const code = event.keyCode;
+  handleKeyDown(event) {
+    if(event.code === 'Space') {
+      this.events.push({
+        type: 'shoot',
+        dir: {
+          dx: this.dx,
+          dy: this.dy
+        }
+      })
+      console.log('shoot');
+      console.log(this.dx + ' ' + this.dy)
+    }
+  }
 
-  //   let dx = 0;
-  //   let dy = 0;
-
-  //   // checks if typed the arrows
-  //   if (code === 65) {
-  //     // left
-  //     dx -= 1;
-  //   } else if (code === 87) {
-  //     // up
-  //     dy -= 1;
-  //   } else if (code === 68) {
-  //     // right
-  //     dx += 1;
-  //   } else if (code === 83) {
-  //     // down
-  //     dy += 1;
-  //   }
-
-  //   if (dx != 0 || dy != 0) {
-  //     this.events.push({
-  //       type: "movement",
-  //       vel: {
-  //         dx,
-  //         dy,
-  //       },
-  //     });
-  //   }
-  // }
-
-  // TODO: fix vector calculation
   handleMouseMove(event) {
     let mouseX = event.pageX;
     let mouseY = event.pageY;
@@ -86,6 +70,9 @@ class Canvas extends Component {
     let mag = Math.sqrt(dx*dx + dy*dy);
     dx = dx / mag;
     dy = dy / mag;
+
+    this.dx = dx;
+    this.dy = dy;
 
 
     if (dx != 0 || dy != 0) {
@@ -146,10 +133,11 @@ class Canvas extends Component {
     this.playerInfo = {};
 
     for (const player in playerInfo) {
-     if(playerInfo[player].color === '#FF00D0') {
-       this.me =  new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
-     }
-      this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
+
+      if(playerInfo[player].color === '#FF00D0') {
+        this.me =  new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
+      }
+      this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color, playerInfo[player].shot, playerInfo[player].velX, playerInfo[player].velY);
     }
 
     this.gameObjects = {
