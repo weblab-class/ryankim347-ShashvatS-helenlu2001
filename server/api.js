@@ -153,6 +153,10 @@ router.post("/curRoom", (req, res) => {
   return;
 });
 
+router.post("/numMaps", (req,res) => {
+  res.send(3)
+})
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);

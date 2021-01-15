@@ -1,10 +1,10 @@
 import { Link, navigate } from "@reach/router";
 import React, { Component } from "react";
-
+import GoogleLogin, { GoogleLogout } from "react-google-login";
 import "../../utilities.css";
 import "./NavBar.css";
 /**
- * @param userId specifies the id of the currently logged in user 
+ * @param userId specifies the id of the currently logged in user
  */
 
 
