@@ -15,7 +15,8 @@
 }
 .Login-specialLink{
     color: white;
-    text-decoration: none
+    text-decoration: none;
+    display: block
 }
 .Login-buttonContainer {
     animation: fadein 3s ease-in 1;
