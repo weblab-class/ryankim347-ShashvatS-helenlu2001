@@ -16,13 +16,14 @@ class Game extends Component {
     super(props);
     // Initialize Default State
     this.state = {
-      startTime: this.props.location.state.startTime
+      startTime: this.props.location.state.startTime,
+      color: this.props.location.state.color
     };
   }
 
   componentDidMount() {
     // remember -- api calls go here!
-
+    console.log(this.state.color);
     if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
         const { room } = data;
@@ -50,7 +51,7 @@ class Game extends Component {
         <Timer startTime={this.state.startTime}/>
         <div className="Game-container">
           <div>game board </div>
-          <Canvas code={this.props.code} className="Game-canvas" />
+          <Canvas code={this.props.code} color={this.state.color} className="Game-canvas" />
         </div>
       </>
     );

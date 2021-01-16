@@ -14,6 +14,8 @@ function myId() {
   return cookie.parse(document.cookie)["client-id"];
 }
 
+const COLORS = ['#FF00D0', '#FFFF00', '#00FF00', '#00D0FF', '#FFAA00', '#BB00FF', '#FED4FF', '#FFFFAB', '#C4FFC4', '#C2F4FF', '#FFE1A6', '#D1D1D1'];
+
 /**
  * @param userId specifies the id of the currently logged in user
  */
@@ -29,6 +31,8 @@ class Lobby extends Component {
       players: [],
       colors: undefined,
       playerNames: undefined,
+      myName: this.props.location.state.name,
+      myColor: undefined
     };
 
     this.lobbyData = this.lobbyData.bind(this);
@@ -38,7 +42,6 @@ class Lobby extends Component {
 
   componentDidMount() {
     // remember -- api calls go here!
-
     socket.on("lobby-data", this.lobbyData);
     socket.on("start-game", (data) => this.receiveStartGame(data.startTime));
 
@@ -99,6 +102,10 @@ class Lobby extends Component {
       playerNames: data.playerNames,
       colors: data.colors,
     });
+
+    let playerID = Object.keys(data.playerNames).find(key => data.playerNames[key] === this.state.myName);
+    let colorKey = Object.keys(data.colors).find(key => data.colors[key] === playerID);
+    this.setState({myColor: COLORS[colorKey]});
   }
 
   startGame() {
@@ -110,7 +117,7 @@ class Lobby extends Component {
   }
 
   receiveStartGame(startTime) {
-    navigate("/game", {state: {startTime: startTime}});
+    navigate("/game", {state: {startTime: startTime, color: this.state.myColor}});
   }
 
   render() {
