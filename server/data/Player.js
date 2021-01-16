@@ -16,6 +16,8 @@ class Player {
     this.isDead = false;
     this.ticksUntilAlive = -1;
 
+
+
   }
 
   move(blocks, players) {
@@ -39,6 +41,8 @@ class Player {
         this.checkPlayerCollision(player);
       }
     }
+
+
   }
 
 
@@ -65,6 +69,13 @@ class Player {
 
   killed() {
     this.isDead = true;
+    this.ticksUntilAlive = 15;
+    setInterval(() => {
+      this.ticksUntilAlive = Math.max(this.ticksUntilAlive-1, 0);
+      if(this.ticksUntilAlive === 0) {
+        this.isDead = false;
+      }
+    }, 1000)
   }
 
   // inspired by: https://cscheng.info/2016/06/09/calculate-circle-line-intersection-with-javascript-and-p5js.html
