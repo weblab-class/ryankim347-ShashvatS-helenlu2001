@@ -11,10 +11,8 @@ class Game {
 
     this.mapWidth = 600;
     this.mapHeight = 600;
-    this.mapCount = 1;
-    this.mapNum = Math.floor(Math.random()*this.mapCount)
-    const query = {id: this.mapNum}
-    Map.find(query).then((map) => console.log("found map" + JSON.stringify(map.x) + JSON.stringify(map.y)))
+
+    //console.log(this.map.x[0])
     this.players = [host_id];
     this.playerNames = {
       [host_id]: host_name,
@@ -31,7 +29,7 @@ class Game {
     this.mode = "lobby";
 
     this.startTime = undefined;
-    this.gameObjects = undefined;
+    this.gameObjects = {blocks: undefined};
     this.playerInfo = undefined;
 
     this.events = {};
@@ -123,21 +121,21 @@ class Game {
   }
 
   initializeGameObjects() {
+    this.mapCount = 3;
+    this.mapNum = Math.floor(Math.random()*this.mapCount)
+    const query = {id: this.mapNum}
     this.gameObjects = {
-      blocks: [
-        new Block(20, 20),
-        new Block(60, 20),
-        new Block(100, 20),
-        new Block(20, 60),
-        new Block(20, 100),
-        new Block(20, 140),
-        new Block(400, 400),
-        new Block(440, 400),
-        new Block(400, 440),
-        new Block(360, 400),
-        new Block(400, 360),
-      ],
-    };
+      blocks: []
+    }
+    Map.findOne(query).then((map) => {
+      let blockArray = []
+      for (let i=0;i<map.x.length;i++) {
+        blockArray.push(new Block(map.x[i],map.y[i]))
+      }
+      this.gameObjects = {
+        blocks: blockArray
+      }
+    })
   }
 
   initializePlayers() {
@@ -169,8 +167,6 @@ class Game {
    */
   updateGameState() {
     // Do some calculations
-
-    // console.log(this.events);
 
     for (const player in this.events) {
       const events = this.events[player];
