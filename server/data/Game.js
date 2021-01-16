@@ -122,7 +122,7 @@ class Game {
 
   initializeGameObjects() {
     this.mapCount = 3;
-    this.mapNum = Math.floor(Math.random()*this.mapCount)
+    this.mapNum = Math.floor(Math.random()*this.mapCount)+100
     const query = {id: this.mapNum}
     this.gameObjects = {
       blocks: []

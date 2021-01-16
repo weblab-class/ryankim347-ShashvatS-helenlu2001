@@ -65,9 +65,8 @@ class Canvas extends Component {
   handleMouseMove(event) {
     this.mouseX = event.pageX;
     this.mouseY = event.pageY;
-
-    let dx = this.mouseX - this.me.x - window.innerWidth/2 + 300;
-    let dy = this.mouseY - this.me.y - 70;
+    let dx = this.mouseX - window.innerWidth/2;
+    let dy = this.mouseY - 370;
     let mag = Math.sqrt(dx*dx + dy*dy);
     dx = dx / mag;
     dy = dy / mag;
@@ -87,11 +86,10 @@ class Canvas extends Component {
     }
   }
 
-
-
   eventLoop() {
-    let dx = this.mouseX - this.me.x - window.innerWidth/2 + 300;
-    let dy = this.mouseY - this.me.y - 70;
+    let dx = this.mouseX - window.innerWidth/2;
+    let dy = this.mouseY - 370;
+    console.log(this.mouseX,this.mouseY,dx,dy)
     let mag = Math.sqrt(dx*dx + dy*dy);
     if (mag <5) {
       this.events.push({
@@ -126,10 +124,10 @@ class Canvas extends Component {
       // Do stuff
 
       for (let player in this.playerInfo) {
-        this.playerInfo[player].draw(ctx, this.mouseX, this.mouseY);
+        this.playerInfo[player].draw(ctx, this.me.x-300, this.me.y-300);
       }
 
-      this.gameObjects.blocks.forEach((block) => block.draw(ctx, this.mouseX, this.mouseY));
+      this.gameObjects.blocks.forEach((block) => block.draw(ctx, this.me.x-300, this.me.y-300));
     }
 
     if (this.running) {

@@ -12,13 +12,13 @@ class Player {
     this.isDead = isDead;
   }
 
-  draw(ctx, mouseX, mouseY) {
+  draw(ctx, playerX, playerY) {
     if(this.isDead) {
       return;
     }
     ctx.beginPath();
     ctx.fillStyle = this.color;
-    ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+    ctx.arc(this.x-playerX, this.y-playerY, this.r, 0, 2 * Math.PI);
     ctx.fill();
 
     if(this.shoot) {
