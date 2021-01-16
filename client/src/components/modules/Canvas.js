@@ -129,15 +129,24 @@ class Canvas extends Component {
 
   receiveUpdate(data) {
     const { playerInfo, gameObjects, playerNames, colors } = data;
-
+    console.log(playerNames)
     this.playerInfo = {};
 
     for (const player in playerInfo) {
 
       if(playerInfo[player].color === this.props.color) {
         this.me =  new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
+        this.props.updatePoints(playerInfo[player].points);
       }
-      this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color, playerInfo[player].shot, playerInfo[player].velX, playerInfo[player].velY, playerInfo[player].isDead);
+      this.playerInfo[player] = new Player(
+        playerInfo[player].x,
+        playerInfo[player].y,
+        playerInfo[player].color,
+        playerInfo[player].shot,
+        playerInfo[player].velX,
+        playerInfo[player].velY,
+        playerInfo[player].isDead,
+      );
     }
 
     this.gameObjects = {

@@ -8,6 +8,7 @@ class Player {
     this.color = color;
 
     this.shot = false;
+    this.points = 0;
 
     this.velX = 0;
     this.velY = 0;
@@ -18,6 +19,10 @@ class Player {
   }
 
   move(blocks, players) {
+    if(this.isDead) {
+      return;
+    }
+
     this.x += speed * this.velX;
     this.y += speed * this.velY;
 
@@ -28,27 +33,32 @@ class Player {
 
     for(let i = 0; i < players.length; i++) {
       let player = players[i];
-      if(player.color === this.color) {
+      if(player.color === this.color || player.isDead) {
         continue;
+      } else {
+        this.checkPlayerCollision(player);
       }
-      this.checkPlayerCollision(player);
     }
   }
 
 
   // TODO: need to handle case when we have a kabob when shooting -- should only kill the person that is closest
   shoot(players) {
+    if(this.isDead) {
+      return;
+    }
+
     this.shot = true;
     for(let i = 0; i < players.length; i++) {
       let player = players[i];
-      if(player.color === this.color) {
+      if(player.color === this.color || player.isDead) {
         continue;
       }
       if(this.checkKilled(player)) {
+        this.points += 1;
         break;
       }
     }
-
 
     setTimeout(() => this.shot = false, 250); // shoots for 0.5 sec
   }
@@ -149,6 +159,9 @@ class Player {
 
   // inspired by https://www.youtube.com/watch?v=LPzyNOHY3A4
   checkPlayerCollision(other) {
+    if(other.isDead) {
+      return;
+    }
     let dx = other.x - this.x;
     let dy = other.y - this.y;
     let dist = Math.sqrt(dx*dx + dy*dy);

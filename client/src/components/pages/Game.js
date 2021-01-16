@@ -17,8 +17,14 @@ class Game extends Component {
     // Initialize Default State
     this.state = {
       startTime: this.props.location.state.startTime,
-      color: this.props.location.state.color
+      color: this.props.location.state.color,
+      points: 0
     };
+    this.updatePoints = this.updatePoints.bind(this);
+  }
+
+  updatePoints(points) {
+    this.setState({points: points});
   }
 
   componentDidMount() {
@@ -38,20 +44,21 @@ class Game extends Component {
       return;
     }
 
-    console.log('state start time' + this.state.startTime);
-    console.log('now' + Date.now());
-    console.log(this.state.startTime + 5000 - Date.now());
-
   }
 
   render() {
     return (
       <>
-        <Timer startTime={this.state.startTime}/>
+        <div className='Game-sidebar'>
+          <Timer startTime={this.state.startTime}/>
+          <div className='Game-points'> My Points | {this.state.points} </div>
+        </div>
         <div className="Game-container">
           <div>game board </div>
-          <Canvas code={this.props.code} color={this.state.color} className="Game-canvas" />
+          <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} className="Game-canvas" />
         </div>
+
+
       </>
     );
   }
