@@ -38,6 +38,7 @@ class Lobby extends Component {
     this.lobbyData = this.lobbyData.bind(this);
     this.startGame = this.startGame.bind(this);
     this.receiveStartGame = this.receiveStartGame.bind(this);
+    this.getColor = this.getColor.bind(this);
   }
 
   componentDidMount() {
@@ -108,6 +109,12 @@ class Lobby extends Component {
     this.setState({myColor: COLORS[colorKey]});
   }
 
+  getColor(value) {
+    let playerID = Object.keys(this.state.playerNames).find(key => this.state.playerNames[key] === value);
+    let colorKey = Object.keys(this.state.colors).find(key => this.state.colors[key] === playerID);
+    return COLORS[colorKey];
+  }
+
   startGame() {
     if (this.state.creator) {
       socket.emit("start-game", {
@@ -143,7 +150,7 @@ class Lobby extends Component {
 
               <div className="Lobby-people">
                 {this.state.players.map((value, index) => (
-                  <div key={index} className="Lobby-username">
+                  <div key={index} className="Lobby-username" style={{color: this.getColor(value)}}>
                     {value}
                   </div>
                 ))}
