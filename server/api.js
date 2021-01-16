@@ -155,9 +155,9 @@ router.post("/curRoom", (req, res) => {
 
 router.post("/initMap", (req,res) => {
   const map0 = new Map({
-    id: 0,
-    x: [100],
-    y: [100]
+    id: 100,
+    x: [20,60,100,20,20,20,400,440,400,360,400],
+    y: [20,20,20,60,100,140,400,400,440,400,360]
   })
   map0.save().then((map) => {
     console.log("inserted")
