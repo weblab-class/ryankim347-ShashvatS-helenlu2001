@@ -2,7 +2,7 @@ const { colors, colorMap, numColors, maxPlayers, gameDuration, fps } = require("
 const { getIo } = require("../server-socket");
 const { Block } = require("./Block");
 const { Player } = require("./Player");
-const { Map } = require("./Map");
+const Map = require("../models/map");
 
 class Game {
   constructor(code, host_id, host_name) {
@@ -13,7 +13,8 @@ class Game {
     this.mapHeight = 600;
     this.mapCount = 1;
     this.mapNum = Math.floor(Math.random()*this.mapCount)
-    this.map = new Map(this.mapNum)
+    const query = {id: this.mapNum}
+    Map.find(query).then((map) => console.log("found map" + JSON.stringify(map.x) + JSON.stringify(map.y)))
     this.players = [host_id];
     this.playerNames = {
       [host_id]: host_name,
