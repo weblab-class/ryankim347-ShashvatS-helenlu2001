@@ -8,10 +8,10 @@
 */
 
 const express = require("express");
-
+const mongoose = require("mongoose");
 // import models so we can interact with the database
 const User = require("./models/user");
-
+const Map = require("./models/map")
 // import authentication library
 const auth = require("./auth");
 
@@ -152,6 +152,17 @@ router.post("/curRoom", (req, res) => {
   res.json({});
   return;
 });
+
+router.post("/initMap", (req,res) => {
+  const map0 = new Map({
+    id: 0,
+    x: [100],
+    y: [100]
+  })
+  map0.save().then((map) => {
+    console.log("inserted")
+  })
+})
 
 router.post("/numMaps", (req,res) => {
   res.send(3)
