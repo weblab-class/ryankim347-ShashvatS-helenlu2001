@@ -16,7 +16,27 @@ class Player {
     this.isDead = false;
     this.ticksUntilAlive = -1;
 
+    this.respawnPoints = [];
 
+    for(let i = 0; i < 15; i++) {
+      let px = Math.floor(Math.random() * 500);
+      let py = Math.floor(Math.random() * 500);
+
+      this.respawnPoints.push([px,py]);
+    }
+
+    setInterval(() => {
+      this.ticksUntilAlive -= 1;
+      if(this.ticksUntilAlive === 0) {
+        this.isDead = false;
+        let idx = Math.floor(Math.random() * 15);
+
+        this.x = this.respawnPoints[idx][0];
+        this.y = this.respawnPoints[idx][1];
+        this.velX = 0;
+        this.velY = 0;
+      }
+    }, 1000)
 
   }
 
@@ -70,12 +90,6 @@ class Player {
   killed() {
     this.isDead = true;
     this.ticksUntilAlive = 15;
-    setInterval(() => {
-      this.ticksUntilAlive = Math.max(this.ticksUntilAlive-1, 0);
-      if(this.ticksUntilAlive === 0) {
-        this.isDead = false;
-      }
-    }, 1000)
   }
 
   // inspired by: https://cscheng.info/2016/06/09/calculate-circle-line-intersection-with-javascript-and-p5js.html
