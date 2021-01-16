@@ -137,7 +137,7 @@ class Canvas extends Component {
       if(playerInfo[player].color === this.props.color) {
         this.me =  new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
       }
-      this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color, playerInfo[player].shot, playerInfo[player].velX, playerInfo[player].velY);
+      this.playerInfo[player] = new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color, playerInfo[player].shot, playerInfo[player].velX, playerInfo[player].velY, playerInfo[player].isDead);
     }
 
     this.gameObjects = {

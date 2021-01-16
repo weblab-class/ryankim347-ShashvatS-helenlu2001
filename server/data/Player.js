@@ -35,10 +35,73 @@ class Player {
     }
   }
 
-  shoot() {
+
+  // TODO: need to handle case when we have a kabob when shooting -- should only kill the person that is closest
+  shoot(players) {
     this.shot = true;
+    for(let i = 0; i < players.length; i++) {
+      let player = players[i];
+      if(player.color === this.color) {
+        continue;
+      }
+      if(this.checkKilled(player)) {
+        break;
+      }
+    }
+
+
     setTimeout(() => this.shot = false, 250); // shoots for 0.5 sec
   }
+
+  killed() {
+    this.isDead = true;
+  }
+
+  // inspired by: https://cscheng.info/2016/06/09/calculate-circle-line-intersection-with-javascript-and-p5js.html
+  checkKilled(player) {
+    let h = player.x;
+    let k = player.y;
+
+    let m = this.velY / this.velX;
+    let n = this.y - m*this.x;
+
+    let a = 1 + m*m;
+    let b = -h*2 + (m*(n-k)) * 2;
+    let c = h*h + (n-k)*(n-k) - this.r*this.r;
+
+    let d = b*b - 4*a*c;
+    if(d >= 0) {
+      let x = (-b + Math.sqrt(b*b - 4*a*c)) / (2*a);
+      let y = m*x + n;
+
+      if(this.distFromCenter(x,y) < 150) {
+        player.killed();
+        return true;
+      }
+    }
+
+    if(d > 0) {
+      let x2 = (-b - Math.sqrt(b*b - 4*a*c)) / (2*a);
+      let y2 = m*x2 + n;
+
+      if(this.distFromCenter(x2,y2) < 150) {
+        player.killed();
+        return true;
+      }
+    }
+
+    return false;
+
+  }
+
+  distFromCenter(x, y) {
+    let dx = this.x - x;
+    let dy = this.y - y;
+    return Math.sqrt(dx*dx + dy*dy);
+  }
+
+
+
 
   setVel(x, y) {
     this.velX = x;
@@ -84,6 +147,7 @@ class Player {
     }
   }
 
+  // inspired by https://www.youtube.com/watch?v=LPzyNOHY3A4
   checkPlayerCollision(other) {
     let dx = other.x - this.x;
     let dy = other.y - this.y;

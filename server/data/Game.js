@@ -194,7 +194,7 @@ class Game {
         } else if (event.type === "movement") {
           this.playerInfo[player].setVel(event.vel.dx, event.vel.dy);
         } else if (event.type === 'shoot') {
-          this.playerInfo[player].shoot();
+          this.playerInfo[player].shoot(Object.values(this.playerInfo));
         }
       });
     }

@@ -1,5 +1,5 @@
 class Player {
-  constructor(x, y, color, shoot, shootX, shootY) {
+  constructor(x, y, color, shoot, shootX, shootY, isDead) {
     this.r = 12;
     this.x = x;
     this.y = y;
@@ -8,9 +8,14 @@ class Player {
     this.shoot = shoot;
     this.shootX = shootX;
     this.shootY = shootY;
+
+    this.isDead = isDead;
   }
 
   draw(ctx) {
+    if(this.isDead) {
+      return;
+    }
     ctx.beginPath();
     ctx.fillStyle = this.color;
     ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);

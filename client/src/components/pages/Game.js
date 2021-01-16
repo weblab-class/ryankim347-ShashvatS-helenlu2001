@@ -23,7 +23,6 @@ class Game extends Component {
 
   componentDidMount() {
     // remember -- api calls go here!
-    console.log(this.state.color);
     if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
         const { room } = data;
