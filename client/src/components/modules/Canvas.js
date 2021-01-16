@@ -126,10 +126,10 @@ class Canvas extends Component {
       // Do stuff
 
       for (let player in this.playerInfo) {
-        this.playerInfo[player].draw(ctx);
+        this.playerInfo[player].draw(ctx, this.mouseX, this.mouseY);
       }
 
-      this.gameObjects.blocks.forEach((block) => block.draw(ctx));
+      this.gameObjects.blocks.forEach((block) => block.draw(ctx, this.mouseX, this.mouseY));
     }
 
     if (this.running) {

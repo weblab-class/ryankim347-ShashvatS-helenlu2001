@@ -12,7 +12,7 @@ class Player {
     this.isDead = isDead;
   }
 
-  draw(ctx) {
+  draw(ctx, mouseX, mouseY) {
     if(this.isDead) {
       return;
     }

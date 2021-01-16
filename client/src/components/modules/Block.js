@@ -9,7 +9,7 @@ class Block {
     this.color = 'white'
   }
 
-  draw(ctx) {
+  draw(ctx, mouseX, mouseY) {
     ctx.beginPath();
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.s, this.s);
