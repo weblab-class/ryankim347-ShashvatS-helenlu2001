@@ -202,7 +202,7 @@ class Game {
     this.events = {};
 
     for (const player in this.playerInfo) {
-      this.playerInfo[player].move(this.gameObjects.blocks);
+      this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo));
     }
   }
 

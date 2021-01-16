@@ -17,13 +17,21 @@ class Player {
 
   }
 
-  move(blocks) {
+  move(blocks, players) {
     this.x += speed * this.velX;
     this.y += speed * this.velY;
 
     for (let i = 0; i < blocks.length; i++) {
       let block = blocks[i];
       this.checkBlockCollision(block.topLeft()[0], block.topLeft()[1], block.side());
+    }
+
+    for(let i = 0; i < players.length; i++) {
+      let player = players[i];
+      if(player.color === this.color) {
+        continue;
+      }
+      this.checkPlayerCollision(player);
     }
   }
 
@@ -74,6 +82,24 @@ class Player {
         this.y = compY + this.r;
       }
     }
+  }
+
+  checkPlayerCollision(other) {
+    let dx = other.x - this.x;
+    let dy = other.y - this.y;
+    let dist = Math.sqrt(dx*dx + dy*dy);
+
+    if( dist < 24) {
+      let overlap = 0.5*(dist-24);
+
+      this.x += overlap * dx / dist;
+      this.y += overlap * dy / dist;
+
+      other.x -= overlap * dx / dist;
+      other.y -= overlap * dy / dist;
+
+    }
+
   }
 }
 
