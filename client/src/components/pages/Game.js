@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Timer from '../modules/Timer.js';
+import Leaderboard from '../modules/Leaderboard.js';
 import Canvas from "../modules/Canvas.js";
 import "../../utilities.css";
 import "./Game.css";
@@ -18,13 +19,14 @@ class Game extends Component {
     this.state = {
       startTime: this.props.location.state.startTime,
       color: this.props.location.state.color,
-      points: 0
+      leaderboardInfo: [],
     };
-    this.updatePoints = this.updatePoints.bind(this);
+    this.updateLeaderboard = this.updateLeaderboard.bind(this);
   }
 
-  updatePoints(points) {
-    this.setState({points: points});
+
+  updateLeaderboard(leaderboardInfo) {
+    this.setState({leaderboardInfo: leaderboardInfo});
   }
 
   componentDidMount() {
@@ -51,11 +53,11 @@ class Game extends Component {
       <>
         <div className='Game-sidebar'>
           <Timer startTime={this.state.startTime}/>
-          <div className='Game-points'> My Points | {this.state.points} </div>
+          <Leaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
         </div>
         <div className="Game-container">
           <div>game board </div>
-          <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} className="Game-canvas" />
+          <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} updateLeaderboard={this.updateLeaderboard} className="Game-canvas" />
         </div>
 
 

@@ -1,7 +1,8 @@
 const speed = 2;
 
 class Player {
-  constructor(posX, posY, color) {
+  constructor(name, posX, posY, color) {
+    this.name = name;
     this.r = 12;
     this.x = posX;
     this.y = posY;

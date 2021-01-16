@@ -129,14 +129,18 @@ class Canvas extends Component {
 
   receiveUpdate(data) {
     const { playerInfo, gameObjects, playerNames, colors } = data;
-    console.log(playerNames)
     this.playerInfo = {};
+    let leaderboardInfo = []
 
     for (const player in playerInfo) {
+      leaderboardInfo.push({
+        color: playerInfo[player].color,
+        points: playerInfo[player].points,
+        name: playerInfo[player].name
+      });
 
       if(playerInfo[player].color === this.props.color) {
         this.me =  new Player(playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
-        this.props.updatePoints(playerInfo[player].points);
       }
       this.playerInfo[player] = new Player(
         playerInfo[player].x,
@@ -156,6 +160,8 @@ class Canvas extends Component {
     gameObjects.blocks.forEach((block) => {
       this.gameObjects.blocks.push(new Block(block.x, block.y));
     });
+
+    this.props.updateLeaderboard(leaderboardInfo);
   }
 
   componentWillUnmount() {
