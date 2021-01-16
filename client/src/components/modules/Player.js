@@ -25,8 +25,8 @@ class Player {
       ctx.beginPath();
       ctx.lineWidth = 3;
       ctx.strokeStyle = this.color;
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x + this.shootX*150, this.y + this.shootY*150);
+      ctx.moveTo(this.x-playerX, this.y-playerY);
+      ctx.lineTo(this.x-playerX + this.shootX*150, this.y-playerY + this.shootY*150);
       ctx.stroke();
     }
 

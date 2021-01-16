@@ -117,17 +117,18 @@ class Canvas extends Component {
   drawLoop() {
     const ctx = this.refs.canvas.getContext("2d");
     ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
-
+    let relX = this.me.x-300;
+    let relY = this.me.y-300;
     if (this.playerInfo === undefined || this.gameObjects === undefined) {
       // Do nothing
     } else {
       // Do stuff
 
       for (let player in this.playerInfo) {
-        this.playerInfo[player].draw(ctx, this.me.x-300, this.me.y-300);
+        this.playerInfo[player].draw(ctx, relX, relY);
       }
 
-      this.gameObjects.blocks.forEach((block) => block.draw(ctx, this.me.x-300, this.me.y-300));
+      this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
     }
 
     if (this.running) {
