@@ -56,7 +56,7 @@ class Game extends Component {
           <Leaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
         </div>
         <div className="Game-container">
-          <div>game board </div>
+          <div>Game Board </div>
           <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} updateLeaderboard={this.updateLeaderboard} className="Game-canvas" />
         </div>
 

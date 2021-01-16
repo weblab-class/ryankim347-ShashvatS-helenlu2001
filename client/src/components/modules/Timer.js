@@ -11,7 +11,8 @@ class Timer extends Component {
     super(props);
     // Initialize Default State
     this.state = {
-      timeLeft: 300
+      timeLeft: 300,
+      gameOver: false
     };
   }
 
@@ -22,7 +23,11 @@ class Timer extends Component {
 
   }
 
-
+  componentDidUpdate() {
+    if (this.state.timeLeft <= 0) {
+      this.setState({gameOver: true})
+    }
+  }
 
   render() {
     let minutes = Math.max(0, Math.floor(this.state.timeLeft / 60));
@@ -34,7 +39,10 @@ class Timer extends Component {
     return (
       <>
         <div className='Timer-container'>
-          {'Time Left | ' + minutes + ':' + seconds}
+          {(this.state.gameOver)
+            ? "Time's up!"
+            : 'Time Left | ' + minutes + ':' + seconds
+          }
         </div>
 
       </>

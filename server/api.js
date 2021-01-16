@@ -153,20 +153,16 @@ router.post("/curRoom", (req, res) => {
   return;
 });
 
-router.post("/initMap", (req,res) => {
-  const map0 = new Map({
-    id: 100,
-    x: [20,60,100,20,20,20,400,440,400,360,400],
-    y: [20,20,20,60,100,140,400,400,440,400,360]
-  })
-  map0.save().then((map) => {
-    console.log("inserted")
-  })
-})
-
-router.post("/numMaps", (req,res) => {
-  res.send(3)
-})
+// router.post("/initMap", (req,res) => {
+//   const map0 = new Map({
+//     id: 100,
+//     x: [20,60,100,20,20,20,400,440,400,360,400],
+//     y: [20,20,20,60,100,140,400,400,440,400,360]
+//   })
+//   map0.save().then((map) => {
+//     console.log("inserted")
+//   })
+// })
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

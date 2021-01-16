@@ -36,7 +36,9 @@ class Canvas extends Component {
 
     this.dx = undefined;
     this.dy = undefined;
-
+    this.mouseX = 0;
+    this.mouseY = 0;
+    this.me =  new Player(0, 0, this.props.color);
     this.eventLoop();
   }
 
@@ -60,13 +62,12 @@ class Canvas extends Component {
       console.log(this.dx + ' ' + this.dy)
     }
   }
-
   handleMouseMove(event) {
-    let mouseX = event.pageX;
-    let mouseY = event.pageY;
+    this.mouseX = event.pageX;
+    this.mouseY = event.pageY;
 
-    let dx = mouseX - this.me.x - window.innerWidth/2 + 300;
-    let dy = mouseY - this.me.y - 70;
+    let dx = this.mouseX - this.me.x - window.innerWidth/2 + 300;
+    let dy = this.mouseY - this.me.y - 70;
     let mag = Math.sqrt(dx*dx + dy*dy);
     dx = dx / mag;
     dy = dy / mag;
@@ -75,7 +76,7 @@ class Canvas extends Component {
     this.dy = dy;
 
 
-    if (dx != 0 || dy != 0) {
+    if ((dx != 0 || dy != 0) && mag > 5) {
       this.events.push({
         type: "movement",
         vel: {
@@ -84,14 +85,23 @@ class Canvas extends Component {
         },
       });
     }
-
   }
 
 
 
   eventLoop() {
-    // First, process all of the events
-
+    let dx = this.mouseX - this.me.x - window.innerWidth/2 + 300;
+    let dy = this.mouseY - this.me.y - 70;
+    let mag = Math.sqrt(dx*dx + dy*dy);
+    if (mag <5) {
+      this.events.push({
+        type: "movement",
+        vel: {
+          dx: 0,
+          dy: 0
+        }
+      })
+    }
     if (this.events.length > 0) {
       socket.emit("game-events", {
         room: this.props.code,
