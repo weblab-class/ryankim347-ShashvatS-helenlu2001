@@ -89,7 +89,6 @@ class Canvas extends Component {
   eventLoop() {
     let dx = this.mouseX - window.innerWidth/2;
     let dy = this.mouseY - 370;
-    console.log(this.mouseX,this.mouseY,dx,dy)
     let mag = Math.sqrt(dx*dx + dy*dy);
     if (mag <5) {
       this.events.push({
