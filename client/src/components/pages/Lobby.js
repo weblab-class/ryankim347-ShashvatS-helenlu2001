@@ -42,7 +42,6 @@ class Lobby extends Component {
 
   componentDidMount() {
     // remember -- api calls go here!
-    post("/api/initMap").then(console.log("nice"))
     socket.on("lobby-data", this.lobbyData);
     socket.on("start-game", (data) => this.receiveStartGame(data.startTime));
 
