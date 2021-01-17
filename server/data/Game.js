@@ -2,6 +2,7 @@ const { colors, colorMap, numColors, maxPlayers, gameDuration, fps } = require("
 const { getIo } = require("../server-socket");
 const { Block } = require("./Block");
 const { Player } = require("./Player");
+const { Bullet } = require("./Bullet");
 const Map = require("../models/map");
 
 class Game {
@@ -29,7 +30,7 @@ class Game {
     this.mode = "lobby";
 
     this.startTime = undefined;
-    this.gameObjects = {blocks: undefined};
+    this.gameObjects = {blocks: [], bullets: []};
     this.playerInfo = undefined;
 
     this.events = {};
@@ -125,7 +126,8 @@ class Game {
     this.mapNum = Math.floor(Math.random()*this.mapCount)+100
     const query = {id: this.mapNum}
     this.gameObjects = {
-      blocks: []
+      blocks: [],
+      bullets: []
     }
     Map.findOne(query).then((map) => {
       let blockArray = []
@@ -133,7 +135,8 @@ class Game {
         blockArray.push(new Block(map.x[i],map.y[i]))
       }
       this.gameObjects = {
-        blocks: blockArray
+        blocks: blockArray,
+        bullets: []
       }
     })
   }
@@ -191,15 +194,31 @@ class Game {
           this.playerInfo[player].setVel(event.vel.dx, event.vel.dy);
         } else if (event.type === 'shoot') {
           this.playerInfo[player].shoot(Object.values(this.playerInfo));
+        } else if (event.type === 'bullet') {
+          console.log(JSON.stringify(this.gameObjects))
+          this.gameObjects.bullets.push(new Bullet(
+            event.pos.x,
+            event.pos.y,
+            event.dir.dx,
+            event.dir.dy,
+            event.color
+          ))
         }
       });
     }
 
     // Reset events to empty
     this.events = {};
-
     for (const player in this.playerInfo) {
       this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo));
+    }
+    for (let i=0;i<this.gameObjects.bullets.length;i++) {
+      this.gameObjects.bullets[i].move(this.gameObjects.blocks, Object.values(this.playerInfo))
+    }
+    for (let i=this.gameObjects.bullets.length-1;i>=0;i++) {
+      if (!this.gameObjects.bullets[i].stillGoing) {
+        delete this.gameObjects.bullets[i]
+      }
     }
   }
 

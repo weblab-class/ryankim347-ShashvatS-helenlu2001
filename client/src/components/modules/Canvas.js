@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Player from "./Player.js";
 import Block from "./Block.js";
+import Bullet from "./Bullet.js"
 
 import "../../utilities.css";
 import "./Canvas.css";
@@ -60,6 +61,20 @@ class Canvas extends Component {
       })
       console.log('shoot');
       console.log(this.dx + ' ' + this.dy)
+    }
+    if(event.code === 'KeyF') {
+      this.events.push({
+        type: 'bullet',
+        dir: {
+          dx: this.dx,
+          dy: this.dy
+        },
+        pos: {
+          x: this.me.x,
+          y: this.me.y
+        },
+        color: this.me.color
+      })
     }
   }
   handleMouseMove(event) {
@@ -126,7 +141,7 @@ class Canvas extends Component {
       for (let player in this.playerInfo) {
         this.playerInfo[player].draw(ctx, relX, relY);
       }
-
+      this.gameObjects.bullets.forEach((bullet) => bullet.draw(ctx, relX, relY))
       this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
     }
 
@@ -136,7 +151,7 @@ class Canvas extends Component {
   }
 
   receiveUpdate(data) {
-    const { playerInfo, gameObjects, playerNames, colors } = data;
+    const { playerInfo, gameObjects, playerNames, colors} = data;
     this.playerInfo = {};
     let leaderboardInfo = []
 
@@ -163,8 +178,11 @@ class Canvas extends Component {
 
     this.gameObjects = {
       blocks: [],
+      bullets: []
     };
-
+    gameObjects.bullets.forEach((bullet) => {
+      this.gameObjects.bullets.push(new Bullet(bullet.x,bullet.y,bullet.velX,bullet.velY,bullet.color,!bullet.stillGoing))
+    })
     gameObjects.blocks.forEach((block) => {
       this.gameObjects.blocks.push(new Block(block.x, block.y));
     });
