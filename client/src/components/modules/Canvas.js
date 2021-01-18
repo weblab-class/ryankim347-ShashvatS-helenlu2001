@@ -181,7 +181,9 @@ class Canvas extends Component {
       bullets: []
     };
     gameObjects.bullets.forEach((bullet) => {
-      this.gameObjects.bullets.push(new Bullet(bullet.x,bullet.y,bullet.velX,bullet.velY,bullet.color,!bullet.stillGoing))
+      if (bullet) {
+        this.gameObjects.bullets.push(new Bullet(bullet.x,bullet.y,bullet.velX,bullet.velY,bullet.color,!bullet.stillGoing))
+      }
     })
     gameObjects.blocks.forEach((block) => {
       this.gameObjects.blocks.push(new Block(block.x, block.y));

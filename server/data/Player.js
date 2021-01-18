@@ -1,5 +1,33 @@
 const speed = 2;
-
+const segmentCircleIntersect = (x1,y1,x2,y2,xc,yc,r) => {
+  let ACx = xc-x1
+  let ACy = yc-y1
+  let BCx = xc-x2
+  let BCy = yc-y2
+  let ABx = x2-x1
+  let ABy = y2-y1
+  let AB = Math.sqrt(ABx*ABx + ABy*ABy)
+  let BC = Math.sqrt(BCx*BCx + BCy*BCy)
+  let AC = Math.sqrt(ACx*ACx + ACy*ACy)
+  //first check if either endpoint is inside
+  if (AC <= r || BC <= r) {
+    return true
+  }
+  //i dont think this next part is actually necessary but it's cool, check for other intersections with circle
+  let proj = (ACx*ABx+ACy*ABy)/AB
+  if ((proj<0) || (proj > AB)) {
+    return false
+  }
+  let unitX = ABx/AB
+  let unitY = ABy/AB
+  let Dx = x1 + unitX*proj
+  let Dy = y1 + unitY*proj
+  let dist = Math.sqrt((Dx-xc)*(Dx-xc)+(Dy-yc)*(Dy-yc))
+  if (dist > r) {
+    return false
+  }
+  return true
+}
 class Player {
   constructor(name, posX, posY, color) {
     this.name = name;
@@ -41,7 +69,7 @@ class Player {
 
   }
 
-  move(blocks, players) {
+  move(blocks, players, bullets) {
     if(this.isDead) {
       return;
     }
@@ -60,6 +88,13 @@ class Player {
         continue;
       } else {
         this.checkPlayerCollision(player);
+      }
+    }
+
+    for (let i=0; i<bullets.length; i++) {
+      let bullet = bullets[i];
+      if (bullet) {
+        this.checkBullet(bullet)
       }
     }
 
@@ -92,6 +127,17 @@ class Player {
     this.isDead = true;
     this.ticksUntilAlive = 15;
   }
+
+  checkBullet(bullet) {
+    let x1 = bullet.x-bullet.length*bullet.velX
+    let y1 = bullet.y-bullet.length*bullet.velY
+    let x2 = bullet.x+bullet.length*bullet.velX
+    let y2 = bullet.y+bullet.length*bullet.velY
+    if (segmentCircleIntersect(x1,y1,x2,y2,this.x,this.y,this.r) && bullet.color != this.color){
+      this.killed()
+    }
+  }
+
   // inspired by: https://cscheng.info/2016/06/09/calculate-circle-line-intersection-with-javascript-and-p5js.html
   checkKilled(player) {
     let h = player.x;

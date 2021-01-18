@@ -195,7 +195,6 @@ class Game {
         } else if (event.type === 'shoot') {
           this.playerInfo[player].shoot(Object.values(this.playerInfo));
         } else if (event.type === 'bullet') {
-          console.log(JSON.stringify(this.gameObjects))
           this.gameObjects.bullets.push(new Bullet(
             event.pos.x,
             event.pos.y,
@@ -210,14 +209,18 @@ class Game {
     // Reset events to empty
     this.events = {};
     for (const player in this.playerInfo) {
-      this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo));
+      this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo), this.gameObjects.bullets);
     }
     for (let i=0;i<this.gameObjects.bullets.length;i++) {
-      this.gameObjects.bullets[i].move(this.gameObjects.blocks, Object.values(this.playerInfo))
+      if (this.gameObjects.bullets[i]) {
+        this.gameObjects.bullets[i].move(this.gameObjects.blocks)
+      }
     }
     for (let i=this.gameObjects.bullets.length-1;i>=0;i--) {
-      if (!this.gameObjects.bullets[i].stillGoing) {
-        delete this.gameObjects.bullets[i]
+      if (this.gameObjects.bullets[i]) {
+        if (!this.gameObjects.bullets[i].stillGoing) {
+          delete this.gameObjects.bullets[i]
+        }
       }
     }
   }
