@@ -92,7 +92,6 @@ class Player {
     this.isDead = true;
     this.ticksUntilAlive = 15;
   }
-
   // inspired by: https://cscheng.info/2016/06/09/calculate-circle-line-intersection-with-javascript-and-p5js.html
   checkKilled(player) {
     let h = player.x;

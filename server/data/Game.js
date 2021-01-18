@@ -215,7 +215,7 @@ class Game {
     for (let i=0;i<this.gameObjects.bullets.length;i++) {
       this.gameObjects.bullets[i].move(this.gameObjects.blocks, Object.values(this.playerInfo))
     }
-    for (let i=this.gameObjects.bullets.length-1;i>=0;i++) {
+    for (let i=this.gameObjects.bullets.length-1;i>=0;i--) {
       if (!this.gameObjects.bullets[i].stillGoing) {
         delete this.gameObjects.bullets[i]
       }
