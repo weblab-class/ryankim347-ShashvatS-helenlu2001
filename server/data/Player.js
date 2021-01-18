@@ -1,4 +1,6 @@
 const speed = 2;
+const respawnTime = 5
+
 const segmentCircleIntersect = (x1,y1,x2,y2,xc,yc,r) => {
   let ACx = xc-x1
   let ACy = yc-y1
@@ -69,7 +71,7 @@ class Player {
 
   }
 
-  move(blocks, players, bullets) {
+  move(blocks, players, bullets, points) {
     if(this.isDead) {
       return;
     }
@@ -94,7 +96,7 @@ class Player {
     for (let i=0; i<bullets.length; i++) {
       let bullet = bullets[i];
       if (bullet) {
-        this.checkBullet(bullet)
+        this.checkBullet(bullet, points)
       }
     }
 
@@ -125,16 +127,17 @@ class Player {
 
   killed() {
     this.isDead = true;
-    this.ticksUntilAlive = 15;
+    this.ticksUntilAlive = respawnTime;
   }
 
-  checkBullet(bullet) {
+  checkBullet(bullet, points) {
     let x1 = bullet.x-bullet.length*bullet.velX
     let y1 = bullet.y-bullet.length*bullet.velY
     let x2 = bullet.x+bullet.length*bullet.velX
     let y2 = bullet.y+bullet.length*bullet.velY
     if (segmentCircleIntersect(x1,y1,x2,y2,this.x,this.y,this.r) && bullet.color != this.color){
       this.killed()
+      points.push(bullet.color)
     }
   }
 

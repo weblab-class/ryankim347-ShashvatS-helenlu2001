@@ -208,9 +208,18 @@ class Game {
 
     // Reset events to empty
     this.events = {};
+    let points = []
     for (const player in this.playerInfo) {
-      this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo), this.gameObjects.bullets);
+      this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo), this.gameObjects.bullets, points);
     }
+    //this line is inefficient for now, maybe we could have players be a dictionary mapping colors to players?
+    points.forEach((color) => {
+      for (const player in this.playerInfo) {
+        if (this.playerInfo[player].color === color) {
+          this.playerInfo[player].points += 1
+        }
+      }
+    })
     for (let i=0;i<this.gameObjects.bullets.length;i++) {
       if (this.gameObjects.bullets[i]) {
         this.gameObjects.bullets[i].move(this.gameObjects.blocks)

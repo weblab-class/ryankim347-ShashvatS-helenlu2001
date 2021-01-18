@@ -1,5 +1,5 @@
 //inspired by https://stackoverflow.com/a/1079478
-const segmentCircleIntersect = (x1,y1,x2,y2,xc,yc,r) => {
+export function segmentCircleIntersect(x1,y1,x2,y2,xc,yc,r) {
   let ACx = xc-x1
   let ACy = yc-y1
   let BCx = xc-x2
@@ -28,5 +28,3 @@ const segmentCircleIntersect = (x1,y1,x2,y2,xc,yc,r) => {
   }
   return true
 }
-
-export {segmentCircleIntersect}
