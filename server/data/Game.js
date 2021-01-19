@@ -192,8 +192,6 @@ class Game {
           this.playerInfo[player].setVel(0, 0);
         } else if (event.type === "movement") {
           this.playerInfo[player].setVel(event.vel.dx, event.vel.dy);
-        } else if (event.type === 'shoot') {
-          this.playerInfo[player].shoot(Object.values(this.playerInfo));
         } else if (event.type === 'bullet') {
           this.gameObjects.bullets.push(new Bullet(
             event.pos.x,

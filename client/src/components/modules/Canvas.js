@@ -53,17 +53,6 @@ class Canvas extends Component {
   handleKeyDown(event) {
     if(event.code === 'Space') {
       this.events.push({
-        type: 'shoot',
-        dir: {
-          dx: this.dx,
-          dy: this.dy
-        }
-      })
-      console.log('shoot');
-      console.log(this.dx + ' ' + this.dy)
-    }
-    if(event.code === 'KeyF') {
-      this.events.push({
         type: 'bullet',
         dir: {
           dx: this.dx,

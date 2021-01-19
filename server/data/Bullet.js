@@ -89,12 +89,6 @@ class Bullet {
     this.stillGoing = false;
   }
 
-  distFromCenter(x, y) {
-    let dx = this.x - x;
-    let dy = this.y - y;
-    return Math.sqrt(dx*dx + dy*dy);
-  }
-
 }
 
 module.exports = { Bullet };
