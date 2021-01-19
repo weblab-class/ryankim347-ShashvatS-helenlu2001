@@ -8,7 +8,7 @@ import "./Login.css";
  * @param userId specifies the id of the currently logged in user
  */
 
-const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = '127446521312-hdfp7kh60ebsqr209mhunpje0bin3gq8.apps.googleusercontent.com';
 
 class Login extends Component {
   constructor(props) {
