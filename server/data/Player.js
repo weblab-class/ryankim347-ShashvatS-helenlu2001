@@ -127,6 +127,12 @@ class Player {
               this.speed = 2;
             }, 15*1000);
             break;
+          case 'shrink':
+            this.r = 9;
+            setTimeout(() => {
+              this.r = 12;
+            }, 15*1000);
+            break;
         }
       }
     }

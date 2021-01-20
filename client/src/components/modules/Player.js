@@ -1,7 +1,7 @@
 class Player {
-  constructor(me, x, y, color, shoot, shootX, shootY, isDead, powerups) {
+  constructor(me, x, y, color, shoot, shootX, shootY, isDead, powerups, r) {
     this.me = me;
-    this.r = 12;
+    this.r = r;
     this.x = x;
     this.y = y;
     this.color = color;

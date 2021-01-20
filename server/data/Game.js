@@ -6,7 +6,7 @@ const { Bullet } = require("./Bullet");
 const Map = require("../models/map");
 const { Cloak } = require("./powerups/Cloak");
 const { Speed } = require('./powerups/Speed');
-const { genCoordinates } = require("../util");
+const { Shrink } = require("./powerups/Shrink");
 
 class Game {
   constructor(code, host_id, host_name) {
@@ -144,6 +144,9 @@ class Game {
       }
       for(let i = 0; i < 5; i++) {
         powerupArray.push(new Speed(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500)));
+      }
+      for(let i = 0; i < 5; i++) {
+        powerupArray.push(new Shrink(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500)));
       }
       this.gameObjects = {
         blocks: blockArray,

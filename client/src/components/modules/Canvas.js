@@ -9,6 +9,7 @@ import Speed from './powerups/Speed.js';
 import "../../utilities.css";
 import "./Canvas.css";
 import { socket } from "../../client-socket.js";
+import Shrink from "./powerups/Shrink.js";
 
 /**
  * @param userId specifies the id of the currently logged in user
@@ -157,6 +158,7 @@ class Canvas extends Component {
       if(playerInfo[player].color === this.props.color) {
         this.me =  new Player(playerInfo[player].color === this.props.color, playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
       }
+      console.log(playerInfo[player].r);
       this.playerInfo[player] = new Player(
         playerInfo[player].color === this.props.color,
         playerInfo[player].x,
@@ -166,7 +168,8 @@ class Canvas extends Component {
         playerInfo[player].velX,
         playerInfo[player].velY,
         playerInfo[player].isDead,
-        playerInfo[player].powerups
+        playerInfo[player].powerups,
+        playerInfo[player].r
       );
     }
 
@@ -191,6 +194,10 @@ class Canvas extends Component {
         case 'speed':
           this.gameObjects.powerups.push(new Speed(powerup.x, powerup.y));
           break;
+        case 'shrink':
+          this.gameObjects.powerups.push(new Shrink(powerup.x, powerup.y));
+          break;
+
       }
     });
 
