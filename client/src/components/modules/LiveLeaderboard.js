@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "../../utilities.css";
-import "./Leaderboard.css";
+import "./LiveLeaderboard.css";
 
-class Leaderboard extends Component {
+class LiveLeaderboard extends Component {
   constructor(props) {
     super(props);
     // Initialize Default State
@@ -19,12 +19,12 @@ class Leaderboard extends Component {
     this.props.leaderboardInfo.sort((a, b) => (a.points > b.points) ? -1 : 1);
     return (
       <>
-        <div className='Leaderboard-container'>
-          <div className= 'Leaderboard-title'> LEADERBOARD </div>
+        <div className='LiveLeaderboard-container'>
+          <div className= 'LiveLeaderboard-title'> LEADERBOARD </div>
           {this.props.leaderboardInfo.map((e) => {
             return (
-              <div className='Leaderboard-entry' style={e.color === this.props.color ? {border: '1px solid white'} : {}}>
-                <div className='Leaderboard-name' style={{color: e.color}}> {e.name} </div>
+              <div className='LiveLeaderboard-entry' style={e.color === this.props.color ? {border: '1px solid white'} : {}}>
+                <div className='LiveLeaderboard-name' style={{color: e.color}}> {e.name} </div>
                 <div> {e.points}  </div>
               </div>
             );
@@ -36,4 +36,4 @@ class Leaderboard extends Component {
   }
 }
 
-export default Leaderboard;
+export default LiveLeaderboard;

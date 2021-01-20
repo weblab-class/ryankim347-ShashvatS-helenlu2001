@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Timer from '../modules/Timer.js';
-import Leaderboard from '../modules/Leaderboard.js';
+import LiveLeaderboard from '../modules/LiveLeaderboard.js';
 import Canvas from "../modules/Canvas.js";
 import "../../utilities.css";
 import "./Game.css";
@@ -63,7 +63,7 @@ class Game extends Component {
       <>
         <div className='Game-sidebar'>
           <Timer startTime={this.state.startTime} endGame={this.endGame}/>
-          <Leaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
+          <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
         </div>
         <div className="Game-container">
           <div>Game Board </div>
