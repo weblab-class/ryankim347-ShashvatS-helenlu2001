@@ -4,9 +4,7 @@ import NavBar from "../modules/NavBar.js";
 
 import "../../utilities.css";
 import "./Custom.css";
-/**
- * @param userId specifies the id of the currently logged in user
- */
+import { get, post } from "../../utilities";
 
 
 class Custom extends Component {
@@ -19,8 +17,10 @@ class Custom extends Component {
       description: '',
 
       elements: {
-        walls: new Set()
-      }
+        blocks: new Set()
+      },
+
+      public: false
     };
 
     this.changeWidth = this.changeWidth.bind(this);
@@ -29,6 +29,8 @@ class Custom extends Component {
     this.clickTile = this.clickTile.bind(this);
 
     this.wallDescrip = this.wallDescrip.bind(this);
+    this.saveMap = this.saveMap.bind(this);
+    this.publicMap = this.publicMap.bind(this);
 
   }
 
@@ -49,15 +51,46 @@ class Custom extends Component {
 
   }
 
+  publicMap() {
+    this.setState({public: !this.state.public});
+  }
+
+
   clickTile(e) {
     if(e.target.style.backgroundColor === 'white') {
       e.target.style.backgroundColor = 'black';
-      this.state.elements.walls.delete(e.target.id);
+      this.state.elements.blocks.delete(e.target.id);
     } else {
       e.target.style.backgroundColor = 'white';
-      this.state.elements.walls.add(e.target.id);
+      this.state.elements.blocks.add(e.target.id);
     }
   }
+
+  saveMap() {
+    let x = []
+    let y = []
+
+    this.state.elements.blocks.forEach((str) => {
+      x.push(parseInt(str.substring(0, str.indexOf(','))));
+      y.push(parseInt(str.substring(str.indexOf(',')+1)));
+    });
+
+    let req = {
+      creatorID: this.props.userId,
+      width: this.state.width,
+      height: this.state.height,
+      x: x,
+      y: y,
+      public: this.state.public
+    }
+
+    console.log(req);
+    post('/api/addMap', req).then(() => {
+      console.log('success!');
+    })
+
+  }
+
 
 
   render() {
@@ -91,7 +124,12 @@ class Custom extends Component {
                   <div className='Custom-'> </div>
                 </div>
                 <div className='Custom-elementDescrip'> {this.state.description} </div>
-                <div className='u-button'> S A V E </div>
+                <div style={{display: 'flex', marginBottom: 32}}>
+                  <div style={{marginRight: 16}}> Make Map Available to Public? </div>
+                  <input style={{width: 20, margin: 0}} type='checkbox' onClick={this.publicMap} />
+                </div>
+
+                <div className='u-button' onClick={this.saveMap}> S A V E </div>
             </div>
         </div>
 

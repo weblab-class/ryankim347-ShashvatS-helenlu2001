@@ -108,7 +108,7 @@ class App extends Component {
             <Lobby code={this.state.code} changeRoom={this.changeRoom} path="/lobby" />
             <Game code={this.state.code} changeRoom={this.changeRoom} path="/game" />
             <Leaderboard path="/leaderboard" />
-            <Custom path="/custommaps" />
+            <Custom path="/custommaps" userId={this.state.userId} />
 
             <Stats
               path="/stats"

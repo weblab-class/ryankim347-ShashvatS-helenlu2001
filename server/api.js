@@ -11,7 +11,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 // import models so we can interact with the database
 const User = require("./models/user");
-const Map = require("./models/map")
+const Map = require("./models/map");
+const CustomMap = require('./models/custom.js');
 // import authentication library
 const auth = require("./auth");
 
@@ -163,6 +164,21 @@ router.post("/curRoom", (req, res) => {
 //     console.log("inserted")
 //   })
 // })
+
+
+router.post('/addMap', (req,res) => {
+  const map = new CustomMap({
+    creatorID: req.body.creatorID,
+    width: req.body.width,
+    height: req.body.height,
+    x: req.body.x,
+    y: req.body.y,
+    public: req.body.public
+  });
+  map.save().then((map) => {
+    console.log('inserted new custom map!');
+  })
+})
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
