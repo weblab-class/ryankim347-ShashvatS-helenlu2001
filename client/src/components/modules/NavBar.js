@@ -15,17 +15,11 @@ class NavBar extends Component {
     this.state = {
 
     };
-    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount() {
     // remember -- api calls go here!
   }
-
-  onClick(event) {
-    navigate("/game");
-  }
-
 
 
   render() {

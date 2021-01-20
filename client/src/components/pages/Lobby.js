@@ -146,7 +146,6 @@ class Lobby extends Component {
               </div>
               <hr />
 
-              {/* TODO: change the player name color based on the results of the colors (this.state.colors) */}
 
               <div className="Lobby-people">
                 {this.state.players.map((value, index) => (

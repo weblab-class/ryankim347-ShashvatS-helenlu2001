@@ -14,6 +14,7 @@ import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
 import Leaderboard from './pages/Leaderboard.js';
+import Custom from "./pages/Custom.js";
 /**
  * Define the "App" component as a class.
  */
@@ -107,6 +108,7 @@ class App extends Component {
             <Lobby code={this.state.code} changeRoom={this.changeRoom} path="/lobby" />
             <Game code={this.state.code} changeRoom={this.changeRoom} path="/game" />
             <Leaderboard path="/leaderboard" />
+            <Custom path="/custommaps" />
 
             <Stats
               path="/stats"
