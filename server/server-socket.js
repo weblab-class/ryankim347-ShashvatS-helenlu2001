@@ -136,12 +136,11 @@ module.exports = {
         }
       });
 
-      socket.on('move', (dir) => {
+      socket.on("move", (dir) => {
         const user = getUserFromSocketID(socket.id);
-        console.log('user id is ' + user._id);
-        console.log('data is ' + dir);
-      })
-
+        console.log("user id is " + user._id);
+        console.log("data is " + dir);
+      });
     });
   },
 

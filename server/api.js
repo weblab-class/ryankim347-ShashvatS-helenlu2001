@@ -12,7 +12,7 @@ const mongoose = require("mongoose");
 // import models so we can interact with the database
 const User = require("./models/user");
 const Map = require("./models/map");
-const CustomMap = require('./models/custom.js');
+const CustomMap = require("./models/custom.js");
 // import authentication library
 const auth = require("./auth");
 
@@ -26,6 +26,7 @@ const { genGamePin, getClientId } = require("./util");
 const { games } = require("./data/games");
 const { Game } = require("./data/Game");
 const { clients } = require("./data/client");
+const { getSocketFromUserID } = require("./server-socket");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -76,6 +77,10 @@ router.post("/create", (req, res) => {
   games[code] = game;
 
   if (clientId in clients) {
+    if (clients[clientId].room != code) {
+      const socket = getSocketFromUserID(clientId);
+      socket.leave(clients[clientId].room);
+    }
     clients[clientId].room = code;
   } else {
     clients[clientId] = {
@@ -117,6 +122,10 @@ router.post("/join", (req, res) => {
 
   if (joined) {
     if (clientId in clients) {
+      if (clients[clientId].room != code) {
+        const socket = getSocketFromUserID(clientId);
+        socket.leave(clients[clientId].room);
+      }
       clients[clientId].room = code;
     } else {
       clients[clientId] = {
@@ -165,20 +174,19 @@ router.post("/curRoom", (req, res) => {
 //   })
 // })
 
-
-router.post('/addMap', (req,res) => {
+router.post("/addMap", (req, res) => {
   const map = new CustomMap({
     creatorID: req.body.creatorID,
     width: req.body.width,
     height: req.body.height,
     x: req.body.x,
     y: req.body.y,
-    public: req.body.public
+    public: req.body.public,
   });
   map.save().then((map) => {
-    console.log('inserted new custom map!');
-  })
-})
+    console.log("inserted new custom map!");
+  });
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
