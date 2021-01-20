@@ -1,0 +1,88 @@
+
+.Leaderboard-container {
+  margin: 0 auto;
+  padding: 32px;
+  max-width: 1000px;
+
+
+}
+
+.Leaderboard-top3container {
+  height: 300px;
+
+  display: flex;
+  justify-content: center;;
+}
+
+.Leaderboard-place {
+  width: 200px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  text-align: center;
+
+}
+
+.Leaderboard-top3 {
+  border: 1px solid white;
+  margin-top: 16px;
+  font-size: 32px;
+  font-weight: 700;
+  color: rgb(78, 78, 78)
+}
+
+.Leaderboard-first {
+  padding-top: 100px;
+  height: 150px;
+  background-color: rgb(255, 208, 0);
+}
+
+.Leaderboard-second {
+  padding-top: 65px;
+  height: 110px;
+  background-color: rgb(179, 179, 179);
+}
+
+.Leaderboard-third {
+  padding-top: 30px;
+  height: 70px;
+  background-color: rgb(182, 134, 71);
+}
+
+.Leaderboard-name {
+  font-size: 32px;
+  width: 200px;
+}
+
+.Leaderboard-restrow {
+  padding: 8px 32px;
+  display: flex;
+  font-size: 24px;
+}
+
+.Leaderboard-restplace {
+  text-align: center;
+  width: 50px;
+}
+
+.Leaderboard-restname {
+  flex-grow: 2;
+  padding-left: 32px;
+}
+
+.Leaderboard-restpoints {
+  text-align: center;
+  width: 80px;
+}
+
+.Leaderboard-title {
+  margin-bottom: 32px;
+  font-size: 60px;
+  font-family: 'Orbitron';
+  color: white;
+-webkit-text-stroke: 1px white;
+  -webkit-text-fill-color: black;
+  text-align: center;
+}

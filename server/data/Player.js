@@ -105,7 +105,6 @@ class Player {
       }
     }
 
-    console.log(powerups);
     for(let i=0; i < powerups.length; i++) {
       let powerup = powerups[i];
       if(powerup === undefined) {

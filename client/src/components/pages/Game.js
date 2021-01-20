@@ -20,13 +20,23 @@ class Game extends Component {
       startTime: this.props.location.state.startTime,
       color: this.props.location.state.color,
       leaderboardInfo: [],
+      gameOver: false,
     };
+
     this.updateLeaderboard = this.updateLeaderboard.bind(this);
+    this.endGame = this.endGame.bind(this);
   }
 
 
   updateLeaderboard(leaderboardInfo) {
     this.setState({leaderboardInfo: leaderboardInfo});
+    console.log(leaderboardInfo);
+  }
+
+  endGame() {
+    setTimeout(() => {
+      navigate("/leaderboard", {state: {leaderboardInfo: this.state.leaderboardInfo}});
+    }, 5*1000)
   }
 
   componentDidMount() {
@@ -52,7 +62,7 @@ class Game extends Component {
     return (
       <>
         <div className='Game-sidebar'>
-          <Timer startTime={this.state.startTime}/>
+          <Timer startTime={this.state.startTime} endGame={this.endGame}/>
           <Leaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
         </div>
         <div className="Game-container">
