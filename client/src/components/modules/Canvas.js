@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Player from "./Player.js";
 import Block from "./Block.js";
 import Bullet from "./Bullet.js"
+import Cloak from './powerups/Cloak.js';
 
 import "../../utilities.css";
 import "./Canvas.css";
@@ -132,6 +133,7 @@ class Canvas extends Component {
       }
       this.gameObjects.bullets.forEach((bullet) => bullet.draw(ctx, relX, relY))
       this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
+      this.gameObjects.powerups.forEach((powerup) => powerup.draw(ctx, relX, relY));
     }
 
     if (this.running) {
@@ -162,12 +164,14 @@ class Canvas extends Component {
         playerInfo[player].velX,
         playerInfo[player].velY,
         playerInfo[player].isDead,
+        playerInfo[player].powerups
       );
     }
 
     this.gameObjects = {
       blocks: [],
-      bullets: []
+      bullets: [],
+      powerups: [],
     };
     gameObjects.bullets.forEach((bullet) => {
       if (bullet) {
@@ -176,6 +180,9 @@ class Canvas extends Component {
     })
     gameObjects.blocks.forEach((block) => {
       this.gameObjects.blocks.push(new Block(block.x, block.y));
+    });
+    gameObjects.powerups.forEach((powerup) => {
+      this.gameObjects.powerups.push(new Cloak(powerup.x, powerup.y));
     });
 
     this.props.updateLeaderboard(leaderboardInfo);

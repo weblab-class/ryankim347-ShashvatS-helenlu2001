@@ -4,6 +4,8 @@ const { Block } = require("./Block");
 const { Player } = require("./Player");
 const { Bullet } = require("./Bullet");
 const Map = require("../models/map");
+const { Cloak } = require("./Cloak");
+const { genCoordinates } = require("../util");
 
 class Game {
   constructor(code, host_id, host_name) {
@@ -30,7 +32,7 @@ class Game {
     this.mode = "lobby";
 
     this.startTime = undefined;
-    this.gameObjects = {blocks: [], bullets: []};
+    this.gameObjects = {blocks: [], bullets: [], powerups: []};
     this.playerInfo = undefined;
 
     this.events = {};
@@ -127,17 +129,25 @@ class Game {
     const query = {id: this.mapNum}
     this.gameObjects = {
       blocks: [],
-      bullets: []
+      bullets: [],
+      powerups: []
     }
     Map.findOne(query).then((map) => {
       let blockArray = []
       for (let i=0;i<map.x.length;i++) {
         blockArray.push(new Block(map.x[i],map.y[i]))
       }
+      let powerupArray = [];
+      for(let i = 0; i < 10; i++) {
+        powerupArray.push(new Cloak(Math.floor(Math.random() * 1000),Math.floor(Math.random() * 1000)));
+      }
       this.gameObjects = {
         blocks: blockArray,
-        bullets: []
+        bullets: [],
+        powerups: powerupArray
       }
+      console.log('powerupArray ' + powerupArray);
+      console.log('powerup in game object ' + this.gameObjects.powerups)
     })
   }
 
@@ -208,8 +218,10 @@ class Game {
     this.events = {};
     let points = []
     for (const player in this.playerInfo) {
-      this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo), this.gameObjects.bullets, points);
+      this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo), this.gameObjects.bullets, points, this.gameObjects.powerups);
     }
+    console.log('hellooooo in game');
+    console.log(this.gameObjects.powerups);
     //this line is inefficient for now, maybe we could have players be a dictionary mapping colors to players?
     points.forEach((color) => {
       for (const player in this.playerInfo) {
@@ -230,6 +242,18 @@ class Game {
         }
       }
     }
+
+    // remove all powerups that have been used
+    let newPowerups = []
+    for(let i = this.gameObjects.powerups.length-1; i >= 0; i--) {
+      if(this.gameObjects.powerups[i]) {
+        if(!this.gameObjects.powerups[i].isUsed()) {
+          newPowerups.push(this.gameObjects.powerups[i]);
+        }
+      }
+    }
+    this.gameObjects.powerups = newPowerups;
+
   }
 
   /**

@@ -13,8 +13,8 @@ function getClientId(req) {
   return req.cookies["client-id"];
 }
 
-function genCoordinates(mapWidth, mapHeight) {
-  return {X: Math.floor(Math.random() * mapWidth), Y: Math.floor(Math.random() * mapHeight)};
+function genCoordinates(maxX, maxY) {
+  return {X: Math.floor(Math.random() * maxX), Y: Math.floor(Math.random() * maxY)};
 }
 
 module.exports = { genGamePin, getClientId, genCoordinates };

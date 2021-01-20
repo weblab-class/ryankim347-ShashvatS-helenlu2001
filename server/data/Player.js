@@ -44,6 +44,10 @@ class Player {
     this.velX = 0;
     this.velY = 0;
 
+    this.powerups = {
+      invisible: false,
+    };
+
     this.isDead = false;
     this.ticksUntilAlive = -1;
 
@@ -71,7 +75,7 @@ class Player {
 
   }
 
-  move(blocks, players, bullets, points) {
+  move(blocks, players, bullets, points, powerups) {
     if(this.isDead) {
       return;
     }
@@ -100,6 +104,21 @@ class Player {
       }
     }
 
+    console.log(powerups);
+    for(let i=0; i < powerups.length; i++) {
+      let powerup = powerups[i];
+      if(powerup === undefined) {
+        continue;
+      }
+      if(powerup.isUsed()) {
+        continue;
+      }
+      if (this.checkPowerUp(powerup.topLeft()[0], powerup.topLeft()[1], powerup.side())) {
+        powerup.use();
+        this.powerups.invisible = true;
+        setTimeout(() => {this.powerups.invisible = false;}, 15*1000);
+      }
+    }
 
   }
 
@@ -148,7 +167,7 @@ class Player {
 
   // inspired by http://www.jeffreythompson.org/collision-detection/circle-rect.php
   // TODO: basically done, but small glitch at the corner
-  checkBlockCollision(left, top, side) {
+  checkBlockCollision(left, top, side, powerup=false) {
     let compX = this.x;
     let compY = this.y;
 
@@ -205,6 +224,34 @@ class Player {
 
     }
 
+  }
+
+  checkPowerUp(left, top, side) {
+    let compX = this.x;
+    let compY = this.y;
+
+    if (compX < left) {
+      compX = left;
+    } else if (compX > left + side) {
+      compX = left + side;
+    }
+
+    if (compY < top) {
+      compY = top;
+    } else if (compY > top + side) {
+      compY = top + side;
+    }
+
+    let dx = compX - this.x;
+    let dy = compY - this.y;
+    let dist = dx * dx + dy * dy;
+
+    // collision if this condition holds
+    if ( dist < this.r * this.r && dist !== 0) {
+      return true;
+    }
+
+    return false;
   }
 }
 

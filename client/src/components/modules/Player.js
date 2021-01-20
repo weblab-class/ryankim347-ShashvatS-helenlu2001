@@ -1,5 +1,5 @@
 class Player {
-  constructor(x, y, color, shoot, shootX, shootY, isDead) {
+  constructor(x, y, color, shoot, shootX, shootY, isDead, powerups) {
     this.r = 12;
     this.x = x;
     this.y = y;
@@ -10,6 +10,7 @@ class Player {
     this.shootY = shootY;
 
     this.isDead = isDead;
+    this.powerups = powerups;
   }
 
   draw(ctx, playerX, playerY) {
@@ -17,7 +18,7 @@ class Player {
       return;
     }
     ctx.beginPath();
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = this.powerups.invisible ? '#383838': this.color;
     ctx.arc(this.x-playerX, this.y-playerY, this.r, 0, 2 * Math.PI);
     ctx.fill();
 
@@ -39,6 +40,10 @@ class Player {
 
   y() {
     return this.y;
+  }
+
+  isInvisible() {
+    return this.powerups.invisible;
   }
 }
 
