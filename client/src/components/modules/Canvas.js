@@ -4,6 +4,7 @@ import Player from "./Player.js";
 import Block from "./Block.js";
 import Bullet from "./Bullet.js"
 import Cloak from './powerups/Cloak.js';
+import Speed from './powerups/Speed.js';
 
 import "../../utilities.css";
 import "./Canvas.css";
@@ -183,7 +184,14 @@ class Canvas extends Component {
       this.gameObjects.blocks.push(new Block(block.x, block.y));
     });
     gameObjects.powerups.forEach((powerup) => {
-      this.gameObjects.powerups.push(new Cloak(powerup.x, powerup.y));
+      switch(powerup.type) {
+        case 'cloak':
+          this.gameObjects.powerups.push(new Cloak(powerup.x, powerup.y));
+          break;
+        case 'speed':
+          this.gameObjects.powerups.push(new Speed(powerup.x, powerup.y));
+          break;
+      }
     });
 
     this.props.updateLeaderboard(leaderboardInfo);

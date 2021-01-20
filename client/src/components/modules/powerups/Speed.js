@@ -1,16 +1,12 @@
-class Cloak {
-  constructor(x, y) {
-    this.type = 'cloak';
-
+class Speed {
+  constructor(x, y, s=40) {
     // coordinates of the top left corner
     this.x = x;
     this.y = y;
 
     // side length of block
-    this.s = 40;
-    this.color = "grey";
-
-    this.used = false;
+    this.s = s;
+    this.color = 'yellow'
   }
 
   draw(ctx, playerX, playerY) {
@@ -28,13 +24,7 @@ class Cloak {
     return this.s;
   }
 
-  use() {
-    this.used = true;
-  }
 
-  isUsed() {
-    return this.used;
-  }
 }
 
-module.exports = { Cloak };
+export default Speed;

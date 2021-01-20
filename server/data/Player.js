@@ -1,4 +1,4 @@
-const speed = 2;
+// const speed = 2;
 const respawnTime = 5
 
 const segmentCircleIntersect = (x1,y1,x2,y2,xc,yc,r) => {
@@ -43,6 +43,7 @@ class Player {
 
     this.velX = 0;
     this.velY = 0;
+    this.speed = 2;
 
     this.powerups = {
       invisible: false,
@@ -80,8 +81,8 @@ class Player {
       return;
     }
 
-    this.x += speed * this.velX;
-    this.y += speed * this.velY;
+    this.x += this.speed * this.velX;
+    this.y += this.speed * this.velY;
 
     for (let i = 0; i < blocks.length; i++) {
       let block = blocks[i];
@@ -115,8 +116,18 @@ class Player {
       }
       if (this.checkPowerUp(powerup.topLeft()[0], powerup.topLeft()[1], powerup.side())) {
         powerup.use();
-        this.powerups.invisible = true;
-        setTimeout(() => {this.powerups.invisible = false;}, 15*1000);
+        switch(powerup.type) {
+          case 'cloak':
+            this.powerups.invisible = true;
+            setTimeout(() => {this.powerups.invisible = false;}, 15*1000);
+            break;
+          case 'speed':
+            this.speed = 4;
+            setTimeout(() => {
+              this.speed = 2;
+            }, 15*1000);
+            break;
+        }
       }
     }
 

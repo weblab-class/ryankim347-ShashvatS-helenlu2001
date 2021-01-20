@@ -1,14 +1,13 @@
-class Cloak {
+class Speed {
   constructor(x, y) {
-    this.type = 'cloak';
-
+    this.type = 'speed';
     // coordinates of the top left corner
     this.x = x;
     this.y = y;
 
     // side length of block
     this.s = 40;
-    this.color = "grey";
+    this.color = "yellow";
 
     this.used = false;
   }
@@ -35,6 +34,10 @@ class Cloak {
   isUsed() {
     return this.used;
   }
+
+  type() {
+    return this.type;
+  }
 }
 
-module.exports = { Cloak };
+module.exports = { Speed };
