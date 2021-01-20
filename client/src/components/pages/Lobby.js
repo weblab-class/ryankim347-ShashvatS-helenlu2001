@@ -156,10 +156,17 @@ class Lobby extends Component {
               </div>
 
               {this.state.creator && (
-                <div className="u-button" onClick={this.startGame}>
-                  {" "}
-                  S T A R T{" "}
+                <div>
+                  <div className="u-button">
+                    S E T T I N G S
+                  </div>
+                  <div style={{height: 16}}> </div>
+                  <div className="u-button" onClick={this.startGame}>
+                    {" "}
+                    S T A R T{" "}
+                  </div>
                 </div>
+
               )}
             </div>
             <ColorPicker

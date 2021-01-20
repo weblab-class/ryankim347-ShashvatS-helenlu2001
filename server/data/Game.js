@@ -8,6 +8,8 @@ const { Cloak } = require("./powerups/Cloak");
 const { Speed } = require('./powerups/Speed');
 const { Shrink } = require("./powerups/Shrink");
 
+
+// new map design: map is split into 40x40 cells and we randomly pick a cell to place players in
 class Game {
   constructor(code, host_id, host_name) {
     this.code = code; // game code
@@ -34,6 +36,7 @@ class Game {
 
     this.startTime = undefined;
     this.gameObjects = {blocks: [], bullets: [], powerups: []};
+    this.occupiedCells = new Set();
     this.playerInfo = undefined;
 
     this.events = {};
@@ -136,7 +139,11 @@ class Game {
     Map.findOne(query).then((map) => {
       let blockArray = []
       for (let i=0;i<map.x.length;i++) {
-        blockArray.push(new Block(map.x[i],map.y[i]))
+        blockArray.push(new Block(map.x[i],map.y[i]));
+
+        let xi = Math.floor(map.x[i] / 40);
+        let yi = Math.floor(map.y[i] / 40);
+        this.occupiedCells.add(xi + ',' + yi);
       }
       let powerupArray = [];
       for(let i = 0; i < 5; i++) {
@@ -165,10 +172,13 @@ class Game {
 
     // TODO: shuffle, and actually place people in better spots
     for (const player in this.playerNames) {
-      const posX = i * 100 + 300;
-      const posY = i * 100 + 300;
+      let posX = Math.floor(Math.random() * 400) + 200;
+      let posY = Math.floor(Math.random() * 400) + 200;
 
-      i += 1;
+      while(this.occupiedCells.has(Math.floor(posX/40 - 12)+','+Math.floor(posY/40 - 12))) {
+        posX = Math.floor(Math.random() * 400) + 200;
+        posY = Math.floor(Math.random() * 400) + 200;
+      }
 
       this.playerInfo[player] = new Player(this.playerNames[player], posX, posY, colorMap[colors[this.id_to_color[player]]]);
     }
