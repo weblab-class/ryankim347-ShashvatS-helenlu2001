@@ -1,5 +1,6 @@
 class Player {
-  constructor(x, y, color, shoot, shootX, shootY, isDead, powerups) {
+  constructor(me, x, y, color, shoot, shootX, shootY, isDead, powerups) {
+    this.me = me;
     this.r = 12;
     this.x = x;
     this.y = y;
@@ -18,7 +19,12 @@ class Player {
       return;
     }
     ctx.beginPath();
-    ctx.fillStyle = this.powerups.invisible ? '#383838': this.color;
+    if(this.me) {
+      ctx.fillStyle = this.powerups.invisible ? '#383838': this.color;
+
+    } else {
+      ctx.fillStyle = this.powerups.invisible ? 'black': this.color;
+    }
     ctx.arc(this.x-playerX, this.y-playerY, this.r, 0, 2 * Math.PI);
     ctx.fill();
 

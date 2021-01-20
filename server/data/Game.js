@@ -4,7 +4,7 @@ const { Block } = require("./Block");
 const { Player } = require("./Player");
 const { Bullet } = require("./Bullet");
 const Map = require("../models/map");
-const { Cloak } = require("./Cloak");
+const { Cloak } = require("./powerups/Cloak");
 const { genCoordinates } = require("../util");
 
 class Game {
@@ -139,7 +139,7 @@ class Game {
       }
       let powerupArray = [];
       for(let i = 0; i < 10; i++) {
-        powerupArray.push(new Cloak(Math.floor(Math.random() * 1000),Math.floor(Math.random() * 1000)));
+        powerupArray.push(new Cloak(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500)));
       }
       this.gameObjects = {
         blocks: blockArray,
