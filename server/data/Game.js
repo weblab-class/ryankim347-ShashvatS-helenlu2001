@@ -232,9 +232,13 @@ class Game {
         } else if (event.type === "movement") {
           this.playerInfo[player].setVel(event.vel.dx, event.vel.dy);
         } else if (event.type === "bullet") {
-          this.gameObjects.bullets.push(
-            new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
-          );
+          if (this.playerInfo[player].canShoot()) {
+            this.playerInfo[player].shoot(Object.values(this.playerInfo));
+
+            this.gameObjects.bullets.push(
+              new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
+            );
+          }
         }
       });
     }

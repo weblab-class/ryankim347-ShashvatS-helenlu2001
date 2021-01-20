@@ -79,7 +79,7 @@ router.post("/create", (req, res) => {
   if (clientId in clients) {
     if (clients[clientId].room != code) {
       const socket = getSocketFromUserID(clientId);
-      socket.leave(clients[clientId].room);
+      if (socket != undefined) socket.leave(clients[clientId].room);
     }
     clients[clientId].room = code;
   } else {
@@ -124,7 +124,7 @@ router.post("/join", (req, res) => {
     if (clientId in clients) {
       if (clients[clientId].room != code) {
         const socket = getSocketFromUserID(clientId);
-        socket.leave(clients[clientId].room);
+        if (socket != undefined) socket.leave(clients[clientId].room);
       }
       clients[clientId].room = code;
     } else {
