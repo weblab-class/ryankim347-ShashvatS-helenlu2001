@@ -233,7 +233,7 @@ class Game {
           this.playerInfo[player].setVel(event.vel.dx, event.vel.dy);
         } else if (event.type === "bullet") {
           if (this.playerInfo[player].canShoot()) {
-            this.playerInfo[player].shoot(Object.values(this.playerInfo));
+            this.playerInfo[player].shoot();
 
             this.gameObjects.bullets.push(
               new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
