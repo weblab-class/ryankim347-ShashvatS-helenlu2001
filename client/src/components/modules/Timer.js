@@ -12,18 +12,25 @@ class Timer extends Component {
     // Initialize Default State
     this.state = {
       timeLeft: 300,
-      gameOver: false
+      gameOver: false,
+      setIntervalReturn: undefined,
     };
   }
 
   componentDidMount() {
-    setInterval(() => {
+    this.setState({setIntervalReturn: setInterval(() => {
       this.setState({timeLeft: Math.round((5*60*1000 + this.props.startTime - Date.now()) / 1000)});
       if(this.state.timeLeft <= 0) {
         this.setState({gameOver: true});
         this.props.endGame();
       }
-    }, 500)
+    }, 500)});
+  }
+
+  componentWillUnmount() {
+    if(this.state.setIntervalReturn) {
+      clearInterval(this.state.setIntervalReturn);
+    }
   }
 
   render() {

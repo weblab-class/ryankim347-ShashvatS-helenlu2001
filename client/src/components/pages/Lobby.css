@@ -2,6 +2,7 @@
     margin: 0 auto;
     display: flex;
     padding: 8px;
+    padding-bottom: 64px;
     max-width: 1100px;
 }
 
@@ -49,6 +50,7 @@
 
 .Lobby-people {
     display: grid;
+    min-height: 250px;
     grid-template-columns: 25% 25% 25% 25%;
     text-align: center;
 }
@@ -77,4 +79,62 @@ hr {
 
     background-image: url('../../public/loading.gif');
     background-size: cover;
+}
+
+.Lobby-slider {
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+}
+
+.Lobby-settingContainer {
+    margin: 0 auto;
+    padding: 16px;
+    padding-bottom: 32px;
+    width: 440px;
+}
+
+.Lobby-mapTypes {
+    margin-bottom: 24px;
+    width: 100%;
+    display: flex;
+}
+
+.Lobby-mapType {
+    border: 1px solid white;
+    padding: 8px;
+    flex-grow: 2;
+    text-align: center;
+}
+
+.Lobby-settingHeading {
+    margin-bottom: 16px;
+    font-size: 20px;
+    text-align: center;
+
+}
+
+.Lobby-settingTitle {
+    margin: 8px 0;
+}
+
+.Lobby-mapSettings {
+    padding: 0 16px;
+}
+
+.Lobby-square {
+    min-width: 6px;
+    min-height: 6px;
+    border: 0.5px solid rgb(56, 56, 56);
+  }
+
+.Lobby-row {
+    margin: 0 auto;
+    display: flex;
+}
+
+.Lobby-gridContainer {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
 }

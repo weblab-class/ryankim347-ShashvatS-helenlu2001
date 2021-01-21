@@ -4,6 +4,7 @@ import cookie from "cookie";
 
 import ColorPicker from "./lobby/ColorPicker";
 import NavBar from "../modules/NavBar.js";
+import SettingsBar from "../modules/SettingsBar.js";
 
 import "../../utilities.css";
 import "./Lobby.css";
@@ -32,13 +33,26 @@ class Lobby extends Component {
       colors: undefined,
       playerNames: undefined,
       myName: this.props.location.state.name,
-      myColor: undefined
+      myColor: undefined,
+      display: 'LOBBY',
+
+      standard: true,
+      stdHeight: 25,
+      stdWidth: 25,
+      stdWallDensity: 25,
+      stdMirrorDensity: 25,
+      custWidth: 0,
+      custHeight: 0,
+      custBlocks: [],
+      custTitle: 'NONE SELECTED YET'
+
     };
 
     this.lobbyData = this.lobbyData.bind(this);
     this.startGame = this.startGame.bind(this);
     this.receiveStartGame = this.receiveStartGame.bind(this);
     this.getColor = this.getColor.bind(this);
+    this.updateDisplay = this.updateDisplay.bind(this);
   }
 
   componentDidMount() {
@@ -127,11 +141,24 @@ class Lobby extends Component {
     navigate("/game", {state: {startTime: startTime, color: this.state.myColor}});
   }
 
+  updateDisplay(display) {
+    this.setState({display: display});
+  }
+
   render() {
     // makes the game code look prettier
     let code = "";
     for (let i = 0; i < this.props.code.length; i++) {
       code += this.props.code[i] + " ";
+    }
+
+    let grid = [];
+    for(let i = 0; i < this.state.custHeight; i++) {
+      let row = [];
+      for(let j = 0; j < this.state.custWidth; j++) {
+        row.push(<div className='Lobby-square' id={i+','+j}> </div>)
+      }
+      grid.push(<div className='Lobby-row'> {row} </div>);
     }
 
     if (this.state.initialized) {
@@ -144,30 +171,91 @@ class Lobby extends Component {
                 <div className="Lobby-heading"> Game Code </div>
                 <div className="Lobby-code"> {code} </div>
               </div>
-              <hr />
+              {this.state.creator ? <SettingsBar display={this.state.display} updateDisplay={this.updateDisplay}/> : <hr/> }
 
 
-              <div className="Lobby-people">
-                {this.state.players.map((value, index) => (
-                  <div key={index} className="Lobby-username" style={{color: this.getColor(value)}}>
-                    {value}
+              {/* LOBBY / GENERAL VIEW SCREEN */}
+              {(this.state.display === 'LOBBY' || !this.state.creator) &&
+                <>
+                  <div className="Lobby-people">
+                    {this.state.players.map((value, index) => (
+                      <div key={index} className="Lobby-username" style={{color: this.getColor(value)}}>
+                        {value}
+                      </div>
+                    ))}
+
                   </div>
-                ))}
-              </div>
+                  {this.state.creator && (
+                    <div>
+                      <div style={{height: 16}}> </div>
+                      <div className="u-button" onClick={this.startGame}>
+                        {" "}
+                        S T A R T{" "}
+                      </div>
+                    </div>
 
-              {this.state.creator && (
-                <div>
-                  <div className="u-button">
-                    S E T T I N G S
-                  </div>
-                  <div style={{height: 16}}> </div>
-                  <div className="u-button" onClick={this.startGame}>
-                    {" "}
-                    S T A R T{" "}
-                  </div>
-                </div>
+                  )}
+                </>
+              }
 
+              {(this.state.display === 'MAP') && (
+                <>
+                  <div className='Lobby-settingContainer'>
+                    <div className='Lobby-settingHeading'> — Choose Your Map Type — </div>
+                    <div className='Lobby-mapTypes'>
+                      <div className='Lobby-mapType' onClick={(e) => {this.setState({standard: true})}} style={this.state.standard ? {backgroundColor: '#363636'} : {backgroundColor: 'black'}}> Standard Map </div>
+                      <div className='Lobby-mapType' onClick={(e) => {this.setState({standard: false})}} style={!this.state.standard ? {backgroundColor: '#363636'} : {backgroundColor: 'black'}}> Custom Map </div>
+                    </div>
+                    {
+                      this.state.standard ?
+                        (
+                          <div className='Lobby-mapSettings'>
+                            <div className='Lobby-settingTitle'> Map Width: {this.state.stdWidth / 50} </div>
+                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdWidth} onChange={(e) => this.setState({stdWidth: e.target.value})}></input>
+                            <div className='Lobby-settingTitle'> Map Height: {this.state.stdHeight / 50} </div>
+                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdHeight} onChange={(e) => this.setState({stdHeight: e.target.value})}></input>
+                            <div className='Lobby-settingTitle'> Wall Density: {this.state.stdWallDensity / 50} </div>
+                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdWallDensity} onChange={(e) => this.setState({stdWallDensity: e.target.value})}></input>
+                            <div className='Lobby-settingTitle'> Mirror Density: {this.state.stdMirrorDensity / 50} </div>
+                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdMirrorDensity} onChange={(e) => this.setState({stdMirrorDensity: e.target.value})}></input>
+
+                          </div>
+                        ) :
+                        <div classname='Lobby-mapSettings'>
+                          <div className='Lobby-settingTitle'> Your Selected Custom Map: {this.state.custTitle} </div>
+                          <div className='Lobby-gridContainer'>
+                            {grid}
+                          </div>
+
+                        </div>
+                    }
+
+
+                  </div>
+
+                </>
               )}
+
+
+
+              {/* GAME SETTINGS SCREEN */}
+              {
+                this.state.display === 'GAME' && (
+                  <div className='Lobby-settingContainer' style={{width: 404, paddingBottom: 32}}>
+                    <div className='Lobby-settingHeading'> — Gameplay Settings — </div>
+
+                    <div className='Lobby-settingTitle'> Game Speed: {this.state.width} </div>
+                    <input className='Lobby-slider' type='range' id='width' name='width' min='1' max='50' value={this.state.width} onChange={this.changeWidth}></input>
+                    <div className='Lobby-settingTitle'> Kill Cooldown: {this.state.height} </div>
+                    <input className='Lobby-slider' type='range' id='height' name='height' min='1' max='50' value={this.state.height} onChange={this.changeHeight}></input>
+                    <div className='Lobby-settingTitle'> Respawn Rate: {this.state.height} </div>
+                    <input className='Lobby-slider' type='range' id='height' name='height' min='1' max='50' value={this.state.height} onChange={this.changeHeight}></input>
+                    <div className='Lobby-settingTitle'> Player Size: {this.state.height} </div>
+                    <input className='Lobby-slider' type='range' id='height' name='height' min='1' max='50' value={this.state.height} onChange={this.changeHeight}></input>
+
+                  </div>
+                )
+              }
             </div>
             <ColorPicker
               code={this.props.code}

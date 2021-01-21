@@ -1,3 +1,5 @@
+import cloakimg from './cloak.jpg';
+
 class Cloak {
   constructor(x, y, s=40) {
     // coordinates of the top left corner
@@ -10,9 +12,13 @@ class Cloak {
   }
 
   draw(ctx, playerX, playerY) {
-    ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
+    let img = new Image();
+    img.src = cloakimg;
+    img.onload = () => {
+      ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
+    }
+    // ctx.fillStyle = this.color;
+    // ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
     ctx.fillStyle = 'black';
   }
 

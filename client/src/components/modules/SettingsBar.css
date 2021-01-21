@@ -1,0 +1,13 @@
+.SettingsBar-container {
+  padding-bottom: 32px;
+  width: 255px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.SettingsBar-entry {
+  font-size: 20px;
+  padding: 12px;
+  border: 0.5px solid white;
+
+}
