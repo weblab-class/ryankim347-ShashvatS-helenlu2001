@@ -1,4 +1,5 @@
 const speed = 10;
+
 const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   let ACx = xc - x1;
   let ACy = yc - y1;
@@ -28,6 +29,21 @@ const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   }
   return true;
 };
+
+// Stolen from https://stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function
+// returns true iff the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
+function intersects(a, b, c, d, p, q, r, s) {
+  let det, gamma, lambda;
+  det = (c - a) * (s - q) - (r - p) * (d - b);
+  if (det === 0) {
+    return false;
+  } else {
+    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+    return 0 < lambda && lambda < 1 && 0 < gamma && gamma < 1;
+  }
+}
+
 class Bullet {
   constructor(posX, posY, velX, velY, color) {
     this.length = 10;
@@ -54,12 +70,13 @@ class Bullet {
       const hits = this.checkBlock(block.topLeft()[0], block.topLeft()[1], block.side());
 
       if (hits && block.mirror) {
-        return new Bullet(this.x, this.y, -this.velX, -this.velY, this.color);
+        return this.createReflectedBullet(block);
       }
     }
 
     return null;
   }
+
   getEndCoords() {
     return [
       this.x - this.length * this.velX,
@@ -68,6 +85,7 @@ class Bullet {
       this.y + this.length * this.velY,
     ];
   }
+
   checkBlock(topLeftX, topLeftY, side) {
     let c = this.getEndCoords();
     if (
@@ -87,6 +105,63 @@ class Bullet {
 
     return false;
   }
+
+  /**
+   *
+   * @param {Block} block
+   */
+  createReflectedBullet(block) {
+    const c = this.getEndCoords();
+
+    let dir = -1;
+
+    if (intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x + block.s, block.y)) dir = 1;
+    else if (
+      intersects(
+        c[0],
+        c[1],
+        c[2],
+        c[3],
+        block.x + block.s,
+        block.y,
+        block.x + block.s,
+        block.y + block.s
+      )
+    )
+      dir = 2;
+    else if (
+      intersects(
+        c[0],
+        c[1],
+        c[2],
+        c[3],
+        block.x,
+        block.y + block.s,
+        block.x + block.s,
+        block.y + block.s
+      )
+    )
+      dir = 3;
+    else if (intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x, block.y + block.s))
+      dir = 4;
+
+    let x = this.x;
+    let y = this.y;
+    let velX = this.velX;
+    let velY = this.velY;
+
+    if (dir == 1 || dir == 3) {
+      velY *= -1;
+    } else if (dir == 2 || dir == 4) {
+      velX *= -1;
+    }
+
+    // TODO: the (x, y) position needs to be updated too, technically
+    // But, I can't even tell the different right now so
+
+    return new Bullet(x, y, velX, velY, this.color);
+  }
+
   // TODO: need to handle case when we have a kabob when shooting -- should only kill the person that is closest
   // TOOD: pretty sure this code is never actually called
 
