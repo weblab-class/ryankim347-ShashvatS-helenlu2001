@@ -288,10 +288,25 @@ class Game {
         }
       }
     }
+
+    let numDeleted = 0;
     for (let i = this.gameObjects.bullets.length - 1; i >= 0; i--) {
       if (this.gameObjects.bullets[i]) {
         if (!this.gameObjects.bullets[i].stillGoing) {
           delete this.gameObjects.bullets[i];
+        }
+      } else {
+        numDeleted += 1;
+      }
+    }
+
+    // Clean-up routine
+    if (numDeleted / this.gameObjects.bullets.length > 0.75) {
+      const bullets = this.gameObjects.bullets;
+      this.gameObjects.bullets = [];
+      for (let i = 0; i < bullets.length; ++i) {
+        if (bullets[i]) {
+          this.gameObjects.bullets.push(bullets[i]);
         }
       }
     }
