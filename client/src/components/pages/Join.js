@@ -73,7 +73,9 @@ class Join extends Component {
       }
     }
   }
-
+  navRules() {
+    navigate("/howtoplay")
+  }
   // TODO: fix the spacing between the two inputs
 
   render() {
@@ -93,6 +95,11 @@ class Join extends Component {
             <div className="Join-button" onClick={this.onCreate}>
               {" "}
               C R E A T E{" "}
+            </div>
+            <div className="Join-spacer"> </div>
+            <div className="Join-button" onClick={this.navRules}>
+              {" "}
+              R U L E S{" "}
             </div>
           </div>
         </div>
