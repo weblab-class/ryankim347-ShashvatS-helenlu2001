@@ -1,4 +1,4 @@
-import cloakimg from './cloak.jpg';
+import cloak from './cloak.png';
 
 class Cloak {
   constructor(x, y, s=40) {
@@ -12,14 +12,12 @@ class Cloak {
   }
 
   draw(ctx, playerX, playerY) {
-    // let img = new Image();
-    // img.src = cloakimg;
-    // img.onload = () => {
-    //   ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
-    // }
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
-    ctx.fillStyle = 'black';
+    let img = new Image();
+    img.src = cloak;
+    ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
+    // ctx.fillStyle = this.color;
+    // ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
+    // ctx.fillStyle = 'black';
   }
 
   topLeft() {

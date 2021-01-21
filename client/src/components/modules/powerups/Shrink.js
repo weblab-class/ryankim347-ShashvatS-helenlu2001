@@ -1,3 +1,5 @@
+import potion from './potion.png';
+
 class Shrink {
   constructor(x, y, s=20) {
     // coordinates of the top left corner
@@ -10,10 +12,14 @@ class Shrink {
   }
 
   draw(ctx, playerX, playerY) {
-    ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
-    ctx.fillStyle = 'black';
+    let img = new Image();
+    img.src = potion;
+    ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
+
+    // ctx.beginPath();
+    // ctx.fillStyle = this.color;
+    // ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
+    // ctx.fillStyle = 'black';
   }
 
   topLeft() {

@@ -1,3 +1,5 @@
+import bolt from './thunderbolt.png';
+
 class Speed {
   constructor(x, y, s=40) {
     // coordinates of the top left corner
@@ -10,10 +12,15 @@ class Speed {
   }
 
   draw(ctx, playerX, playerY) {
-    ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
-    ctx.fillStyle = 'black';
+
+    let img = new Image();
+    img.src = bolt;
+    ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
+
+    // ctx.beginPath();
+    // ctx.fillStyle = this.color;
+    // ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
+    // ctx.fillStyle = 'black';
   }
 
   topLeft() {
