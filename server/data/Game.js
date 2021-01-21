@@ -5,9 +5,8 @@ const { Player } = require("./Player");
 const { Bullet } = require("./Bullet");
 const Map = require("../models/map");
 const { Cloak } = require("./powerups/Cloak");
-const { Speed } = require('./powerups/Speed');
+const { Speed } = require("./powerups/Speed");
 const { Shrink } = require("./powerups/Shrink");
-
 
 // new map design: map is split into 40x40 cells and we randomly pick a cell to place players in
 class Game {
@@ -35,7 +34,7 @@ class Game {
     this.mode = "lobby";
 
     this.startTime = undefined;
-    this.gameObjects = {blocks: [], bullets: [], powerups: []};
+    this.gameObjects = { blocks: [], bullets: [], powerups: [] };
     this.occupiedCells = new Set();
     this.playerInfo = undefined;
 
@@ -123,46 +122,59 @@ class Game {
 
     this.startTime = Date.now();
 
-    io.in(this.code).emit("start-game", {startTime: this.startTime});
+    io.in(this.code).emit("start-game", { startTime: this.startTime });
     this.gameLoop();
   }
 
   initializeGameObjects() {
     this.mapCount = 3;
-    this.mapNum = Math.floor(Math.random()*this.mapCount)+100
-    const query = {id: this.mapNum}
+    this.mapNum = Math.floor(Math.random() * this.mapCount) + 100;
+    const query = { id: this.mapNum };
     this.gameObjects = {
       blocks: [],
       bullets: [],
-      powerups: []
-    }
+      powerups: [],
+    };
+
     Map.findOne(query).then((map) => {
-      let blockArray = []
-      for (let i=0;i<map.x.length;i++) {
-        blockArray.push(new Block(map.x[i],map.y[i]));
+      let blockArray = [];
+      for (let i = 0; i < map.x.length; i++) {
+        blockArray.push(new Block(map.x[i], map.y[i]));
 
         let xi = Math.floor(map.x[i] / 40);
         let yi = Math.floor(map.y[i] / 40);
-        this.occupiedCells.add(xi + ',' + yi);
+        this.occupiedCells.add(xi + "," + yi);
+
+        //TODO: change this to another way of deciding which blocks are mirrors
+        // But this is prolly fine for now
+        if (Math.random() < 0.1) {
+          blockArray[i].makeMirror();
+        }
       }
       let powerupArray = [];
-      for(let i = 0; i < 5; i++) {
-        powerupArray.push(new Cloak(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500)));
+      for (let i = 0; i < 5; i++) {
+        powerupArray.push(
+          new Cloak(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+        );
       }
-      for(let i = 0; i < 5; i++) {
-        powerupArray.push(new Speed(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500)));
+      for (let i = 0; i < 5; i++) {
+        powerupArray.push(
+          new Speed(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+        );
       }
-      for(let i = 0; i < 5; i++) {
-        powerupArray.push(new Shrink(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500)));
+      for (let i = 0; i < 5; i++) {
+        powerupArray.push(
+          new Shrink(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+        );
       }
       this.gameObjects = {
         blocks: blockArray,
         bullets: [],
-        powerups: powerupArray
-      }
-      console.log('powerupArray ' + powerupArray);
-      console.log('powerup in game object ' + this.gameObjects.powerups)
-    })
+        powerups: powerupArray,
+      };
+      // console.log("powerupArray " + powerupArray);
+      // console.log("powerup in game object " + this.gameObjects.powerups);
+    });
   }
 
   initializePlayers() {
@@ -175,12 +187,19 @@ class Game {
       let posX = Math.floor(Math.random() * 400) + 200;
       let posY = Math.floor(Math.random() * 400) + 200;
 
-      while(this.occupiedCells.has(Math.floor(posX/40 - 12)+','+Math.floor(posY/40 - 12))) {
+      while (
+        this.occupiedCells.has(Math.floor(posX / 40 - 12) + "," + Math.floor(posY / 40 - 12))
+      ) {
         posX = Math.floor(Math.random() * 400) + 200;
         posY = Math.floor(Math.random() * 400) + 200;
       }
 
-      this.playerInfo[player] = new Player(this.playerNames[player], posX, posY, colorMap[colors[this.id_to_color[player]]]);
+      this.playerInfo[player] = new Player(
+        this.playerNames[player],
+        posX,
+        posY,
+        colorMap[colors[this.id_to_color[player]]]
+      );
     }
   }
 
@@ -219,58 +238,93 @@ class Game {
           this.playerInfo[player].setVel(0, 0);
         } else if (event.type === "movement") {
           this.playerInfo[player].setVel(event.vel.dx, event.vel.dy);
-        } else if (event.type === 'bullet') {
-          this.gameObjects.bullets.push(new Bullet(
-            event.pos.x,
-            event.pos.y,
-            event.dir.dx,
-            event.dir.dy,
-            event.color
-          ))
+        } else if (event.type === "bullet") {
+          if (this.playerInfo[player].canShoot()) {
+            this.playerInfo[player].shoot();
+
+            this.gameObjects.bullets.push(
+              new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
+            );
+          }
         }
       });
     }
 
     // Reset events to empty
     this.events = {};
-    let points = []
+    let points = [];
     for (const player in this.playerInfo) {
-      this.playerInfo[player].move(this.gameObjects.blocks, Object.values(this.playerInfo), this.gameObjects.bullets, points, this.gameObjects.powerups);
+      this.playerInfo[player].move(
+        this.gameObjects.blocks,
+        Object.values(this.playerInfo),
+        this.gameObjects.bullets,
+        points,
+        this.gameObjects.powerups
+      );
     }
-    console.log('hellooooo in game');
-    console.log(this.gameObjects.powerups);
+    // console.log("hellooooo in game");
+    // console.log(this.gameObjects.powerups);
+
     //this line is inefficient for now, maybe we could have players be a dictionary mapping colors to players?
     points.forEach((color) => {
       for (const player in this.playerInfo) {
         if (this.playerInfo[player].color === color) {
-          this.playerInfo[player].points += 1
+          this.playerInfo[player].points += 1;
         }
       }
-    })
-    for (let i=0;i<this.gameObjects.bullets.length;i++) {
+    });
+
+    //TODO: this is inefficient, but its fine for now
+    //Also, idk if deleting is the "proper" way, but it works for now
+
+    const newBullets = [];
+
+    for (let i = 0; i < this.gameObjects.bullets.length; i++) {
       if (this.gameObjects.bullets[i]) {
-        this.gameObjects.bullets[i].move(this.gameObjects.blocks)
-      }
-    }
-    for (let i=this.gameObjects.bullets.length-1;i>=0;i--) {
-      if (this.gameObjects.bullets[i]) {
-        if (!this.gameObjects.bullets[i].stillGoing) {
-          delete this.gameObjects.bullets[i]
+        const newBullet = this.gameObjects.bullets[i].move(this.gameObjects.blocks);
+
+        if (newBullet != null && newBullet != undefined) {
+          newBullets.push(newBullet);
         }
       }
     }
 
+    let numDeleted = 0;
+    for (let i = this.gameObjects.bullets.length - 1; i >= 0; i--) {
+      if (this.gameObjects.bullets[i]) {
+        if (!this.gameObjects.bullets[i].stillGoing) {
+          delete this.gameObjects.bullets[i];
+        }
+      } else {
+        numDeleted += 1;
+      }
+    }
+
+    // Clean-up routine
+    if (numDeleted / this.gameObjects.bullets.length > 0.75) {
+      const bullets = this.gameObjects.bullets;
+      this.gameObjects.bullets = [];
+      for (let i = 0; i < bullets.length; ++i) {
+        if (bullets[i]) {
+          this.gameObjects.bullets.push(bullets[i]);
+        }
+      }
+    }
+
+    for (const newBullet of newBullets) {
+      this.gameObjects.bullets.push(newBullet);
+    }
+
     // remove all powerups that have been used
-    let newPowerups = []
-    for(let i = this.gameObjects.powerups.length-1; i >= 0; i--) {
-      if(this.gameObjects.powerups[i]) {
-        if(!this.gameObjects.powerups[i].isUsed()) {
+    let newPowerups = [];
+    for (let i = this.gameObjects.powerups.length - 1; i >= 0; i--) {
+      if (this.gameObjects.powerups[i]) {
+        if (!this.gameObjects.powerups[i].isUsed()) {
           newPowerups.push(this.gameObjects.powerups[i]);
         }
       }
     }
     this.gameObjects.powerups = newPowerups;
-
   }
 
   /**

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 import Player from "./Player.js";
 import Block from "./Block.js";
-import Bullet from "./Bullet.js"
-import Cloak from './powerups/Cloak.js';
-import Speed from './powerups/Speed.js';
+import Bullet from "./Bullet.js";
+import Cloak from "./powerups/Cloak.js";
+import Speed from "./powerups/Speed.js";
 
 import "../../utilities.css";
 import "./Canvas.css";
@@ -42,45 +42,44 @@ class Canvas extends Component {
     this.dy = undefined;
     this.mouseX = 0;
     this.mouseY = 0;
-    this.me =  new Player(0, 0, this.props.color);
+    this.me = new Player(0, 0, this.props.color);
     this.eventLoop();
   }
 
   componentDidMount() {
     window.addEventListener("keydown", this.handleKeyDown);
-    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener("mousemove", this.handleMouseMove);
 
     this.drawLoop();
   }
 
   handleKeyDown(event) {
-    if(event.code === 'Space') {
+    if (event.code === "Space") {
       this.events.push({
-        type: 'bullet',
+        type: "bullet",
         dir: {
           dx: this.dx,
-          dy: this.dy
+          dy: this.dy,
         },
         pos: {
           x: this.me.x,
-          y: this.me.y
+          y: this.me.y,
         },
-        color: this.me.color
-      })
+        color: this.me.color,
+      });
     }
   }
   handleMouseMove(event) {
     this.mouseX = event.pageX;
     this.mouseY = event.pageY;
-    let dx = this.mouseX - window.innerWidth/2;
+    let dx = this.mouseX - window.innerWidth / 2;
     let dy = this.mouseY - 370;
-    let mag = Math.sqrt(dx*dx + dy*dy);
+    let mag = Math.sqrt(dx * dx + dy * dy);
     dx = dx / mag;
     dy = dy / mag;
 
     this.dx = dx;
     this.dy = dy;
-
 
     if ((dx != 0 || dy != 0) && mag > 5) {
       this.events.push({
@@ -94,17 +93,17 @@ class Canvas extends Component {
   }
 
   eventLoop() {
-    let dx = this.mouseX - window.innerWidth/2;
+    let dx = this.mouseX - window.innerWidth / 2;
     let dy = this.mouseY - 370;
-    let mag = Math.sqrt(dx*dx + dy*dy);
-    if (mag <5) {
+    let mag = Math.sqrt(dx * dx + dy * dy);
+    if (mag < 5) {
       this.events.push({
         type: "movement",
         vel: {
           dx: 0,
-          dy: 0
-        }
-      })
+          dy: 0,
+        },
+      });
     }
     if (this.events.length > 0) {
       socket.emit("game-events", {
@@ -123,8 +122,8 @@ class Canvas extends Component {
   drawLoop() {
     const ctx = this.refs.canvas.getContext("2d");
     ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
-    let relX = this.me.x-300;
-    let relY = this.me.y-300;
+    let relX = this.me.x - 300;
+    let relY = this.me.y - 300;
     if (this.playerInfo === undefined || this.gameObjects === undefined) {
       // Do nothing
     } else {
@@ -133,7 +132,7 @@ class Canvas extends Component {
       for (let player in this.playerInfo) {
         this.playerInfo[player].draw(ctx, relX, relY);
       }
-      this.gameObjects.bullets.forEach((bullet) => bullet.draw(ctx, relX, relY))
+      this.gameObjects.bullets.forEach((bullet) => bullet.draw(ctx, relX, relY));
       this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
       this.gameObjects.powerups.forEach((powerup) => powerup.draw(ctx, relX, relY));
     }
@@ -144,19 +143,24 @@ class Canvas extends Component {
   }
 
   receiveUpdate(data) {
-    const { playerInfo, gameObjects, playerNames, colors} = data;
+    const { playerInfo, gameObjects, playerNames, colors } = data;
     this.playerInfo = {};
-    let leaderboardInfo = []
+    let leaderboardInfo = [];
 
     for (const player in playerInfo) {
       leaderboardInfo.push({
         color: playerInfo[player].color,
         points: playerInfo[player].points,
-        name: playerInfo[player].name
+        name: playerInfo[player].name,
       });
 
-      if(playerInfo[player].color === this.props.color) {
-        this.me =  new Player(playerInfo[player].color === this.props.color, playerInfo[player].x, playerInfo[player].y, playerInfo[player].color);
+      if (playerInfo[player].color === this.props.color) {
+        this.me = new Player(
+          playerInfo[player].color === this.props.color,
+          playerInfo[player].x,
+          playerInfo[player].y,
+          playerInfo[player].color
+        );
       }
       console.log(playerInfo[player].r);
       this.playerInfo[player] = new Player(
@@ -180,24 +184,25 @@ class Canvas extends Component {
     };
     gameObjects.bullets.forEach((bullet) => {
       if (bullet) {
-        this.gameObjects.bullets.push(new Bullet(bullet.x,bullet.y,bullet.velX,bullet.velY,bullet.color,!bullet.stillGoing))
+        this.gameObjects.bullets.push(
+          new Bullet(bullet.x, bullet.y, bullet.velX, bullet.velY, bullet.color, !bullet.stillGoing)
+        );
       }
-    })
+    });
     gameObjects.blocks.forEach((block) => {
-      this.gameObjects.blocks.push(new Block(block.x, block.y));
+      this.gameObjects.blocks.push(new Block(block.x, block.y, block.mirror));
     });
     gameObjects.powerups.forEach((powerup) => {
-      switch(powerup.type) {
-        case 'cloak':
+      switch (powerup.type) {
+        case "cloak":
           this.gameObjects.powerups.push(new Cloak(powerup.x, powerup.y));
           break;
-        case 'speed':
+        case "speed":
           this.gameObjects.powerups.push(new Speed(powerup.x, powerup.y));
           break;
-        case 'shrink':
+        case "shrink":
           this.gameObjects.powerups.push(new Shrink(powerup.x, powerup.y));
           break;
-
       }
     });
 
