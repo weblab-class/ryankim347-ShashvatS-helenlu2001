@@ -1,7 +1,3 @@
-canvas {
-    border: 1px solid white;
-}
-
-.Canvas-container {
-  margin-top: 50px;
+body {
+  overflow: hidden;
 }

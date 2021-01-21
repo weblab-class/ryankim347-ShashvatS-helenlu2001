@@ -65,10 +65,7 @@ class Game extends Component {
           <Timer startTime={this.state.startTime} endGame={this.endGame}/>
           <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
         </div>
-        <div className="Game-container">
-          <div>Game Board </div>
-          <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} updateLeaderboard={this.updateLeaderboard} className="Game-canvas" />
-        </div>
+        <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} updateLeaderboard={this.updateLeaderboard} className="Game-canvas" />
 
 
       </>

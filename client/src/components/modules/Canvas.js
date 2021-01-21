@@ -122,8 +122,8 @@ class Canvas extends Component {
   drawLoop() {
     const ctx = this.refs.canvas.getContext("2d");
     ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
-    let relX = this.me.x - 300;
-    let relY = this.me.y - 300;
+    let relX = this.me.x - window.innerWidth/2;
+    let relY = this.me.y - window.innerHeight/2;
     if (this.playerInfo === undefined || this.gameObjects === undefined) {
       // Do nothing
     } else {
@@ -216,9 +216,7 @@ class Canvas extends Component {
   render() {
     return (
       <>
-        <div className="Canvas-container">
-          <canvas ref="canvas" width={600} height={600} />
-        </div>
+        <canvas ref="canvas" width={window.innerWidth} height={window.innerHeight} />
       </>
     );
   }
