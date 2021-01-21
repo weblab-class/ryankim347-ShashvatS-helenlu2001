@@ -102,7 +102,7 @@ module.exports = {
         const cookies = cookie.parse(socket.request.headers.cookie);
         const clientId = cookies["client-id"];
 
-        const { room } = data;
+        const { room , settings } = data;
 
         if (games[room] == undefined) {
           return;
@@ -111,7 +111,7 @@ module.exports = {
         const game = games[room];
 
         if (game.isHost(clientId)) {
-          game.start();
+          game.start(settings);
         }
       });
 

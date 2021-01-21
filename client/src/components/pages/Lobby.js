@@ -133,6 +133,12 @@ class Lobby extends Component {
     if (this.state.creator) {
       socket.emit("start-game", {
         room: this.props.code,
+        settings: {
+          standard: this.state.standard,
+          width: this.state.custWidth,
+          height: this.state.custHeight,
+          blocks: Array.from(this.state.custBlocks),
+        }
       });
     }
   }

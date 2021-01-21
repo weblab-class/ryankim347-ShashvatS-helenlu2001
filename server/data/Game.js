@@ -109,7 +109,7 @@ class Game {
     io.in(this.code).emit("lobby-data", data);
   }
 
-  start() {
+  start(settings) {
     const io = getIo();
 
     if (this.mode !== "lobby") return;
@@ -117,7 +117,7 @@ class Game {
 
     // TODO: Do stuff to actually start playing the game (initialization, etc)
 
-    this.initializeGameObjects();
+    this.initializeGameObjects(settings);
     this.initializePlayers();
 
     this.startTime = Date.now();
@@ -126,7 +126,7 @@ class Game {
     this.gameLoop();
   }
 
-  initializeGameObjects() {
+  initializeGameObjects(settings) {
     this.mapCount = 3;
     this.mapNum = Math.floor(Math.random() * this.mapCount) + 100;
     const query = { id: this.mapNum };
@@ -136,45 +136,92 @@ class Game {
       powerups: [],
     };
 
-    Map.findOne(query).then((map) => {
+
+    if(!settings.standard) { // custom maps
       let blockArray = [];
-      for (let i = 0; i < map.x.length; i++) {
-        blockArray.push(new Block(map.x[i], map.y[i]));
+      let powerupArray = [];
 
-        let xi = Math.floor(map.x[i] / 40);
-        let yi = Math.floor(map.y[i] / 40);
-        this.occupiedCells.add(xi + "," + yi);
+      for(let i = 0; i < settings.blocks.length; i++) {
+        let block = settings.blocks[i];
+        let xi = block.substring(0, block.indexOf(','));
+        let yi = block.substring(block.indexOf(',') + 1);
 
-        //TODO: change this to another way of deciding which blocks are mirrors
-        // But this is prolly fine for now
-        if (Math.random() < 0.1) {
+        this.occupiedCells.add(xi + ',' + yi);
+        blockArray.push(new Block(xi*40, yi*40));
+        if (Math.random() < 0.2) {
           blockArray[i].makeMirror();
         }
       }
-      let powerupArray = [];
+
+      for(let i = -1; i < settings.width+1; i++) {
+        blockArray.push(new Block(i*40, -40));
+        blockArray.push(new Block(i*40, settings.height*40));
+      }
+
+      for(let i = 0; i < settings.height; i++) {
+        blockArray.push(new Block(-40, 40*i));
+        blockArray.push(new Block(settings.width*40, 40*i));
+      }
+
       for (let i = 0; i < 5; i++) {
         powerupArray.push(
           new Cloak(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
         );
-      }
-      for (let i = 0; i < 5; i++) {
         powerupArray.push(
           new Speed(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
         );
-      }
-      for (let i = 0; i < 5; i++) {
         powerupArray.push(
           new Shrink(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
         );
       }
+
       this.gameObjects = {
         blocks: blockArray,
         bullets: [],
         powerups: powerupArray,
       };
-      // console.log("powerupArray " + powerupArray);
-      // console.log("powerup in game object " + this.gameObjects.powerups);
-    });
+
+    } else {
+      Map.findOne(query).then((map) => {
+        let blockArray = [];
+        for (let i = 0; i < map.x.length; i++) {
+          blockArray.push(new Block(map.x[i], map.y[i]));
+
+          let xi = Math.floor(map.x[i] / 40);
+          let yi = Math.floor(map.y[i] / 40);
+          this.occupiedCells.add(xi + "," + yi);
+
+          //TODO: change this to another way of deciding which blocks are mirrors
+          // But this is prolly fine for now
+          if (Math.random() < 0.1) {
+            blockArray[i].makeMirror();
+          }
+        }
+        let powerupArray = [];
+        for (let i = 0; i < 5; i++) {
+          powerupArray.push(
+            new Cloak(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+          );
+        }
+        for (let i = 0; i < 5; i++) {
+          powerupArray.push(
+            new Speed(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+          );
+        }
+        for (let i = 0; i < 5; i++) {
+          powerupArray.push(
+            new Shrink(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+          );
+        }
+        this.gameObjects = {
+          blocks: blockArray,
+          bullets: [],
+          powerups: powerupArray,
+        };
+        // console.log("powerupArray " + powerupArray);
+        // console.log("powerup in game object " + this.gameObjects.powerups);
+      });
+    }
   }
 
   initializePlayers() {
