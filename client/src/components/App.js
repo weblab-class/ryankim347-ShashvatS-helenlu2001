@@ -105,10 +105,10 @@ class App extends Component {
             />
 
             <Join path="/join" changeRoom={this.changeRoom} />
-            <Lobby code={this.state.code} changeRoom={this.changeRoom} path="/lobby" />
+            <Lobby code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} path="/lobby" />
             <Game code={this.state.code} changeRoom={this.changeRoom} path="/game" />
             <Leaderboard path="/leaderboard" />
-            <Custom path="/custommaps" userId={this.state.userId} />
+            <Custom path="/customize" userId={this.state.userId}  name={this.state.name} />
 
             <Stats
               path="/stats"

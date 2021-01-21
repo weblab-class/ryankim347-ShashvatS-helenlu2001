@@ -12,13 +12,13 @@ class Cloak {
   }
 
   draw(ctx, playerX, playerY) {
-    let img = new Image();
-    img.src = cloakimg;
-    img.onload = () => {
-      ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
-    }
-    // ctx.fillStyle = this.color;
-    // ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
+    // let img = new Image();
+    // img.src = cloakimg;
+    // img.onload = () => {
+    //   ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
+    // }
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
     ctx.fillStyle = 'black';
   }
 

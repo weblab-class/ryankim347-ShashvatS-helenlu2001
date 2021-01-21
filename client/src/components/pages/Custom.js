@@ -12,6 +12,7 @@ class Custom extends Component {
     super(props);
     // Initialize Default State
     this.state = {
+      name: '',
       width: 25,
       height: 25,
       description: '',
@@ -77,6 +78,8 @@ class Custom extends Component {
 
     let req = {
       creatorID: this.props.userId,
+      creatorName: this.props.name,
+      name: this.state.name,
       width: this.state.width,
       height: this.state.height,
       x: x,
@@ -112,6 +115,8 @@ class Custom extends Component {
             </div>
             <div className='Custom-settingsContainer'>
               <div className='u-heading u-textCenter' style={{marginBottom: 16}}> — SETTINGS — </div>
+                <div> Map Name: </div>
+                <input className='Custom-name' value={this.state.name} onChange={(e) => this.setState({name: e.target.value})}/>
                 <div> Map Width: {this.state.width} </div>
                 <input type='range' id='width' name='width' min='1' max='50' value={this.state.width} onChange={this.changeWidth}></input>
                 <div> Map Height: {this.state.height} </div>

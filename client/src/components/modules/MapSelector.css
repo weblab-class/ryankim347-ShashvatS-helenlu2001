@@ -1,0 +1,42 @@
+.MapSelector-container {
+  margin: 0 auto;
+  padding: 32px;
+  width: 400px;
+
+}
+
+.MapSelector-entries {
+  margin-bottom: 32px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.MapSelector-entry {
+  position: relative;
+  padding: 16px;
+}
+
+.MapSelector-entry:hover {
+  background-color:rgb(20, 20, 20);
+}
+
+.MapSelector-info {
+  font-size: 16px;
+}
+
+
+.MapSelector-preview {
+  margin: 8px;
+  font-size: 20px;
+}
+
+.MapSelector-mapName {
+  font-size: 24px;
+}
+
+.MapSelector-select {
+  position: absolute;
+  height: 16px;
+  top: calc(50% - 8px);
+  right: 16px;
+}

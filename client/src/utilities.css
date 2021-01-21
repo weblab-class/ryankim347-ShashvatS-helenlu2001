@@ -119,6 +119,20 @@ form {
   color:rgb(0, 0, 0);
 }
 
+.u-button2 {
+  margin: 0 auto;
+  padding: 8px;
+  border: 1px solid white;
+
+  text-align: center;
+  margin-bottom: 24px;
+}
+.u-button2:hover {
+  background-color: #363636;
+}
+
+
+
 @keyframes button {
   0%   {background-color: rgb(255, 0, 208);}
   33%  {background-color: rgb(255, 255, 0);}
@@ -140,4 +154,8 @@ form {
 
 .u-spacer {
   height: 48px;
+}
+
+.u-italic {
+  font-style: italic;
 }

@@ -2,6 +2,7 @@ import { navigate } from "@reach/router";
 import React, { Component } from "react";
 import cookie from "cookie";
 
+import MapSelector from "../modules/MapSelector";
 import ColorPicker from "./lobby/ColorPicker";
 import NavBar from "../modules/NavBar.js";
 import SettingsBar from "../modules/SettingsBar.js";
@@ -17,9 +18,6 @@ function myId() {
 
 const COLORS = ['#FF00D0', '#FFFF00', '#00FF00', '#00D0FF', '#FFAA00', '#BB00FF', '#FED4FF', '#FFFFAB', '#C4FFC4', '#C2F4FF', '#FFE1A6', '#D1D1D1'];
 
-/**
- * @param userId specifies the id of the currently logged in user
- */
 
 class Lobby extends Component {
   constructor(props) {
@@ -35,6 +33,7 @@ class Lobby extends Component {
       myName: this.props.location.state.name,
       myColor: undefined,
       display: 'LOBBY',
+      browseMaps: false,
 
       standard: true,
       stdHeight: 25,
@@ -44,7 +43,7 @@ class Lobby extends Component {
       custWidth: 0,
       custHeight: 0,
       custBlocks: [],
-      custTitle: 'NONE SELECTED YET'
+      custTitle: ''
 
     };
 
@@ -53,6 +52,7 @@ class Lobby extends Component {
     this.receiveStartGame = this.receiveStartGame.bind(this);
     this.getColor = this.getColor.bind(this);
     this.updateDisplay = this.updateDisplay.bind(this);
+    this.selectMap = this.selectMap.bind(this);
   }
 
   componentDidMount() {
@@ -145,6 +145,16 @@ class Lobby extends Component {
     this.setState({display: display});
   }
 
+  selectMap(title, width, height, blocks) {
+    this.setState({
+      browseMaps: title.length === 0,
+      custTitle: title,
+      custWidth: width,
+      custHeight: height,
+      custBlocks: blocks,
+    })
+  }
+
   render() {
     // makes the game code look prettier
     let code = "";
@@ -156,10 +166,12 @@ class Lobby extends Component {
     for(let i = 0; i < this.state.custHeight; i++) {
       let row = [];
       for(let j = 0; j < this.state.custWidth; j++) {
-        row.push(<div className='Lobby-square' id={i+','+j}> </div>)
+        row.push(<div className='Lobby-square' style={ this.state.custBlocks.has(i+','+j) ? {backgroundColor: 'white'} : {backgroundColor: 'black'}}> </div>)
       }
       grid.push(<div className='Lobby-row'> {row} </div>);
     }
+
+
 
     if (this.state.initialized) {
       return (
@@ -226,6 +238,11 @@ class Lobby extends Component {
                           <div className='Lobby-gridContainer'>
                             {grid}
                           </div>
+                          <div className='u-spacer'> </div>
+                          <div className='Lobby-mapType u-button2' style={{width: '50%', margin: '0 auto'}} onClick={(e) => this.setState({browseMaps: true})}>
+                            { this.state.custTitle.length === 0 ? 'Browse Maps' : 'Change Map' }
+                          </div>
+
 
                         </div>
                     }
@@ -257,11 +274,18 @@ class Lobby extends Component {
                 )
               }
             </div>
-            <ColorPicker
-              code={this.props.code}
-              colorMap={this.state.colors}
-              names={this.state.playerNames}
-            ></ColorPicker>
+
+            {this.state.browseMaps ?
+              <MapSelector userId={this.props.userId} selectMap={this.selectMap}/> :
+
+              <ColorPicker
+                code={this.props.code}
+                colorMap={this.state.colors}
+                names={this.state.playerNames}
+              ></ColorPicker>
+            }
+
+
           </div>
         </>
       );

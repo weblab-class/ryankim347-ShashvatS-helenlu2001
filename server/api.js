@@ -177,6 +177,8 @@ router.post("/curRoom", (req, res) => {
 router.post("/addMap", (req, res) => {
   const map = new CustomMap({
     creatorID: req.body.creatorID,
+    creatorName: req.body.creatorName,
+    name: req.body.name,
     width: req.body.width,
     height: req.body.height,
     x: req.body.x,
@@ -187,6 +189,12 @@ router.post("/addMap", (req, res) => {
     console.log("inserted new custom map!");
   });
 });
+
+router.get('/customMaps', (req, res) => {
+  CustomMap.find( { $or: [{ creatorID: req.query.userId }, { public: true }] })
+    .then((data) => res.send({data: data}));
+})
+
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

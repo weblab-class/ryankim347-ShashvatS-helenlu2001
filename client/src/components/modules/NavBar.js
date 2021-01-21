@@ -28,6 +28,7 @@ class NavBar extends Component {
       <>
         <div className='NavBar-container'>
             <Link to='/join' className='NavBar-link'> JOIN </Link>
+            <Link to='/customize' className='NavBar-link'> CUSTOMIZE </Link>
             <Link to='/stats' className='NavBar-link'> STATS </Link>
         </div>
 
