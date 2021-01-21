@@ -144,6 +144,12 @@ class Game {
         let xi = Math.floor(map.x[i] / 40);
         let yi = Math.floor(map.y[i] / 40);
         this.occupiedCells.add(xi + "," + yi);
+
+        //TODO: change this to another way of deciding which blocks are mirrors
+        // But this is prolly fine for now
+        if (Math.random() < 0.1) {
+          blockArray[i].makeMirror();
+        }
       }
       let powerupArray = [];
       for (let i = 0; i < 5; i++) {
@@ -267,9 +273,19 @@ class Game {
         }
       }
     });
+
+    //TODO: this is inefficient, but its fine for now
+    //Also, idk if deleting is the "proper" way, but it works for now
+
+    const newBullets = [];
+
     for (let i = 0; i < this.gameObjects.bullets.length; i++) {
       if (this.gameObjects.bullets[i]) {
-        this.gameObjects.bullets[i].move(this.gameObjects.blocks);
+        const newBullet = this.gameObjects.bullets[i].move(this.gameObjects.blocks);
+
+        if (newBullet != null && newBullet != undefined) {
+          newBullets.push(newBullet);
+        }
       }
     }
     for (let i = this.gameObjects.bullets.length - 1; i >= 0; i--) {
@@ -278,6 +294,10 @@ class Game {
           delete this.gameObjects.bullets[i];
         }
       }
+    }
+
+    for (const newBullet of newBullets) {
+      this.gameObjects.bullets.push(newBullet);
     }
 
     // remove all powerups that have been used

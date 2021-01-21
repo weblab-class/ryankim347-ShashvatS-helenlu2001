@@ -50,9 +50,15 @@ class Bullet {
     this.y += speed * this.velY;
 
     for (let i = 0; i < blocks.length; i++) {
-      let block = blocks[i];
-      this.checkBlock(block.topLeft()[0], block.topLeft()[1], block.side());
+      const block = blocks[i];
+      const hits = this.checkBlock(block.topLeft()[0], block.topLeft()[1], block.side());
+
+      if (hits && block.mirror) {
+        return new Bullet(this.x, this.y, -this.velX, -this.velY, this.color);
+      }
     }
+
+    return null;
   }
   getEndCoords() {
     return [
@@ -76,7 +82,10 @@ class Bullet {
       )
     ) {
       this.stillGoing = false;
+      return true;
     }
+
+    return false;
   }
   // TODO: need to handle case when we have a kabob when shooting -- should only kill the person that is closest
   // TOOD: pretty sure this code is never actually called

@@ -7,6 +7,7 @@ class Block {
     // side length of block
     this.s = 40;
     this.color = "white";
+    this.mirror = false;
   }
 
   draw(ctx) {
@@ -22,6 +23,10 @@ class Block {
 
   side() {
     return this.s;
+  }
+
+  makeMirror() {
+    this.mirror = true;
   }
 }
 
