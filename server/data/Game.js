@@ -135,6 +135,7 @@ class Game {
       bullets: [],
       powerups: [],
     };
+
     Map.findOne(query).then((map) => {
       let blockArray = [];
       for (let i = 0; i < map.x.length; i++) {
