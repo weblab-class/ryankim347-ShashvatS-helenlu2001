@@ -84,9 +84,10 @@ class Join extends Component {
         <NavBar/>
         <div className="Join-container">
           <div className="Join-titleContainer">
-            <input placeholder="name" value={this.state.name} onChange={this.onNameChange} />
+            <input className = "Join-input" placeholder="name" value={this.state.name} onChange={this.onNameChange} />
             <br></br>
-            <input placeholder="enter game code" value={this.state.code} onChange={this.onChange} />
+            <input className = "Join-input" placeholder="enter game code" value={this.state.code} onChange={this.onChange} />
+            <div className="Join-spacer"> </div>
             <div className="Join-button" onClick={this.onJoin}>
               {" "}
               J O I N{" "}
@@ -99,7 +100,7 @@ class Join extends Component {
             <div className="Join-spacer"> </div>
             <div className="Join-button" onClick={this.navRules}>
               {" "}
-              R U L E S{" "}
+              H O W &nbsp;T O &nbsp;P L A Y{" "}
             </div>
           </div>
         </div>

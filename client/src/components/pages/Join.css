@@ -26,12 +26,14 @@ input:focus {
 .Join-spacer {
     height: 20px;
 }
-
+.Join-input {
+    width: 300px;
+}
 .Join-button {
     margin: 0 auto;
     padding: 8px;
     border: 1px solid white;
-    width: 250px;
+    width: 300px;
 
     font-family: 'Montserrat';
     font-size: 28px;
