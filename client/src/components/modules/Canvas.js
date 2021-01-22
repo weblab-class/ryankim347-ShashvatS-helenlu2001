@@ -121,6 +121,13 @@ class Canvas extends Component {
 
   drawLoop() {
     const ctx = this.refs.canvas.getContext("2d");
+    if (this.me.powerups) {
+      if (this.me.powerups.invisible) {
+        ctx.globalAlpha = 0.5;
+      }
+    } else {
+      ctx.globalAlpha = 1;
+    }
     ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
     let relX = this.me.x - window.innerWidth/2;
     let relY = this.me.y - window.innerHeight/2;
@@ -131,6 +138,15 @@ class Canvas extends Component {
 
       for (let player in this.playerInfo) {
         this.playerInfo[player].draw(ctx, relX, relY);
+        if (this.playerInfo[player].color === this.me.color && this.playerInfo[player].powerups) {
+          if (this.playerInfo[player].powerups.invisible) {
+            ctx.globalAlpha = 0.5
+          } else {
+            ctx.globalAlpha = 1
+          }
+        } else {
+          ctx.globalAlpha = 1
+        }
       }
       this.gameObjects.bullets.forEach((bullet) => bullet.draw(ctx, relX, relY));
       this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
@@ -162,7 +178,6 @@ class Canvas extends Component {
           playerInfo[player].color
         );
       }
-      console.log(playerInfo[player].r);
       this.playerInfo[player] = new Player(
         playerInfo[player].color === this.props.color,
         playerInfo[player].x,

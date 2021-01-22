@@ -13,13 +13,19 @@ class Bullet {
     if(this.isDead) {
       return;
     }
+    let alpha = ctx.globalAlpha
+    ctx.lineCap = "round"
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.moveTo(this.x-playerX -this.velX*this.len, this.y-playerY-this.velY*this.len)
     ctx.lineTo(this.x-playerX +this.velX*this.len, this.y-playerY+this.velY*this.len)
     ctx.strokeStyle = this.color;
     ctx.stroke();
-    ctx.fillStyle = "black";
+    ctx.globalAlpha = 0.5;
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.globalAlpha = alpha
   }
 
   x() {

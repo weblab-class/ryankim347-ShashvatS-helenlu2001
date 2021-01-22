@@ -199,20 +199,20 @@ class Game {
         }
         let powerupArray = [];
         let c = null
-        for (let i = 0; i < 2; i++) {
-          c = this.validCoords()
+        for (let i = 0; i < 1; i++) {
+          c = this.validCoords(-200,800,blockArray)
           powerupArray.push(
             new Cloak(c[0],c[1])
           );
         }
         for (let i = 0; i < 2; i++) {
-          c = this.validCoords()
+          c = this.validCoords(-200,800,blockArray)
           powerupArray.push(
             new Speed(c[0],c[1])
           );
         }
         for (let i = 0; i < 2; i++) {
-          c = this.validCoords()
+          c = this.validCoords(-200,800,blockArray)
           powerupArray.push(
             new Shrink(c[0],c[1])
           );
@@ -222,8 +222,6 @@ class Game {
           bullets: [],
           powerups: powerupArray,
         };
-        // console.log("powerupArray " + powerupArray);
-        // console.log("powerup in game object " + this.gameObjects.powerups);
       });
     }
   }
@@ -313,8 +311,6 @@ class Game {
         this.gameObjects.powerups
       );
     }
-    // console.log("hellooooo in game");
-    // console.log(this.gameObjects.powerups);
 
     //this line is inefficient for now, maybe we could have players be a dictionary mapping colors to players?
     points.forEach((color) => {
@@ -396,7 +392,7 @@ class Game {
   pushNewPowerup() {
     let powerUp = null;
     let pick = Math.floor(Math.random()*3);
-    let v = this.validCoords()
+    let v = this.validCoords(-200,800,this.gameObjects.blockArray)
     if (pick===0) {
       powerUp = new Cloak(v[0], v[1]);
     } else if (pick===1) {
@@ -406,26 +402,28 @@ class Game {
     }
     this.gameObjects.powerups.push(powerUp);
   }
-  validCoords() {
-    let x = Math.floor(-200 + Math.random() * 1000);
-    let y = Math.floor(-200 + Math.random() * 1000);
-    while(!this.checkValid(x,y)) {
-      x = Math.floor(-200 + Math.random() * 1000);
-      y = Math.floor(-200 + Math.random() * 1000);
+  validCoords(low,high,blocks) {
+    let x = Math.floor(low + Math.random() * (high-low));
+    let y = Math.floor(low + Math.random() * (high-low));
+    while(!this.checkValid(x,y,blocks)) {
+      x = Math.floor(low + Math.random() * (high-low));
+      y = Math.floor(low + Math.random() * (high-low));
     }
     return [x,y]
   }
-  checkValid(x,y) {
-    this.gameObjects.blocks.forEach((block) => {
-      if (x>=block.x-25 && x<=block.x+block.s+50 && y>=block.y-25 && y<=block.y+block.s+50) {
-        return false;
-      }
-    })
-    return true;
+  checkValid(x,y,blocks) {
+    if(blocks) {
+      let valid = true
+      blocks.forEach((block) => {
+        if (x>=block.x-25 && x<=block.x+block.s+50 && y>=block.y-25 && y<=block.y+block.s+50) {
+          valid = false;
+        }
+      })
+      return valid;
+    }
+    return true
   }
   gameLoop() {
-    // console.log("Game loop");
-
     this.updateGameState();
     this.sendGameState();
 

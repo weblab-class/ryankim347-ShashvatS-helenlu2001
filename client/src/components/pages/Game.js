@@ -30,7 +30,6 @@ class Game extends Component {
 
   updateLeaderboard(leaderboardInfo) {
     this.setState({leaderboardInfo: leaderboardInfo});
-    console.log(leaderboardInfo);
   }
 
   endGame() {
