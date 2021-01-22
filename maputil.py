@@ -14,24 +14,24 @@ def makeVertLine(x,y,leftX,leftY,length):
 x = []
 y = []
 
-makeHorizLine(x,y,-300,-300,30)
-makeVertLine(x,y,900,-300,30)
-makeHorizLine(x,y,-300,900,31)
-makeVertLine(x,y,-300,-300,30)
+makeHorizLine(x,y,-320,-320,30)
+makeVertLine(x,y,880,-320,30)
+makeHorizLine(x,y,-320,880,31)
+makeVertLine(x,y,-320,-320,30)
 
 makeVertLine(x,y,200,200,5)
 makeVertLine(x,y,400,200,5)
 makeHorizLine(x,y,200,400,6)
 
 
-makeVertLine(x,y,-100,-200,8)
+makeVertLine(x,y,-120,-200,8)
 
-makeHorizLine(x,y,420,-100,8)
+makeHorizLine(x,y,400,-120,8)
 
-makeHorizLine(x,y,-100,600,12)
+makeHorizLine(x,y,-120,600,12)
 
-makeVertLine(x,y,700,700,5)
-makeHorizLine(x,y,700,700,3)
+makeVertLine(x,y,720,720,5)
+makeHorizLine(x,y,720,720,3)
 mapString = ''
 mapString += '{\n'
 mapString += '\t\t"x": ' + str(x) + ',\n'
