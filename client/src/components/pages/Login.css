@@ -57,8 +57,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    animation: stars 16s ease-in-out infinite,
-                shift 6s linear infinite;
+    animation: stars 8s ease-in-out infinite,
+                shift 16s linear infinite;
 }
 
 .star1 {
@@ -67,37 +67,37 @@
 }
 
 .star2 {
-    animation-delay: -2s;
+    animation-delay: -1s;
     background: url(./stars/star2.png);
 }
 
 .star3 {
-    animation-delay: -4s;
+    animation-delay: -2s;
     background: url(./stars/star3.png);
 }
 
 .star4 {
-    animation-delay: -6s;
+    animation-delay: -3s;
     background: url(./stars/star4.png);
 }
 
 .star5 {
-    animation-delay: -8s;
+    animation-delay: -4s;
     background: url(./stars/star5.png);
 }
 
 .star6 {
-    animation-delay: -10s;
+    animation-delay: -5s;
     background: url(./stars/star6.png);
 }
 
 .star7 {
-    animation-delay: -12s;
+    animation-delay: -6s;
     background: url(./stars/star7.png);
 }
 
 .star8 {
-    animation-delay: -14s;
+    animation-delay: -7s;
     background: url(./stars/star8.png);
 }
 

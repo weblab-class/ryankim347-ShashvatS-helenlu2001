@@ -1,7 +1,27 @@
+.Join-container {
+    display: flex;
+    padding: 40px;
+    margin: 0 auto;
+    max-width: 1100px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.Join-fieldContainer {
+}
+
+.Join-howTo {
+    margin-left: 32px;
+    padding: 32px;
+    width: 500px;
+}
+
+.Join-howTo:hover {
+    background-color:rgb(20, 20, 20);
+}
 
 .Join-titleContainer {
     margin: 0 auto;
-    padding-top: 120px;
     max-width: 1000px;
 
     text-align: center;
@@ -50,4 +70,33 @@ input:focus {
     66%  {background-color: rgb(0, 255, 0);}
     100%  {background-color: rgb(0, 208, 255);}
 
+  }
+
+  .Join-row {
+      display: flex;
+  }
+
+  .Join-fieldTitle {
+      margin-bottom: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+  }
+
+  .Join-field {
+      padding: 16px;
+      font-size: 16px;
+  }
+
+  .Join-spacebar {
+      margin: 0 4px;
+      border: 1px solid white;
+      padding: 4px 8px;
+  }
+
+  ul {
+      padding-left: 16px;
+  }
+  li {
+      margin: 8px;
   }
