@@ -147,7 +147,7 @@ class Game {
         let yi = block.substring(block.indexOf(',') + 1);
 
         this.occupiedCells.add(xi + ',' + yi);
-        blockArray.push(new Block(xi*40, yi*40));
+        blockArray.push(new Block(yi*40, xi*40));
         if (Math.random() < 0.2) {
           blockArray[i].makeMirror();
         }

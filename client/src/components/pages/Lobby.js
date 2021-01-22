@@ -228,14 +228,14 @@ class Lobby extends Component {
                       this.state.standard ?
                         (
                           <div className='Lobby-mapSettings'>
-                            <div className='Lobby-settingTitle'> Map Width: {this.state.stdWidth / 50} </div>
+                            {/* <div className='Lobby-settingTitle'> Map Width: {this.state.stdWidth / 50} </div>
                             <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdWidth} onChange={(e) => this.setState({stdWidth: e.target.value})}></input>
                             <div className='Lobby-settingTitle'> Map Height: {this.state.stdHeight / 50} </div>
                             <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdHeight} onChange={(e) => this.setState({stdHeight: e.target.value})}></input>
                             <div className='Lobby-settingTitle'> Wall Density: {this.state.stdWallDensity / 50} </div>
                             <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdWallDensity} onChange={(e) => this.setState({stdWallDensity: e.target.value})}></input>
                             <div className='Lobby-settingTitle'> Mirror Density: {this.state.stdMirrorDensity / 50} </div>
-                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdMirrorDensity} onChange={(e) => this.setState({stdMirrorDensity: e.target.value})}></input>
+                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdMirrorDensity} onChange={(e) => this.setState({stdMirrorDensity: e.target.value})}></input> */}
 
                           </div>
                         ) :
