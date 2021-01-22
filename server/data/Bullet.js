@@ -115,12 +115,10 @@ class Bullet {
 
     let dir = -1;
 
-    if (
-      intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x + block.s, block.y) &&
-      this.velY >= 0
-    )
-      dir = 1;
-    else if (
+    if (intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x + block.s, block.y)) {
+      if (this.velY >= 0) dir = 1;
+      else return null;
+    } else if (
       intersects(
         c[0],
         c[1],
@@ -130,11 +128,11 @@ class Bullet {
         block.y,
         block.x + block.s,
         block.y + block.s
-      ) &&
-      this.velX <= 0
-    )
-      dir = 2;
-    else if (
+      )
+    ) {
+      if (this.velX <= 0) dir = 2;
+      else return null;
+    } else if (
       intersects(
         c[0],
         c[1],
@@ -144,15 +142,14 @@ class Bullet {
         block.y + block.s,
         block.x + block.s,
         block.y + block.s
-      ) &&
-      this.velY <= 0
-    )
-      dir = 3;
-    else if (
-      intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x, block.y + block.s) &&
-      this.velX >= 0
-    )
-      dir = 4;
+      )
+    ) {
+      if (this.velY <= 0) dir = 3;
+      else return null;
+    } else if (intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x, block.y + block.s)) {
+      if (this.velX >= 0) dir = 4;
+      else return null;
+    }
 
     let x = this.x;
     let y = this.y;
