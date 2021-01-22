@@ -127,8 +127,8 @@ class Game {
   }
 
   initializeGameObjects(settings) {
-    this.mapCount = 3;
-    this.mapNum = Math.floor(Math.random() * this.mapCount) + 100;
+    this.mapCount = 1;
+    this.mapNum = Math.floor(Math.random() * this.mapCount) + 200;
     const query = { id: this.mapNum };
     this.gameObjects = {
       blocks: [],
@@ -163,15 +163,15 @@ class Game {
         blockArray.push(new Block(settings.width*40, 40*i));
       }
 
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 3; i++) {
         powerupArray.push(
-          new Cloak(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+          new Cloak(Math.floor(-200 + Math.random() * 1000), Math.floor(-200 + Math.random() * 1000))
         );
         powerupArray.push(
-          new Speed(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+          new Speed(Math.floor(-200 + Math.random() * 1000), Math.floor(-200 + Math.random() * 1000))
         );
         powerupArray.push(
-          new Shrink(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+          new Shrink(Math.floor(-200 + Math.random() * 1000), Math.floor(-200 + Math.random() * 1000))
         );
       }
 

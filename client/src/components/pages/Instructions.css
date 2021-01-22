@@ -1,0 +1,26 @@
+
+.Instructions-container {
+  margin: 0 auto;
+  padding: 32px;
+  max-width: 1000px;
+
+
+}
+
+.Instructions-body {
+  height: 300px;
+  font-size: large;
+  display: flex;
+  justify-content: center;;
+}
+
+
+.Instructions-title {
+  margin-bottom: 32px;
+  font-size: 60px;
+  font-family: 'Orbitron';
+  color: white;
+-webkit-text-stroke: 1px white;
+  -webkit-text-fill-color: black;
+  text-align: center;
+}
