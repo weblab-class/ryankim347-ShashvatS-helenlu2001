@@ -86,3 +86,24 @@
   -webkit-text-fill-color: black;
   text-align: center;
 }
+
+.Leaderboard-spacer {
+  height: 20px;
+}
+.Leaderboard-input {
+  width: 300px;
+}
+.Leaderboard-button {
+  margin: 0 auto;
+  padding: 8px;
+  border: 1px solid white;
+  width: 300px;
+
+  font-family: 'Montserrat';
+  font-size: 28px;
+}
+
+.Leaderboard-button:hover {
+  animation: button 6s linear infinite alternate;
+  color:rgb(0, 0, 0);
+}
