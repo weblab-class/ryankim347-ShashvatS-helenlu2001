@@ -50,7 +50,7 @@
 
 .Lobby-people {
     display: grid;
-    min-height: 250px;
+    min-height: 200px;
     grid-template-columns: 25% 25% 25% 25%;
     text-align: center;
 }
@@ -137,4 +137,19 @@ hr {
     margin-top: 24px;
     display: flex;
     flex-direction: column;
+}
+
+.Lobby-waiting {
+    text-align: center;
+    font-size: 24px;
+    animation: flash 3s alternate infinite;
+}
+
+@keyframes flash {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

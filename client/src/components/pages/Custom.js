@@ -32,6 +32,7 @@ class Custom extends Component {
     this.wallDescrip = this.wallDescrip.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.publicMap = this.publicMap.bind(this);
+    this.clearMap = this.clearMap.bind(this);
 
   }
 
@@ -55,7 +56,6 @@ class Custom extends Component {
   publicMap() {
     this.setState({public: !this.state.public});
   }
-
 
   clickTile(e) {
     if(e.target.style.backgroundColor === 'white') {
@@ -87,13 +87,21 @@ class Custom extends Component {
       public: this.state.public
     }
 
-    console.log(req);
     post('/api/addMap', req).then(() => {
       console.log('success!');
     })
 
+    this.clearMap();
   }
 
+  clearMap() {
+    for(let i = 0; i < this.state.height; i++) {
+      for(let j = 0; j < this.state.width; j++) {
+        let square = document.getElementById(i+','+j);
+        square.style.backgroundColor = 'black';
+      }
+    }
+  }
 
 
   render() {
@@ -112,6 +120,8 @@ class Custom extends Component {
         <div className='Custom-container'>
             <div className='Custom-mapContainer'>
               {grid}
+              <div className='u-spacer'></div>
+              <div className='u-button' onClick={this.clearMap}> C L E A R </div>
             </div>
             <div className='Custom-settingsContainer'>
               <div className='u-heading u-textCenter' style={{marginBottom: 16}}> — SETTINGS — </div>

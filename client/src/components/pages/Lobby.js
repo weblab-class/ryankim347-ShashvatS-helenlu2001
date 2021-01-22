@@ -178,7 +178,6 @@ class Lobby extends Component {
     }
 
 
-
     if (this.state.initialized) {
       return (
         <>
@@ -203,7 +202,7 @@ class Lobby extends Component {
                     ))}
 
                   </div>
-                  {this.state.creator && (
+                  {this.state.creator ? (
                     <div>
                       <div style={{height: 16}}> </div>
                       <div className="u-button" onClick={this.startGame}>
@@ -212,7 +211,7 @@ class Lobby extends Component {
                       </div>
                     </div>
 
-                  )}
+                  ) : <div className='Lobby-waiting'> waiting for host to start the game. . . </div>}
                 </>
               }
 

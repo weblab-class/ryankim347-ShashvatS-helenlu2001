@@ -10,6 +10,7 @@
   margin-left: 32px;
   padding: 32px;
   width: 500px;
+  height: 520px;
 }
 
 .Custom-settingsContainer:hover {
@@ -17,7 +18,10 @@
 }
 
 .Custom-mapContainer {
+  display: flex;
   width: 100%;
+  flex-direction: column;
+  align-items: center;
 }
 
 .Custom-square {
