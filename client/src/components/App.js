@@ -41,7 +41,6 @@ class App extends Component {
           name: user.name,
           img: user.photo,
         });
-        // navigate("/join");
       }
     });
 
@@ -58,6 +57,7 @@ class App extends Component {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user) => {
+      console.log(res.profileObj);
       this.setState({
         userId: user._id,
         name: res.profileObj.name,
@@ -117,6 +117,7 @@ class App extends Component {
               path="/stats"
               name={this.state.name}
               img={this.state.img}
+              userId={this.state.userId}
               handleLogout={this.handleLogout}
             />
 
