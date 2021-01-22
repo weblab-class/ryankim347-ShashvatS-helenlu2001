@@ -131,6 +131,22 @@ form {
   background-color: #363636;
 }
 
+.u-responsiveButton {
+  margin: 0 auto;
+  padding: 0.5vw;
+  border: 1px solid white;
+  width: 16.667vw;
+
+  text-align: center;
+
+  font-family: 'Montserrat';
+  font-size: 1.8vw;
+}
+
+.u-responsiveButton:hover {
+  animation: button 6s linear infinite alternate;
+  color:rgb(0, 0, 0);
+}
 
 
 @keyframes button {

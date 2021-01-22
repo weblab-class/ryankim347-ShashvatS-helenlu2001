@@ -8,9 +8,9 @@
     margin: 0 auto; }
 
 .Login-title {
-    margin-top: 180px;
-    margin-bottom: 32px;
-    font-size: 72px;
+    margin-top: 24vh;
+    margin-bottom: 2.133vw;    ;
+    font-size: 4.5vw;
     font-family: 'Orbitron';
     color: white;
 	-webkit-text-stroke: 1px white;

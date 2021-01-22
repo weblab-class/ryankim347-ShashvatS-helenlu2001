@@ -49,7 +49,7 @@ class Login extends Component {
                 <div className='Login-title'> A S T R O B L A S T E R </div>
                 <div className='Login-buttonContainer'>
                   {this.props.userId ? (
-                    <Link to='/join' className = "u-button Login-specialLink"> {" "}E N T E R{" "} </Link>
+                    <Link to='/join' className = "u-responsiveButton Login-specialLink"> {" "}E N T E R{" "} </Link>
                     // <GoogleLogout
                     //   render={renderProps => (
                     //     <div className='u-button' onClick={renderProps.onClick}> L O G O U T</div>
@@ -62,7 +62,7 @@ class Login extends Component {
                   ) : (
                     <GoogleLogin
                       render={renderProps => (
-                        <div className='u-button' onClick={renderProps.onClick}> E N T E R </div>
+                        <div className='u-responsiveButton' onClick={renderProps.onClick}> E N T E R </div>
                       )}
                       clientId={GOOGLE_CLIENT_ID}
                       buttonText="E N T E R"
