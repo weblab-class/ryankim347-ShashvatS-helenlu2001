@@ -1,3 +1,7 @@
+.Login-container {
+    position: relative;
+    z-index: 1;
+}
 .Login-titleContainer {
     max-width: 1000px;
     text-align: center;
@@ -19,6 +23,7 @@
     display: block
 }
 .Login-buttonContainer {
+    background-color: black;
     animation: fadein 2s ease-in 1;
 }
 
@@ -31,4 +36,86 @@
     0% {opacity: 0%;}
     66% {opacity: 0%;}
     100% {opacity: 100%}
+}
+
+/* the animations below are drawn from https://www.youtube.com/watch?v=25npMh1hzi8 tutorial */
+.Login-starContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: stars 16s ease-in-out infinite,
+                shift 6s linear infinite;
+}
+
+.star1 {
+    animation-delay: 0s;
+    background: url(./stars/star1.png);
+}
+
+.star2 {
+    animation-delay: -2s;
+    background: url(./stars/star2.png);
+}
+
+.star3 {
+    animation-delay: -4s;
+    background: url(./stars/star3.png);
+}
+
+.star4 {
+    animation-delay: -6s;
+    background: url(./stars/star4.png);
+}
+
+.star5 {
+    animation-delay: -8s;
+    background: url(./stars/star5.png);
+}
+
+.star6 {
+    animation-delay: -10s;
+    background: url(./stars/star6.png);
+}
+
+.star7 {
+    animation-delay: -12s;
+    background: url(./stars/star7.png);
+}
+
+.star8 {
+    animation-delay: -14s;
+    background: url(./stars/star8.png);
+}
+
+
+@keyframes stars {
+    0%,20%,40%,60%,80%,100%  {
+        opacity: 0;
+    }
+    10%,30%,50%,70%,90%  {
+        opacity: 1;
+    }
+}
+
+@keyframes shift {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(2);
+    }
 }

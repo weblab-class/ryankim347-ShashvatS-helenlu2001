@@ -33,6 +33,17 @@ class Login extends Component {
 
     return (
       <>
+        <div className='Login-starContainer'>
+          <div className='star star1'> </div>
+          <div className='star star2'> </div>
+          <div className='star star3'> </div>
+          <div className='star star4'> </div>
+          <div className='star star5'> </div>
+          <div className='star star6'> </div>
+          <div className='star star7'> </div>
+          <div className='star star8'> </div>
+        </div>
+
         <div className='Login-container'>
             <div className='Login-titleContainer'>
                 <div className='Login-title'> A S T R O B L A S T E R </div>
