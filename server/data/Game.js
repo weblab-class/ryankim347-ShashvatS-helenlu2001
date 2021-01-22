@@ -198,19 +198,23 @@ class Game {
           }
         }
         let powerupArray = [];
-        for (let i = 0; i < 5; i++) {
+        let c = null
+        for (let i = 0; i < 2; i++) {
+          c = this.validCoords()
           powerupArray.push(
-            new Cloak(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+            new Cloak(c[0],c[1])
           );
         }
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 2; i++) {
+          c = this.validCoords()
           powerupArray.push(
-            new Speed(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+            new Speed(c[0],c[1])
           );
         }
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 2; i++) {
+          c = this.validCoords()
           powerupArray.push(
-            new Shrink(Math.floor(Math.random() * 500), Math.floor(Math.random() * 500))
+            new Shrink(c[0],c[1])
           );
         }
         this.gameObjects = {
@@ -389,7 +393,36 @@ class Game {
       gameObjects: this.gameObjects,
     });
   }
-
+  pushNewPowerup() {
+    let powerUp = null;
+    let pick = Math.floor(Math.random()*3);
+    let v = this.validCoords()
+    if (pick===0) {
+      powerUp = new Cloak(v[0], v[1]);
+    } else if (pick===1) {
+      powerUp = new Speed(v[0], v[1]);
+    } else if (pick===2) {
+      powerUp = new Shrink(v[0], v[1]);
+    }
+    this.gameObjects.powerups.push(powerUp);
+  }
+  validCoords() {
+    let x = Math.floor(-200 + Math.random() * 1000);
+    let y = Math.floor(-200 + Math.random() * 1000);
+    while(!this.checkValid(x,y)) {
+      x = Math.floor(-200 + Math.random() * 1000);
+      y = Math.floor(-200 + Math.random() * 1000);
+    }
+    return [x,y]
+  }
+  checkValid(x,y) {
+    this.gameObjects.blocks.forEach((block) => {
+      if (x>=block.x-25 && x<=block.x+block.s+50 && y>=block.y-25 && y<=block.y+block.s+50) {
+        return false;
+      }
+    })
+    return true;
+  }
   gameLoop() {
     // console.log("Game loop");
 
@@ -397,7 +430,10 @@ class Game {
     this.sendGameState();
 
     const elapsed = Date.now() - this.startTime;
-
+    let odds = 1500
+    if (Math.random()<1/odds) {
+      this.pushNewPowerup()
+    }
     if (elapsed < gameDuration) {
       setTimeout(this.gameLoop, 1000 / fps);
     } else {
