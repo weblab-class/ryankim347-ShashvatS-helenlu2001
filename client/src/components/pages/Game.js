@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Timer from '../modules/Timer.js';
 import LiveLeaderboard from '../modules/LiveLeaderboard.js';
 import Canvas from "../modules/Canvas.js";
+import PoseHandler from "../modules/PoseHandler.js"
 import "../../utilities.css";
 import "./Game.css";
 import { get, post } from "../../utilities.js";
@@ -65,7 +66,7 @@ class Game extends Component {
           <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
         </div>
         <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} updateLeaderboard={this.updateLeaderboard} className="Game-canvas" />
-
+        <PoseHandler code = {this.props.code}/>
 
       </>
     );

@@ -205,13 +205,13 @@ class Game {
             new Cloak(c[0],c[1])
           );
         }
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
           c = this.validCoords(-200,800,blockArray)
           powerupArray.push(
             new Speed(c[0],c[1])
           );
         }
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
           c = this.validCoords(-200,800,blockArray)
           powerupArray.push(
             new Shrink(c[0],c[1])
@@ -428,7 +428,7 @@ class Game {
     this.sendGameState();
 
     const elapsed = Date.now() - this.startTime;
-    let odds = 1500
+    let odds = 1000
     if (Math.random()<1/odds) {
       this.pushNewPowerup()
     }
