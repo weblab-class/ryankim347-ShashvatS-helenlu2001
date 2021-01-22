@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NavBar from "../modules/NavBar.js";
+import { navigate } from "@reach/router";
 
 import "../../utilities.css";
 import "./Leaderboard.css";
@@ -80,13 +81,23 @@ class Leaderboard extends Component {
           <hr style={{ marginTop: 32 }} />
           <div className="Leaderboard-rest"></div>
         </div>
-        <div>
-          <div className="Leaderboard-button" onClick={this.onLeaderboard}>
+        <div className="Leaderboard-button-container">
+          <div
+            className="Leaderboard-button"
+            onClick={() => {
+              navigate("/lobby");
+            }}
+          >
             {" "}
             A G A I N{" "}
           </div>
           <div className="Leaderboard-spacer"> </div>
-          <div className="Leaderboard-button" onClick={this.onCreate}>
+          <div
+            className="Leaderboard-button"
+            onClick={() => {
+              navigate("/join");
+            }}
+          >
             {" "}
             E X I T{" "}
           </div>

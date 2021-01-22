@@ -1,10 +1,7 @@
-
 .Leaderboard-container {
   margin: 0 auto;
   padding: 32px;
   max-width: 1000px;
-
-
 }
 
 .Leaderboard-top3container {
@@ -86,6 +83,12 @@
   -webkit-text-fill-color: black;
   text-align: center;
 }
+
+
+.Leaderboard-button-container {
+  text-align: center;
+}
+
 
 .Leaderboard-spacer {
   height: 20px;
