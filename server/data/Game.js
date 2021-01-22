@@ -14,8 +14,8 @@ class Game {
     this.code = code; // game code
     this.host_id = host_id; // id of game creator
 
-    this.mapWidth = 600;
-    this.mapHeight = 600;
+    this.mapWidth = 1200;
+    this.mapHeight = 1200;
 
     //console.log(this.map.x[0])
     this.players = [host_id];
