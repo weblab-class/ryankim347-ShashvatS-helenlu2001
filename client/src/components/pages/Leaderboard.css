@@ -1,10 +1,7 @@
-
 .Leaderboard-container {
   margin: 0 auto;
   padding: 32px;
   max-width: 1000px;
-
-
 }
 
 .Leaderboard-top3container {
@@ -85,4 +82,31 @@
 -webkit-text-stroke: 1px white;
   -webkit-text-fill-color: black;
   text-align: center;
+}
+
+
+.Leaderboard-button-container {
+  text-align: center;
+}
+
+
+.Leaderboard-spacer {
+  height: 20px;
+}
+.Leaderboard-input {
+  width: 300px;
+}
+.Leaderboard-button {
+  margin: 0 auto;
+  padding: 8px;
+  border: 1px solid white;
+  width: 300px;
+
+  font-family: 'Montserrat';
+  font-size: 28px;
+}
+
+.Leaderboard-button:hover {
+  animation: button 6s linear infinite alternate;
+  color:rgb(0, 0, 0);
 }

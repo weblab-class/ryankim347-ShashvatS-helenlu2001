@@ -120,37 +120,43 @@ class Canvas extends Component {
   }
 
   drawLoop() {
-    const ctx = this.refs.canvas.getContext("2d");
-    if (this.me.powerups) {
-      if (this.me.powerups.invisible) {
-        ctx.globalAlpha = 0.5;
-      }
+    if (this.refs.canvas == undefined) {
+      console.log("undefined");
+      this.props.triggerRefresh();
     } else {
-      ctx.globalAlpha = 1;
-    }
-    ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
-    let relX = this.me.x - window.innerWidth/2;
-    let relY = this.me.y - window.innerHeight/2;
-    if (this.playerInfo === undefined || this.gameObjects === undefined) {
-      // Do nothing
-    } else {
-      // Do stuff
+      const ctx = this.refs.canvas.getContext("2d");
 
-      for (let player in this.playerInfo) {
-        this.playerInfo[player].draw(ctx, relX, relY);
-        if (this.playerInfo[player].color === this.me.color && this.playerInfo[player].powerups) {
-          if (this.playerInfo[player].powerups.invisible) {
-            ctx.globalAlpha = 0.5
-          } else {
-            ctx.globalAlpha = 1
-          }
-        } else {
-          ctx.globalAlpha = 1
+      if (this.me.powerups) {
+        if (this.me.powerups.invisible) {
+          ctx.globalAlpha = 0.5;
         }
+      } else {
+        ctx.globalAlpha = 1;
       }
-      this.gameObjects.bullets.forEach((bullet) => bullet.draw(ctx, relX, relY));
-      this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
-      this.gameObjects.powerups.forEach((powerup) => powerup.draw(ctx, relX, relY));
+      ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
+      let relX = this.me.x - window.innerWidth / 2;
+      let relY = this.me.y - window.innerHeight / 2;
+      if (this.playerInfo === undefined || this.gameObjects === undefined) {
+        // Do nothing
+      } else {
+        // Do stuff
+
+        for (let player in this.playerInfo) {
+          this.playerInfo[player].draw(ctx, relX, relY);
+          if (this.playerInfo[player].color === this.me.color && this.playerInfo[player].powerups) {
+            if (this.playerInfo[player].powerups.invisible) {
+              ctx.globalAlpha = 0.5;
+            } else {
+              ctx.globalAlpha = 1;
+            }
+          } else {
+            ctx.globalAlpha = 1;
+          }
+        }
+        this.gameObjects.bullets.forEach((bullet) => bullet.draw(ctx, relX, relY));
+        this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
+        this.gameObjects.powerups.forEach((powerup) => powerup.draw(ctx, relX, relY));
+      }
     }
 
     if (this.running) {
@@ -232,7 +238,8 @@ class Canvas extends Component {
   render() {
     return (
       <>
-        <div className='Canvas-container'>
+        <div className="Canvas-container">
+          <div>{this.props.variableToTriggerRefresh}</div>
           <canvas ref="canvas" width={window.innerWidth} height={window.innerHeight} />
         </div>
       </>

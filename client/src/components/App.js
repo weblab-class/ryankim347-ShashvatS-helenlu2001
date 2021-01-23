@@ -13,7 +13,7 @@ import "../utilities.css";
 import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
-import Leaderboard from './pages/Leaderboard.js';
+import Leaderboard from "./pages/Leaderboard.js";
 import Custom from "./pages/Custom.js";
 /**
  * Define the "App" component as a class.
@@ -97,9 +97,7 @@ class App extends Component {
               handleLogout={this.handleLogout}
               userId={this.state.userId}
             />
-            <Instructions
-              path = "/howtoplay"
-            />
+            <Instructions path="/howtoplay" />
             <Login
               path="/"
               handleLogin={this.handleLogin}
@@ -111,7 +109,7 @@ class App extends Component {
             <Lobby code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} path="/lobby" />
             <Game code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} path="/game" />
             <Leaderboard path="/leaderboard" />
-            <Custom path="/customize" userId={this.state.userId}  name={this.state.name} />
+            <Custom path="/customize" userId={this.state.userId} name={this.state.name} />
 
             <Stats
               path="/stats"
@@ -120,8 +118,6 @@ class App extends Component {
               userId={this.state.userId}
               handleLogout={this.handleLogout}
             />
-
-
 
             <NotFound default />
           </Router>

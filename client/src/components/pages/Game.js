@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Timer from '../modules/Timer.js';
-import LiveLeaderboard from '../modules/LiveLeaderboard.js';
+import Timer from "../modules/Timer.js";
+import LiveLeaderboard from "../modules/LiveLeaderboard.js";
 import Canvas from "../modules/Canvas.js";
-import PoseHandler from "../modules/PoseHandler.js"
+import PoseHandler from "../modules/PoseHandler.js";
 import "../../utilities.css";
 import "./Game.css";
 import { get, post } from "../../utilities.js";
@@ -26,15 +26,16 @@ class Game extends Component {
       kills: 0,
       deaths: 0,
       wins: 0,
+      variableToTriggerRefresh: 0,
     };
 
     this.updateLeaderboard = this.updateLeaderboard.bind(this);
     this.endGame = this.endGame.bind(this);
+    this.triggerRefresh = this.triggerRefresh.bind(this);
   }
 
-
   updateLeaderboard(leaderboardInfo) {
-    this.setState({leaderboardInfo: leaderboardInfo});
+    this.setState({ leaderboardInfo: leaderboardInfo });
   }
 
   endGame() {
@@ -85,16 +86,30 @@ class Game extends Component {
 
   }
 
+
+  triggerRefresh() {
+    this.setState({
+      variableToTriggerRefresh: this.state.variableToTriggerRefresh + 1,
+    });
+  }
+
   render() {
     return (
       <>
-        <div className='Game-sidebar'>
-          <Timer startTime={this.state.startTime} endGame={this.endGame}/>
-          <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
+        <div className="Game-sidebar">
+          <Timer startTime={this.state.startTime} endGame={this.endGame} />
+          <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color} />
         </div>
-        <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} updateLeaderboard={this.updateLeaderboard} className="Game-canvas" />
-        <PoseHandler code = {this.props.code}/>
-
+        <Canvas
+          code={this.props.code}
+          color={this.state.color}
+          updatePoints={this.updatePoints}
+          updateLeaderboard={this.updateLeaderboard}
+          triggerRefresh={this.triggerRefresh}
+          variableToTriggerRefresh={this.state.variableToTriggerRefresh}
+          className="Game-canvas"
+        />
+        <PoseHandler code={this.props.code} />
       </>
     );
   }
