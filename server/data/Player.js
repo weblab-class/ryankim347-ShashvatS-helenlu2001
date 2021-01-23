@@ -96,6 +96,8 @@ class Player {
         this.isDead = false;
         this.velX = 0;
         this.velY = 0;
+      } else {
+        return;
       }
     }
 

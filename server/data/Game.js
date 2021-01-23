@@ -49,6 +49,7 @@ class Game {
       respawn: 5, // in seconds
       size: 12, // radius of player
       cooldown: 0.5, // in seconds
+      duration: 5 // in minutes
 
     }
   }
@@ -140,14 +141,16 @@ class Game {
       this.settings.cooldown = settings.cooldown;
     }
 
+    if(settings.duration) {
+      this.settings.duration = settings.duration;
+    }
+
     this.initializeGameObjects(settings);
     this.initializePlayers();
 
     this.startTime = Date.now();
 
-
-
-    io.in(this.code).emit("start-game", { startTime: this.startTime });
+    io.in(this.code).emit("start-game", { startTime: this.startTime , duration: this.settings.duration});
     this.gameLoop();
   }
 
@@ -466,7 +469,7 @@ class Game {
     if (Math.random() < 1 / odds) {
       this.pushNewPowerup();
     }
-    if (elapsed < gameDuration) {
+    if (elapsed < this.settings.duration*60*1000) {
       setTimeout(this.gameLoop, 1000 / fps);
     } else {
       this.mode = "finished";

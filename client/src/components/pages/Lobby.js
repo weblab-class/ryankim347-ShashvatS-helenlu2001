@@ -66,7 +66,7 @@ class Lobby extends Component {
   componentDidMount() {
     // remember -- api calls go here!
     socket.on("lobby-data", this.lobbyData);
-    socket.on("start-game", (data) => this.receiveStartGame(data.startTime));
+    socket.on("start-game", (data) => this.receiveStartGame(data.startTime, data.duration));
 
     if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
@@ -142,7 +142,6 @@ class Lobby extends Component {
       console.log(this.state.custTitle === undefined || this.state.standard);
       socket.emit("start-game", {
         room: this.props.code,
-        duration: this.state.duration,
         settings: {
           // map settings
           standard: this.state.standard || this.state.custTitle === undefined,
@@ -156,7 +155,9 @@ class Lobby extends Component {
           speed: this.state.speed <= 4 ? this.state.speed / 4 : 2*(this.state.speed-4),
           size: RADIUS[this.state.size],
           respawn: this.state.respawn*5,
-          cooldown: this.state.cooldown <= 4 ? this.state.cooldown / 4 : this.state.cooldown / 2 -1
+          cooldown: this.state.cooldown <= 4 ? this.state.cooldown / 4 : this.state.cooldown / 2 -1,
+
+          duration: this.state.duration,
 
         }
       });
@@ -164,7 +165,8 @@ class Lobby extends Component {
     }
   }
 
-  receiveStartGame(startTime) {
+  receiveStartGame(startTime, duration) {
+    this.props.setDuration(duration);
     navigate("/game", {state: {startTime: startTime, color: this.state.myColor}});
   }
 
