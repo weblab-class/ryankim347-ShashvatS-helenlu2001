@@ -48,7 +48,7 @@ class Lobby extends Component {
       custTitle: undefined,
 
       duration: 5,
-      cooldown: 6,
+      cooldown: 2,
       respawn: 3,
       speed: 4,
       size: 1,
@@ -142,10 +142,11 @@ class Lobby extends Component {
       console.log(this.state.custTitle === undefined || this.state.standard);
       socket.emit("start-game", {
         room: this.props.code,
+        duration: this.state.duration,
         settings: {
           // map settings
           standard: this.state.standard || this.state.custTitle === undefined,
-          mirrorDensity: this.state.stdMirrorDensity,
+          mirrorDensity: this.state.stdMirrorDensity / 50,
           width: this.state.custWidth,
           height: this.state.custHeight,
           blocks: Array.from(this.state.custBlocks),
@@ -154,7 +155,8 @@ class Lobby extends Component {
           // game settings
           speed: this.state.speed <= 4 ? this.state.speed / 4 : 2*(this.state.speed-4),
           size: RADIUS[this.state.size],
-          respawn: this.state.respawn,
+          respawn: this.state.respawn*5,
+          cooldown: this.state.cooldown <= 4 ? this.state.cooldown / 4 : this.state.cooldown / 2 -1
 
         }
       });
@@ -292,7 +294,7 @@ class Lobby extends Component {
                     <div className='Lobby-settingHeading'> — Gameplay Settings — </div>
                     <div className='Lobby-settingTitle'> Game Duration: {this.state.duration} min </div>
                     <input className='Lobby-slider' type='range' min='1' max='15' value={this.state.duration} onChange={(e) => {this.setState({duration: e.target.value})}}></input>
-                    <div className='Lobby-settingTitle'> Kill Cooldown: {this.state.cooldown*5} sec </div>
+                    <div className='Lobby-settingTitle'> Kill Cooldown: {this.state.cooldown <= 4 ? this.state.cooldown / 4 : this.state.cooldown / 2 -1} sec </div>
                     <input className='Lobby-slider' type='range' min='1' max='12' value={this.state.cooldown} onChange={(e) => {this.setState({cooldown: e.target.value})}}></input>
                     <div className='Lobby-settingTitle'> Respawn Time: {this.state.respawn*5} sec </div>
                     <input className='Lobby-slider' type='range'  min='1' max='12' value={this.state.respawn} onChange={(e) => {this.setState({respawn: e.target.value})}}></input>

@@ -46,8 +46,9 @@ class Game {
 
     this.settings = {
       speed: 2,
-      respawn: 5,
+      respawn: 5, // in seconds
       size: 12, // radius of player
+      cooldown: 0.5, // in seconds
 
     }
   }
@@ -133,6 +134,10 @@ class Game {
 
     if(settings.respawn) {
       this.settings.respawn = settings.respawn;
+    }
+
+    if(settings.cooldown) {
+      this.settings.cooldown = settings.cooldown;
     }
 
     this.initializeGameObjects(settings);

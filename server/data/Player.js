@@ -1,4 +1,4 @@
-const { bulletTimer } = require("../config");
+// const { bulletTimer } = require("../config");
 
 // const speed = 2;
 // const respawnTime = 5;
@@ -56,11 +56,12 @@ class Player {
 
     this.isDead = false;
     this.ticksUntilAlive = -1;
-    this.respawnTime = settings.respawnTime;
+    this.respawn = settings.respawn * 1000;
 
     this.respawnPoints = [];
 
     this.bulletTimer = Date.now();
+    this.cooldown = settings.cooldown * 1000;
 
     for (let i = 0; i < 15; i++) {
       let px = Math.floor(Math.random() * 500);
@@ -69,27 +70,33 @@ class Player {
       this.respawnPoints.push([px, py]);
     }
 
-    //TODO: the way this is implemented needs to be changed
-    setInterval(() => {
-      this.ticksUntilAlive -= 1;
-      if (this.ticksUntilAlive === 0) {
-        this.isDead = false;
-        let idx = Math.floor(Math.random() * 15);
+    // //TODO: the way this is implemented needs to be changed
+    // setInterval(() => {
+    //   this.ticksUntilAlive -= 1;
+    //   console.log(this.color + "'s ticks until alive:  " + this.ticksUntilAlive);
+    //   if (this.ticksUntilAlive === 0) {
+    //     this.isDead = false;
+    //     let idx = Math.floor(Math.random() * 15);
 
-        this.x = this.respawnPoints[idx][0];
-        this.y = this.respawnPoints[idx][1];
-        this.velX = 0;
-        this.velY = 0;
-      }
-    }, 1000);
+    //     this.x = this.respawnPoints[idx][0];
+    //     this.y = this.respawnPoints[idx][1];
+    //     this.velX = 0;
+    //     this.velY = 0;
+    //   }
+    // }, 1000);
   }
   setDodge(x,y) {
     this.dodgeX = x;
     this.dodgeY = y;
   }
+
   move(blocks, players, bullets, points, powerups) {
-    if (this.isDead) {
-      return;
+    if(this.isDead) {
+      if(Date.now() - this.respawnTimer > this.respawn) {
+        this.isDead = false;
+        this.velX = 0;
+        this.velY = 0;
+      }
     }
 
     this.x += this.speed * this.velX;
@@ -134,15 +141,15 @@ class Player {
             }, 15 * 1000);
             break;
           case "speed":
-            this.speed = 4;
+            this.speed *= 2;
             setTimeout(() => {
-              this.speed = 2;
+              this.speed /= 2;
             }, 15 * 1000);
             break;
           case "shrink":
-            this.r = 9;
+            this.r -= 2;
             setTimeout(() => {
-              this.r = 12;
+              this.r += 2;
             }, 15 * 1000);
             break;
         }
@@ -151,8 +158,10 @@ class Player {
   }
 
   canShoot() {
-    return Date.now() - this.bulletTimer > bulletTimer && !this.isDead;
+    return Date.now() - this.bulletTimer > this.cooldown && !this.isDead;
   }
+
+
 
   // TODO: need to handle case when we have a kabob when shooting -- should only kill the person that is closest
   shoot() {
@@ -166,7 +175,7 @@ class Player {
   killed() {
     this.deaths += 1;
     this.isDead = true;
-    this.ticksUntilAlive = respawnTime;
+    this.respawnTimer = Date.now();
   }
 
   checkBullet(bullet, points) {
@@ -176,7 +185,7 @@ class Player {
     let y2 = bullet.y + bullet.length * bullet.velY;
     if (
       segmentCircleIntersect(x1, y1, x2, y2, this.x+this.dodgeX*this.r*this.poseDist, this.y+this.dodgeY*this.r*this.poseDist, this.r) &&
-      bullet.color != this.color
+      bullet.color != this.color && !this.isDead
     ) {
       this.killed();
       points.push(bullet.color);
@@ -229,7 +238,7 @@ class Player {
 
   // inspired by https://www.youtube.com/watch?v=LPzyNOHY3A4
   checkPlayerCollision(other) {
-    if (other.isDead) {
+    if (other.isDead || this.isDead) {
       return;
     }
     let dx = other.x - this.x-this.dodgeX*this.r*this.poseDist;
