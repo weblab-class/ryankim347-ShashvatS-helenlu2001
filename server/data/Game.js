@@ -247,6 +247,8 @@ class Game {
         this.playerNames[player],
         posX,
         posY,
+        0,
+        0,
         colorMap[colors[this.id_to_color[player]]]
       );
     }
@@ -290,11 +292,13 @@ class Game {
         } else if (event.type === "bullet") {
           if (this.playerInfo[player].canShoot()) {
             this.playerInfo[player].shoot();
-
+            console.log('shooting')
             this.gameObjects.bullets.push(
               new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
             );
           }
+        } else if (event.type === "dodge") {
+          this.playerInfo[player].setDodge(event.pos.x,event.pos.y)
         }
       });
     }

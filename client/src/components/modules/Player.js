@@ -1,5 +1,5 @@
 class Player {
-  constructor(me, x, y, color, shoot, shootX, shootY, isDead, powerups, r) {
+  constructor(me, x, y, color, dodgeX=0, dodgeY=0, shoot, shootX, shootY, isDead, powerups, r) {
     this.me = me;
     this.r = r;
     this.x = x;
@@ -9,6 +9,9 @@ class Player {
     this.shoot = shoot;
     this.shootX = shootX;
     this.shootY = shootY;
+
+    this.dodgeX = dodgeX;
+    this.dodgeY = dodgeY;
 
     this.isDead = isDead;
     this.powerups = powerups;
@@ -21,23 +24,16 @@ class Player {
     ctx.beginPath();
     if(this.me) {
       ctx.fillStyle = this.powerups.invisible ? '#383838': this.color;
-
     } else {
       ctx.fillStyle = this.powerups.invisible ? 'black': this.color;
     }
-    ctx.arc(this.x-playerX, this.y-playerY, this.r, 0, 2 * Math.PI);
+    ctx.arc(this.x-playerX+2*this.r*this.dodgeX, this.y-playerY+2*this.r*this.dodgeY, this.r, 0, 2 * Math.PI);
     ctx.fill();
-
-    if(this.shoot) {
-      ctx.beginPath();
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = this.color;
-      ctx.moveTo(this.x-playerX, this.y-playerY);
-      ctx.lineTo(this.x-playerX + this.shootX*150, this.y-playerY + this.shootY*150);
-      ctx.stroke();
+    if(this.me) {
+      ctx.rect(this.x-playerX-3*this.r,this.y-playerY-3*this.r, 6*this.r,6*this.r)
+      ctx.strokeStyle = "this.color"
+      ctx.stroke()
     }
-
-    ctx.fillStyle = "black";
   }
 
   x() {

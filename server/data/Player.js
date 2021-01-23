@@ -33,12 +33,15 @@ const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   return true;
 };
 class Player {
-  constructor(name, posX, posY, color) {
+  constructor(name, posX, posY, dodgeX, dodgeY, color) {
+    this.poseDist = 2
     this.name = name;
     this.r = 12;
     this.x = posX;
     this.y = posY;
     this.color = color;
+    this.dodgeX = dodgeX;
+    this.dodgeY = dodgeY;
 
     this.points = 0;
 
@@ -78,7 +81,10 @@ class Player {
       }
     }, 1000);
   }
-
+  setDodge(x,y) {
+    this.dodgeX = x;
+    this.dodgeY = y;
+  }
   move(blocks, players, bullets, points, powerups) {
     if (this.isDead) {
       return;
@@ -166,7 +172,7 @@ class Player {
     let x2 = bullet.x + bullet.length * bullet.velX;
     let y2 = bullet.y + bullet.length * bullet.velY;
     if (
-      segmentCircleIntersect(x1, y1, x2, y2, this.x, this.y, this.r) &&
+      segmentCircleIntersect(x1, y1, x2, y2, this.x+this.dodgeX*this.r*this.poseDist, this.y+this.dodgeY*this.r*this.poseDist, this.r) &&
       bullet.color != this.color
     ) {
       this.killed();
@@ -182,8 +188,8 @@ class Player {
   // inspired by http://www.jeffreythompson.org/collision-detection/circle-rect.php
   // TODO: basically done, but small glitch at the corner
   checkBlockCollision(left, top, side, powerup = false) {
-    let compX = this.x;
-    let compY = this.y;
+    let compX = this.x+this.dodgeX*this.r*this.poseDist;
+    let compY = this.y+this.dodgeY*this.r*this.poseDist;
 
     if (compX < left) {
       compX = left;
@@ -223,8 +229,8 @@ class Player {
     if (other.isDead) {
       return;
     }
-    let dx = other.x - this.x;
-    let dy = other.y - this.y;
+    let dx = other.x - this.x-this.dodgeX*this.r*this.poseDist;
+    let dy = other.y - this.y-this.dodgeY*this.r*this.poseDist;
     let dist = Math.sqrt(dx * dx + dy * dy);
 
     if (dist < 24) {
@@ -239,8 +245,8 @@ class Player {
   }
 
   checkPowerUp(left, top, side) {
-    let compX = this.x;
-    let compY = this.y;
+    let compX = this.x+this.dodgeX*this.r*this.poseDist;
+    let compY = this.y+this.dodgeY*this.r*this.poseDist;
 
     if (compX < left) {
       compX = left;

@@ -23,10 +23,9 @@ class Canvas extends Component {
   constructor(props) {
     super(props);
     // Initialize Default State
-
+    this.poseHeight = 100
     this.running = true;
     this.events = [];
-
     this.eventLoop = this.eventLoop.bind(this);
     this.drawLoop = this.drawLoop.bind(this);
     this.receiveUpdate = this.receiveUpdate.bind(this);
@@ -55,6 +54,7 @@ class Canvas extends Component {
 
   handleKeyDown(event) {
     if (event.code === "Space") {
+      console.log(this.me.x,this.me.dodgeX)
       this.events.push({
         type: "bullet",
         dir: {
@@ -62,8 +62,8 @@ class Canvas extends Component {
           dy: this.dy,
         },
         pos: {
-          x: this.me.x,
-          y: this.me.y,
+          x: this.me.x+this.me.dodgeX*24,
+          y: this.me.y+this.me.dodgeY*24,
         },
         color: this.me.color,
       });
@@ -73,7 +73,7 @@ class Canvas extends Component {
     this.mouseX = event.pageX;
     this.mouseY = event.pageY;
     let dx = this.mouseX - window.innerWidth / 2;
-    let dy = this.mouseY - window.innerHeight / 2;
+    let dy = this.mouseY - (window.innerHeight-this.poseHeight) / 2;
     let mag = Math.sqrt(dx * dx + dy * dy);
     dx = dx / mag;
     dy = dy / mag;
@@ -94,7 +94,7 @@ class Canvas extends Component {
 
   eventLoop() {
     let dx = this.mouseX - window.innerWidth / 2;
-    let dy = this.mouseY - 370;
+    let dy = this.mouseY - (window.innerHeight-this.poseHeight)/2;
     let mag = Math.sqrt(dx * dx + dy * dy);
     if (mag < 5) {
       this.events.push({
@@ -130,7 +130,7 @@ class Canvas extends Component {
     }
     ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
     let relX = this.me.x - window.innerWidth/2;
-    let relY = this.me.y - window.innerHeight/2;
+    let relY = this.me.y - (window.innerHeight-this.poseHeight)/2;
     if (this.playerInfo === undefined || this.gameObjects === undefined) {
       // Do nothing
     } else {
@@ -175,7 +175,9 @@ class Canvas extends Component {
           playerInfo[player].color === this.props.color,
           playerInfo[player].x,
           playerInfo[player].y,
-          playerInfo[player].color
+          playerInfo[player].color,
+          playerInfo[player].dodgeX,
+          playerInfo[player].dodgeY
         );
       }
       this.playerInfo[player] = new Player(
@@ -183,6 +185,8 @@ class Canvas extends Component {
         playerInfo[player].x,
         playerInfo[player].y,
         playerInfo[player].color,
+        playerInfo[player].dodgeX,
+        playerInfo[player].dodgeY,
         playerInfo[player].shot,
         playerInfo[player].velX,
         playerInfo[player].velY,
@@ -232,7 +236,7 @@ class Canvas extends Component {
     return (
       <>
         <div className='Canvas-container'>
-          <canvas ref="canvas" width={window.innerWidth} height={window.innerHeight} />
+          <canvas ref="canvas" width={window.innerWidth} height={window.innerHeight-this.poseHeight} />
         </div>
       </>
     );

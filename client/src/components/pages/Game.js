@@ -16,6 +16,7 @@ import { Route } from "react-router-dom";
 class Game extends Component {
   constructor(props) {
     super(props);
+    this.poseEnabled = false;
     // Initialize Default State
     this.state = {
       startTime: this.props.location.state.startTime,
@@ -59,6 +60,10 @@ class Game extends Component {
   }
 
   render() {
+    let pose = null
+    if (this.poseEnabled) {
+      pose = <PoseHandler code = {this.props.code}/>
+    }
     return (
       <>
         <div className='Game-sidebar'>
@@ -66,8 +71,7 @@ class Game extends Component {
           <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color}/>
         </div>
         <Canvas code={this.props.code} color={this.state.color} updatePoints={this.updatePoints} updateLeaderboard={this.updateLeaderboard} className="Game-canvas" />
-        <PoseHandler code = {this.props.code}/>
-
+        {pose}
       </>
     );
   }
