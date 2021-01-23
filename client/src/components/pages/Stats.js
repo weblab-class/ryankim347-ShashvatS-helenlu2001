@@ -2,6 +2,8 @@ import { navigate } from "@reach/router";
 import React, { Component } from "react";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
 import NavBar from "../modules/NavBar.js";
+import { get, post } from "../../utilities.js";
+
 
 import "../../utilities.css";
 import "./Stats.css";
@@ -17,11 +19,25 @@ class Stats extends Component {
     super(props);
     // Initialize Default State
     this.state = {
+      games: 0,
+      kills: 0,
+      death: 0,
+      wins: 0,
     };
   }
 
   componentDidMount() {
     // remember -- api calls go here!
+    console.log(this.props);
+    console.log('hello')
+    get('/api/stats', {userId: this.props.userId}).then((data) => {
+      this.setState({
+        games: data.games,
+        kills: data.points,
+        deaths: data.deaths,
+        wins: data.wins
+      });
+    });
   }
 
 
@@ -41,16 +57,16 @@ class Stats extends Component {
           <hr/>
           <div className='Stats-statContainer'>
             <div className='Stats-stat'>
-              <div className='Stats-number'> 700 </div>
+              <div className='Stats-number'> {this.state.games} </div>
               <div className='Stats-category'> games </div>
             </div>
             <div className='Stats-stat'>
-              <div className='Stats-number'> 800 </div>
-              <div className='Stats-category'> points </div>
+              <div className='Stats-number'> {this.state.wins} </div>
+              <div className='Stats-category'> wins </div>
             </div>
             <div className='Stats-stat'>
-              <div className='Stats-number'> 200 </div>
-              <div className='Stats-category'> wins </div>
+              <div className='Stats-number'>{this.state.deaths === 0 || this.state.deaths === undefined ? 0 : this.state.kills / this.state.deaths}</div>
+              <div className='Stats-category'> k-d ratio </div>
             </div>
           </div>
 
