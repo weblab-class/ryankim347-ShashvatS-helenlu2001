@@ -82,7 +82,7 @@ class Leaderboard extends Component {
           <div className="Leaderboard-rest"></div>
         </div>
         <div className="Leaderboard-button-container">
-          <div
+          {/* <div
             className="Leaderboard-button"
             onClick={() => {
               navigate("/lobby");
@@ -91,7 +91,7 @@ class Leaderboard extends Component {
             {" "}
             A G A I N{" "}
           </div>
-          <div className="Leaderboard-spacer"> </div>
+          <div className="Leaderboard-spacer"> </div> */}
           <div
             className="Leaderboard-button"
             onClick={() => {
