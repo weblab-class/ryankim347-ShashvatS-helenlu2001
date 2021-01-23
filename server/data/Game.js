@@ -115,8 +115,6 @@ class Game {
     if (this.mode !== "lobby") return;
     this.mode = "playing";
 
-    // TODO: Do stuff to actually start playing the game (initialization, etc)
-
     this.initializeGameObjects(settings);
     this.initializePlayers();
 
@@ -143,14 +141,27 @@ class Game {
 
       for (let i = 0; i < settings.blocks.length; i++) {
         let block = settings.blocks[i];
-        let xi = block.substring(0, block.indexOf(","));
-        let yi = block.substring(block.indexOf(",") + 1);
+
+        // flipped because in custom map str representation it's row,col which ends up being y,x in canvas representation
+        let xi = block.substring(block.indexOf(",") + 1);
+        let yi = block.substring(0, block.indexOf(","));
 
         this.occupiedCells.add(xi + "," + yi);
-        blockArray.push(new Block(yi * 40, xi * 40));
-        if (Math.random() < 0.2) {
-          blockArray[i].makeMirror();
-        }
+        blockArray.push(new Block(xi * 40, yi * 40));
+      }
+
+
+      for (let i = 0; i < settings.mirrors.length; i++) {
+        let mirror = settings.mirrors[i];
+        let xi = mirror.substring(mirror.indexOf(",") + 1);
+        let yi = mirror.substring(0, mirror.indexOf(","));
+
+        let block = new Block(xi * 40, yi * 40);
+        block.makeMirror();
+
+        this.occupiedCells.add(xi + "," + yi);
+
+        blockArray.push(block);
       }
 
       for (let i = -1; i < settings.width + 1; i++) {

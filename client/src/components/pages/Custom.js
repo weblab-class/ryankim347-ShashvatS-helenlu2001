@@ -119,7 +119,7 @@ class Custom extends Component {
 
     this.clearMap();
 
-    this.setState({saved: true});
+    this.setState({saved: true, name: ''});
   }
 
   clearMap() {
@@ -155,7 +155,7 @@ class Custom extends Component {
         <div className='Custom-container'>
             <div className='Custom-mapContainer'>
               {grid}
-              <div className='u-spacer'></div>
+              <div className='Custom-note'> each grid cell represents a 40px by 40px square </div>
               <div className='u-button' onClick={this.clearMap}> C L E A R </div>
             </div>
             <div className='Custom-settingsContainer'>

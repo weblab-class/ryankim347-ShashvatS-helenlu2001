@@ -139,6 +139,7 @@ class Lobby extends Component {
           width: this.state.custWidth,
           height: this.state.custHeight,
           blocks: Array.from(this.state.custBlocks),
+          mirrors: Array.from(this.state.custMirrors)
         }
       });
     }
