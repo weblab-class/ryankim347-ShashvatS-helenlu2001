@@ -15,15 +15,18 @@ class Custom extends Component {
       name: '',
       width: 25,
       height: 25,
-      description: '',
+      description: 'walls block bullets; click a non-wall tile to place a wall, click again to remove',
 
       elements: {
         blocks: new Set(),
         mirrors: new Set(),
       },
 
+      down: false,
+
+      saved: false,
       public: false,
-      mode: ''
+      mode: 'WALL'
     };
 
     this.changeWidth = this.changeWidth.bind(this);
@@ -34,6 +37,7 @@ class Custom extends Component {
     this.saveMap = this.saveMap.bind(this);
     this.publicMap = this.publicMap.bind(this);
     this.clearMap = this.clearMap.bind(this);
+    this.enterTile = this.enterTile.bind(this);
 
   }
 
@@ -42,21 +46,23 @@ class Custom extends Component {
   }
 
   changeWidth(e) {
+    this.setState({saved: false});
     this.setState({width: e.target.value});
   }
 
   changeHeight(e) {
+    this.setState({saved: false});
     this.setState({height: e.target.value});
   }
 
-
-
-
   publicMap() {
+    this.setState({saved: false});
     this.setState({public: !this.state.public});
   }
 
+
   clickTile(e) {
+    this.setState({saved: false});
     if(this.state.mode === 'WALL') {
       this.state.elements.mirrors.delete(e.target.id);
       e.target.style.borderColor = 'rgb(56, 56, 56)';
@@ -89,7 +95,6 @@ class Custom extends Component {
   saveMap() {
     let x = []
     let y = []
-
     this.state.elements.blocks.forEach((str) => {
       x.push(parseInt(str.substring(0, str.indexOf(','))));
       y.push(parseInt(str.substring(str.indexOf(',')+1)));
@@ -111,6 +116,8 @@ class Custom extends Component {
     })
 
     this.clearMap();
+
+    this.setState({saved: true});
   }
 
   clearMap() {
@@ -124,13 +131,19 @@ class Custom extends Component {
     }
   }
 
+  enterTile(e) {
+    if(this.state.down) {
+      this.clickTile(e);
+    }
+  }
+
 
   render() {
     let grid = [];
     for(let i = 0; i < this.state.height; i++) {
       let row = [];
       for(let j = 0; j < this.state.width; j++) {
-        row.push(<div className='Custom-square' id={i+','+j} onClick={this.clickTile}> </div>)
+        row.push(<div className='Custom-square' id={i+','+j} onMouseDown={() => this.setState({down: true})} onMouseUp={() => {this.setState({down: false})}} onMouseEnter={this.enterTile} onClick={this.clickTile}> </div>)
       }
       grid.push(<div className='Custom-row'> {row} </div>);
     }
@@ -164,6 +177,8 @@ class Custom extends Component {
                 </div>
 
                 <div className='u-button' onClick={this.saveMap}> S A V E </div>
+                {this.state.saved && <div className='Custom-status'> map is saved! </div>}
+
             </div>
         </div>
 
