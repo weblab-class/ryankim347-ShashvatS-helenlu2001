@@ -115,8 +115,10 @@ class Bullet {
 
     let dir = -1;
 
-    if (intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x + block.s, block.y)) dir = 1;
-    else if (
+    if (intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x + block.s, block.y)) {
+      if (this.velY >= 0) dir = 1;
+      else return null;
+    } else if (
       intersects(
         c[0],
         c[1],
@@ -127,9 +129,10 @@ class Bullet {
         block.x + block.s,
         block.y + block.s
       )
-    )
-      dir = 2;
-    else if (
+    ) {
+      if (this.velX <= 0) dir = 2;
+      else return null;
+    } else if (
       intersects(
         c[0],
         c[1],
@@ -140,10 +143,13 @@ class Bullet {
         block.x + block.s,
         block.y + block.s
       )
-    )
-      dir = 3;
-    else if (intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x, block.y + block.s))
-      dir = 4;
+    ) {
+      if (this.velY <= 0) dir = 3;
+      else return null;
+    } else if (intersects(c[0], c[1], c[2], c[3], block.x, block.y, block.x, block.y + block.s)) {
+      if (this.velX >= 0) dir = 4;
+      else return null;
+    }
 
     let x = this.x;
     let y = this.y;
@@ -163,27 +169,6 @@ class Bullet {
   }
 
   // TODO: need to handle case when we have a kabob when shooting -- should only kill the person that is closest
-  // TOOD: pretty sure this code is never actually called
-
-  // shoot(players) {
-  //   if (!this.stillGoing) {
-  //     return;
-  //   }
-
-  //   this.shot = true;
-  //   for (let i = 0; i < players.length; i++) {
-  //     let player = players[i];
-  //     if (player.color === this.color || player.isDead) {
-  //       continue;
-  //     }
-  //     if (this.checkKilled(player)) {
-  //       this.points += 1;
-  //       break;
-  //     }
-  //   }
-
-  //   setTimeout(() => (this.shot = false), 250); // shoots for 0.5 sec
-  // }
 
   killed() {
     this.stillGoing = false;

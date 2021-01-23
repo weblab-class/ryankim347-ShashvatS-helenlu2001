@@ -18,10 +18,12 @@ class Custom extends Component {
       description: '',
 
       elements: {
-        blocks: new Set()
+        blocks: new Set(),
+        mirrors: new Set(),
       },
 
-      public: false
+      public: false,
+      mode: ''
     };
 
     this.changeWidth = this.changeWidth.bind(this);
@@ -29,7 +31,6 @@ class Custom extends Component {
 
     this.clickTile = this.clickTile.bind(this);
 
-    this.wallDescrip = this.wallDescrip.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.publicMap = this.publicMap.bind(this);
     this.clearMap = this.clearMap.bind(this);
@@ -48,23 +49,41 @@ class Custom extends Component {
     this.setState({height: e.target.value});
   }
 
-  wallDescrip(e) {
-    this.setState({description: 'click an empty tile to place a wall, click again to remove'});
 
-  }
+
 
   publicMap() {
     this.setState({public: !this.state.public});
   }
 
   clickTile(e) {
-    if(e.target.style.backgroundColor === 'white') {
-      e.target.style.backgroundColor = 'black';
+    if(this.state.mode === 'WALL') {
+      this.state.elements.mirrors.delete(e.target.id);
+      e.target.style.borderColor = 'rgb(56, 56, 56)';
+
+      if(e.target.style.backgroundColor === 'white') {
+        e.target.style.backgroundColor = 'black';
+        this.state.elements.blocks.delete(e.target.id);
+      } else {
+        e.target.style.backgroundColor = 'white';
+        this.state.elements.blocks.add(e.target.id);
+      }
+    } else if (this.state.mode === 'MIRROR') {
       this.state.elements.blocks.delete(e.target.id);
-    } else {
-      e.target.style.backgroundColor = 'white';
-      this.state.elements.blocks.add(e.target.id);
+      e.target.style.backgroundColor = 'black';
+      if(e.target.style.borderColor === 'white') {
+        e.target.style.borderColor = 'rgb(56, 56, 56)';
+        this.state.elements.mirrors.delete(e.target.id);
+      } else {
+        e.target.style.borderColor = 'white';
+        this.state.elements.mirrors.add(e.target.id);
+      }
+
     }
+
+
+
+
   }
 
   saveMap() {
@@ -99,6 +118,8 @@ class Custom extends Component {
       for(let j = 0; j < this.state.width; j++) {
         let square = document.getElementById(i+','+j);
         square.style.backgroundColor = 'black';
+        square.style.borderColor = 'rgb(56, 56, 56)';
+
       }
     }
   }
@@ -133,10 +154,8 @@ class Custom extends Component {
                 <input type='range' id='height' name='height' min='1' max='50' value={this.state.height} onChange={this.changeHeight}></input>
                 <div> Add Map Elements </div>
                 <div className='Custom-elements'>
-                  <div className='Custom-wall' onClick={this.wallDescrip}> </div>
-                  <div className='Custom-'> </div>
-                  <div className='Custom-'> </div>
-                  <div className='Custom-'> </div>
+                  <div className='Custom-wall' onClick={() => {this.setState({description: 'walls block bullets; click a non-wall tile to place a wall, click again to remove', mode: 'WALL'})}}> </div>
+                  <div className='Custom-mirror' onClick={() => {this.setState({description: 'mirrors reflect bullets; click a non-mirror tile to place a mirror, click again to remove', mode: 'MIRROR'})}}> </div>
                 </div>
                 <div className='Custom-elementDescrip'> {this.state.description} </div>
                 <div style={{display: 'flex', marginBottom: 32}}>

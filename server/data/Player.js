@@ -44,6 +44,7 @@ class Player {
     this.dodgeY = dodgeY;
 
     this.points = 0;
+    this.deaths = 0;
 
     this.velX = 0;
     this.velY = 0;
@@ -162,6 +163,7 @@ class Player {
   }
 
   killed() {
+    this.deaths += 1;
     this.isDead = true;
     this.ticksUntilAlive = respawnTime;
   }

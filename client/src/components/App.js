@@ -13,7 +13,7 @@ import "../utilities.css";
 import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
-import Leaderboard from './pages/Leaderboard.js';
+import Leaderboard from "./pages/Leaderboard.js";
 import Custom from "./pages/Custom.js";
 /**
  * Define the "App" component as a class.
@@ -41,7 +41,6 @@ class App extends Component {
           name: user.name,
           img: user.photo,
         });
-        // navigate("/join");
       }
     });
 
@@ -58,6 +57,7 @@ class App extends Component {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user) => {
+      console.log(res.profileObj);
       this.setState({
         userId: user._id,
         name: res.profileObj.name,
@@ -97,9 +97,7 @@ class App extends Component {
               handleLogout={this.handleLogout}
               userId={this.state.userId}
             />
-            <Instructions
-              path = "/howtoplay"
-            />
+            <Instructions path="/howtoplay" />
             <Login
               path="/"
               handleLogin={this.handleLogin}
@@ -109,18 +107,17 @@ class App extends Component {
 
             <Join path="/join" changeRoom={this.changeRoom} />
             <Lobby code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} path="/lobby" />
-            <Game code={this.state.code} changeRoom={this.changeRoom} path="/game" />
+            <Game code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} path="/game" />
             <Leaderboard path="/leaderboard" />
-            <Custom path="/customize" userId={this.state.userId}  name={this.state.name} />
+            <Custom path="/customize" userId={this.state.userId} name={this.state.name} />
 
             <Stats
               path="/stats"
               name={this.state.name}
               img={this.state.img}
+              userId={this.state.userId}
               handleLogout={this.handleLogout}
             />
-
-
 
             <NotFound default />
           </Router>

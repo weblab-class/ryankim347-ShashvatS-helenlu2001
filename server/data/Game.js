@@ -136,42 +136,51 @@ class Game {
       powerups: [],
     };
 
-
-    if(!settings.standard) { // custom maps
+    if (!settings.standard) {
+      // custom maps
       let blockArray = [];
       let powerupArray = [];
 
-      for(let i = 0; i < settings.blocks.length; i++) {
+      for (let i = 0; i < settings.blocks.length; i++) {
         let block = settings.blocks[i];
-        let xi = block.substring(0, block.indexOf(','));
-        let yi = block.substring(block.indexOf(',') + 1);
+        let xi = block.substring(0, block.indexOf(","));
+        let yi = block.substring(block.indexOf(",") + 1);
 
-        this.occupiedCells.add(xi + ',' + yi);
-        blockArray.push(new Block(yi*40, xi*40));
+        this.occupiedCells.add(xi + "," + yi);
+        blockArray.push(new Block(yi * 40, xi * 40));
         if (Math.random() < 0.2) {
           blockArray[i].makeMirror();
         }
       }
 
-      for(let i = -1; i < settings.width+1; i++) {
-        blockArray.push(new Block(i*40, -40));
-        blockArray.push(new Block(i*40, settings.height*40));
+      for (let i = -1; i < settings.width + 1; i++) {
+        blockArray.push(new Block(i * 40, -40));
+        blockArray.push(new Block(i * 40, settings.height * 40));
       }
 
-      for(let i = 0; i < settings.height; i++) {
-        blockArray.push(new Block(-40, 40*i));
-        blockArray.push(new Block(settings.width*40, 40*i));
+      for (let i = 0; i < settings.height; i++) {
+        blockArray.push(new Block(-40, 40 * i));
+        blockArray.push(new Block(settings.width * 40, 40 * i));
       }
 
       for (let i = 0; i < 3; i++) {
         powerupArray.push(
-          new Cloak(Math.floor(-200 + Math.random() * 1000), Math.floor(-200 + Math.random() * 1000))
+          new Cloak(
+            Math.floor(-200 + Math.random() * 1000),
+            Math.floor(-200 + Math.random() * 1000)
+          )
         );
         powerupArray.push(
-          new Speed(Math.floor(-200 + Math.random() * 1000), Math.floor(-200 + Math.random() * 1000))
+          new Speed(
+            Math.floor(-200 + Math.random() * 1000),
+            Math.floor(-200 + Math.random() * 1000)
+          )
         );
         powerupArray.push(
-          new Shrink(Math.floor(-200 + Math.random() * 1000), Math.floor(-200 + Math.random() * 1000))
+          new Shrink(
+            Math.floor(-200 + Math.random() * 1000),
+            Math.floor(-200 + Math.random() * 1000)
+          )
         );
       }
 
@@ -180,7 +189,6 @@ class Game {
         bullets: [],
         powerups: powerupArray,
       };
-
     } else {
       Map.findOne(query).then((map) => {
         let blockArray = [];
@@ -198,24 +206,18 @@ class Game {
           }
         }
         let powerupArray = [];
-        let c = null
+        let c = null;
         for (let i = 0; i < 1; i++) {
-          c = this.validCoords(-200,800,blockArray)
-          powerupArray.push(
-            new Cloak(c[0],c[1])
-          );
+          c = this.validCoords(-200, 800, blockArray);
+          powerupArray.push(new Cloak(c[0], c[1]));
         }
         for (let i = 0; i < 1; i++) {
-          c = this.validCoords(-200,800,blockArray)
-          powerupArray.push(
-            new Speed(c[0],c[1])
-          );
+          c = this.validCoords(-200, 800, blockArray);
+          powerupArray.push(new Speed(c[0], c[1]));
         }
         for (let i = 0; i < 1; i++) {
-          c = this.validCoords(-200,800,blockArray)
-          powerupArray.push(
-            new Shrink(c[0],c[1])
-          );
+          c = this.validCoords(-200, 800, blockArray);
+          powerupArray.push(new Shrink(c[0], c[1]));
         }
         this.gameObjects = {
           blocks: blockArray,
@@ -395,53 +397,64 @@ class Game {
   }
   pushNewPowerup() {
     let powerUp = null;
-    let pick = Math.floor(Math.random()*3);
-    let v = this.validCoords(-200,800,this.gameObjects.blockArray)
-    if (pick===0) {
+    let pick = Math.floor(Math.random() * 3);
+    let v = this.validCoords(-200, 800, this.gameObjects.blockArray);
+    if (pick === 0) {
       powerUp = new Cloak(v[0], v[1]);
-    } else if (pick===1) {
+    } else if (pick === 1) {
       powerUp = new Speed(v[0], v[1]);
-    } else if (pick===2) {
+    } else if (pick === 2) {
       powerUp = new Shrink(v[0], v[1]);
     }
     this.gameObjects.powerups.push(powerUp);
   }
-  validCoords(low,high,blocks) {
-    let x = Math.floor(low + Math.random() * (high-low));
-    let y = Math.floor(low + Math.random() * (high-low));
-    while(!this.checkValid(x,y,blocks)) {
-      x = Math.floor(low + Math.random() * (high-low));
-      y = Math.floor(low + Math.random() * (high-low));
+  validCoords(low, high, blocks) {
+    let x = Math.floor(low + Math.random() * (high - low));
+    let y = Math.floor(low + Math.random() * (high - low));
+    while (!this.checkValid(x, y, blocks)) {
+      x = Math.floor(low + Math.random() * (high - low));
+      y = Math.floor(low + Math.random() * (high - low));
     }
-    return [x,y]
+    return [x, y];
   }
-  checkValid(x,y,blocks) {
-    if(blocks) {
-      let valid = true
+  checkValid(x, y, blocks) {
+    if (blocks) {
+      let valid = true;
       blocks.forEach((block) => {
-        if (x>=block.x-25 && x<=block.x+block.s+50 && y>=block.y-25 && y<=block.y+block.s+50) {
+        if (
+          x >= block.x - 25 &&
+          x <= block.x + block.s + 50 &&
+          y >= block.y - 25 &&
+          y <= block.y + block.s + 50
+        ) {
           valid = false;
         }
-      })
+      });
       return valid;
     }
-    return true
+    return true;
   }
   gameLoop() {
     this.updateGameState();
     this.sendGameState();
 
     const elapsed = Date.now() - this.startTime;
-    let odds = 1000
-    if (Math.random()<1/odds) {
-      this.pushNewPowerup()
+    let odds = 1000;
+    if (Math.random() < 1 / odds) {
+      this.pushNewPowerup();
     }
     if (elapsed < gameDuration) {
       setTimeout(this.gameLoop, 1000 / fps);
     } else {
       this.mode = "finished";
-      // TODO: do stuff that happens when the game is finished
+      this.onGameFinish();
     }
+  }
+
+  onGameFinish() {
+    this.mode = "lobby";
+
+    // TODO: do stuff that happens when the game is finished
   }
 }
 
