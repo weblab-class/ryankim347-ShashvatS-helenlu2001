@@ -14,8 +14,9 @@ class Game {
     this.code = code; // game code
     this.host_id = host_id; // id of game creator
 
-    this.mapWidth = 1200;
-    this.mapHeight = 1200;
+    // in terms of number of 40x40 px blocks
+    this.mapWidth = 30;
+    this.mapHeight = 30;
 
     //console.log(this.map.x[0])
     this.players = [host_id];
@@ -136,6 +137,8 @@ class Game {
 
     if (!settings.standard) {
       // custom maps
+      this.mapWidth = settings.width;
+      this.mapHeight = settings.height;
       let blockArray = [];
       let powerupArray = [];
 
@@ -166,39 +169,36 @@ class Game {
 
       for (let i = -1; i < settings.width + 1; i++) {
         blockArray.push(new Block(i * 40, -40));
+        if (Math.random() < 0.1) {
+          blockArray[blockArray.length-1].makeMirror();
+        }
+
         blockArray.push(new Block(i * 40, settings.height * 40));
+        if (Math.random() < 0.1) {
+          blockArray[blockArray.length-1].makeMirror();
+        }
       }
 
       for (let i = 0; i < settings.height; i++) {
         blockArray.push(new Block(-40, 40 * i));
+        if (Math.random() < 0.1) {
+          blockArray[blockArray.length-1].makeMirror();
+        }
+
         blockArray.push(new Block(settings.width * 40, 40 * i));
+        if (Math.random() < 0.1) {
+          blockArray[blockArray.length-1].makeMirror();
+        }
       }
 
-      for (let i = 0; i < 3; i++) {
-        powerupArray.push(
-          new Cloak(
-            Math.floor(-200 + Math.random() * 1000),
-            Math.floor(-200 + Math.random() * 1000)
-          )
-        );
-        powerupArray.push(
-          new Speed(
-            Math.floor(-200 + Math.random() * 1000),
-            Math.floor(-200 + Math.random() * 1000)
-          )
-        );
-        powerupArray.push(
-          new Shrink(
-            Math.floor(-200 + Math.random() * 1000),
-            Math.floor(-200 + Math.random() * 1000)
-          )
-        );
+      for(let i = 0; i < 9; i++) {
+        this.pushNewPowerup();
       }
 
       this.gameObjects = {
         blocks: blockArray,
         bullets: [],
-        powerups: powerupArray,
+        powerups: this.gameObjects.powerups,
       };
     } else {
       Map.findOne(query).then((map) => {
@@ -219,15 +219,15 @@ class Game {
         let powerupArray = [];
         let c = null;
         for (let i = 0; i < 1; i++) {
-          c = this.validCoords(-200, 800, blockArray);
+          c = this.validCoords();
           powerupArray.push(new Cloak(c[0], c[1]));
         }
         for (let i = 0; i < 1; i++) {
-          c = this.validCoords(-200, 800, blockArray);
+          c = this.validCoords();
           powerupArray.push(new Speed(c[0], c[1]));
         }
         for (let i = 0; i < 1; i++) {
-          c = this.validCoords(-200, 800, blockArray);
+          c = this.validCoords();
           powerupArray.push(new Shrink(c[0], c[1]));
         }
         this.gameObjects = {
@@ -246,20 +246,13 @@ class Game {
 
     // TODO: shuffle, and actually place people in better spots
     for (const player in this.playerNames) {
-      let posX = Math.floor(Math.random() * 400) + 200;
-      let posY = Math.floor(Math.random() * 400) + 200;
 
-      while (
-        this.occupiedCells.has(Math.floor(posX / 40 - 12) + "," + Math.floor(posY / 40 - 12))
-      ) {
-        posX = Math.floor(Math.random() * 400) + 200;
-        posY = Math.floor(Math.random() * 400) + 200;
-      }
+      let c = this.validCoords();
 
       this.playerInfo[player] = new Player(
         this.playerNames[player],
-        posX,
-        posY,
+        c[0] + 20,
+        c[1] + 20,
         0,
         0,
         colorMap[colors[this.id_to_color[player]]]
@@ -409,7 +402,7 @@ class Game {
   pushNewPowerup() {
     let powerUp = null;
     let pick = Math.floor(Math.random() * 3);
-    let v = this.validCoords(-200, 800, this.gameObjects.blockArray);
+    let v = this.validCoords();
     if (pick === 0) {
       powerUp = new Cloak(v[0], v[1]);
     } else if (pick === 1) {
@@ -419,32 +412,23 @@ class Game {
     }
     this.gameObjects.powerups.push(powerUp);
   }
-  validCoords(low, high, blocks) {
-    let x = Math.floor(low + Math.random() * (high - low));
-    let y = Math.floor(low + Math.random() * (high - low));
-    while (!this.checkValid(x, y, blocks)) {
-      x = Math.floor(low + Math.random() * (high - low));
-      y = Math.floor(low + Math.random() * (high - low));
+
+  validCoords() {
+    let x = 2 + Math.floor(Math.random() * (this.mapWidth-4));
+    let y = 2 + Math.floor(Math.random() * (this.mapHeight-4));
+
+    while(this.occupiedCells.has(x+','+y)) {
+      x = Math.floor(Math.random() * this.mapWidth);
+      y = Math.floor(Math.random() * this.mapHeight);
     }
-    return [x, y];
-  }
-  checkValid(x, y, blocks) {
-    if (blocks) {
-      let valid = true;
-      blocks.forEach((block) => {
-        if (
-          x >= block.x - 25 &&
-          x <= block.x + block.s + 50 &&
-          y >= block.y - 25 &&
-          y <= block.y + block.s + 50
-        ) {
-          valid = false;
-        }
-      });
-      return valid;
+
+    this.occupiedCells.add(x+','+y);
+    if(!(x < this.mapWidth && x >= 0 && y < this.mapHeight && y >= 0)) {
+      console.log('out of bounds');
     }
-    return true;
+    return [x*40, y*40];
   }
+
   gameLoop() {
     this.updateGameState();
     this.sendGameState();
