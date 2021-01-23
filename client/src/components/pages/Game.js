@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Timer from "../modules/Timer.js";
 import LiveLeaderboard from "../modules/LiveLeaderboard.js";
 import Canvas from "../modules/Canvas.js";
-import PoseHandler from "../modules/PoseHandler.js";
+// import PoseHandler from "../modules/PoseHandler.js";
 import "../../utilities.css";
 import "./Game.css";
 import { get, post } from "../../utilities.js";
@@ -44,19 +44,19 @@ class Game extends Component {
       navigate("/leaderboard", {state: {leaderboardInfo: this.state.leaderboardInfo}});
     }, 5*1000);
 
-    let standings = this.state.leaderboardInfo.sort((a, b) => (a.points > b.points) ? -1 : 1);
-    for(let i = 0; i < standings.length; i++) {
-      if(standings[i].color === this.state.color) {
-        post('/api/stats', {
-          userId: this.props.userId,
-          games: this.state.games + 1,
-          wins: i === 0 ? this.state.wins + 1 : this.state.wins,
-          points: this.state.kills + standings[i].points,
-          deaths: this.state.deaths + standings[i].deaths,
-        });
-        break;
-      }
-    }
+    // let standings = this.state.leaderboardInfo.sort((a, b) => (a.points > b.points) ? -1 : 1);
+    // for(let i = 0; i < standings.length; i++) {
+    //   if(standings[i].color === this.state.color) {
+    //     post('/api/stats', {
+    //       userId: this.props.userId,
+    //       games: this.state.games + 1,
+    //       wins: i === 0 ? this.state.wins + 1 : this.state.wins,
+    //       points: this.state.kills + standings[i].points,
+    //       deaths: this.state.deaths + standings[i].deaths,
+    //     });
+    //     break;
+    //   }
+    // }
   }
 
   componentDidMount() {
@@ -76,14 +76,14 @@ class Game extends Component {
       return;
     }
 
-    get('/api/stats', {userId: this.props.userId}).then((data) => {
-      this.setState({
-        games: data.games,
-        kills: data.points,
-        deaths: data.deaths,
-        wins: data.wins
-      });
-    });
+    // get('/api/stats', {userId: this.props.userId}).then((data) => {
+    //   this.setState({
+    //     games: data.games,
+    //     kills: data.points,
+    //     deaths: data.deaths,
+    //     wins: data.wins
+    //   });
+    // });
 
   }
 
@@ -97,7 +97,7 @@ class Game extends Component {
   render() {
     let pose = null
     if (this.poseEnabled) {
-      pose = <PoseHandler code = {this.props.code}/>
+      // pose = <PoseHandler code = {this.props.code}/>
     }
     return (
       <>
@@ -114,7 +114,7 @@ class Game extends Component {
           variableToTriggerRefresh={this.state.variableToTriggerRefresh}
           className="Game-canvas"
         />
-        {pose}
+        {/* {pose} */}
       </>
     );
   }

@@ -30,14 +30,14 @@ class Stats extends Component {
     // remember -- api calls go here!
     console.log(this.props);
     console.log('hello')
-    get('/api/stats', {userId: this.props.userId}).then((data) => {
-      this.setState({
-        games: data.games,
-        kills: data.points,
-        deaths: data.deaths,
-        wins: data.wins
-      });
-    });
+    // get('/api/stats', {userId: this.props.userId}).then((data) => {
+    //   this.setState({
+    //     games: data.games,
+    //     kills: data.points,
+    //     deaths: data.deaths,
+    //     wins: data.wins
+    //   });
+    // });
   }
 
 

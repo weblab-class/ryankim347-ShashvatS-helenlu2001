@@ -28,8 +28,8 @@
 }
 
 @keyframes intro {
-    0% {font-size: 1px;}
-    100% {font-size: 72px;}
+    0% {font-size: 0.1vw;}
+    100% {font-size: 4.5vw;}
 }
 
 @keyframes fadein {
