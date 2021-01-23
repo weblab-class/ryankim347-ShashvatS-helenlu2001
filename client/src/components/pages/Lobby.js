@@ -39,12 +39,12 @@ class Lobby extends Component {
       stdHeight: 25,
       stdWidth: 25,
       stdWallDensity: 25,
-      stdMirrorDensity: 25,
+      stdMirrorDensity: 5,
       custWidth: 0,
       custHeight: 0,
       custBlocks: [],
       custMirrors: [],
-      custTitle: ''
+      custTitle: undefined
 
     };
 
@@ -135,7 +135,8 @@ class Lobby extends Component {
       socket.emit("start-game", {
         room: this.props.code,
         settings: {
-          standard: this.state.standard,
+          standard: this.state.standard || this.custTitle === undefined,
+          mirrorDensity: this.state.stdMirrorDensity,
           width: this.state.custWidth,
           height: this.state.custHeight,
           blocks: Array.from(this.state.custBlocks),
@@ -241,10 +242,9 @@ class Lobby extends Component {
                             <div className='Lobby-settingTitle'> Map Height: {this.state.stdHeight / 50} </div>
                             <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdHeight} onChange={(e) => this.setState({stdHeight: e.target.value})}></input>
                             <div className='Lobby-settingTitle'> Wall Density: {this.state.stdWallDensity / 50} </div>
-                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdWallDensity} onChange={(e) => this.setState({stdWallDensity: e.target.value})}></input>
+                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdWallDensity} onChange={(e) => this.setState({stdWallDensity: e.target.value})}></input> */}
                             <div className='Lobby-settingTitle'> Mirror Density: {this.state.stdMirrorDensity / 50} </div>
-                            <input className='Lobby-slider' type='range' min='1' max='50' value={this.state.stdMirrorDensity} onChange={(e) => this.setState({stdMirrorDensity: e.target.value})}></input> */}
-
+                            <input className='Lobby-slider' type='range' min='0' max='50' value={this.state.stdMirrorDensity} onChange={(e) => this.setState({stdMirrorDensity: e.target.value})}></input>
                           </div>
                         ) :
                         <div classname='Lobby-mapSettings'>
@@ -254,7 +254,7 @@ class Lobby extends Component {
                           </div>
                           <div className='u-spacer'> </div>
                           <div className='Lobby-mapType u-button2' style={{width: '50%', margin: '0 auto'}} onClick={(e) => this.setState({browseMaps: true})}>
-                            { this.state.custTitle.length === 0 ? 'Browse Maps' : 'Change Map' }
+                            { this.state.custTitle === undefined ? 'Browse Maps' : 'Change Map' }
                           </div>
 
 

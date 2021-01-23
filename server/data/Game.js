@@ -212,7 +212,7 @@ class Game {
 
           //TODO: change this to another way of deciding which blocks are mirrors
           // But this is prolly fine for now
-          if (Math.random() < 0.1) {
+          if (Math.random() < settings.mirrorDensity) {
             blockArray[i].makeMirror();
           }
         }
