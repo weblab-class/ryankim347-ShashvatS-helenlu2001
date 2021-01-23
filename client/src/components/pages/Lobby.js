@@ -17,7 +17,8 @@ function myId() {
 }
 
 const COLORS = ['#FF00D0', '#FFFF00', '#00FF00', '#00D0FF', '#FFAA00', '#BB00FF', '#FED4FF', '#FFFFAB', '#C4FFC4', '#C2F4FF', '#FFE1A6', '#D1D1D1'];
-
+const SIZE = ['small', 'medium', 'large'];
+const RADIUS = [10, 12, 14];
 
 class Lobby extends Component {
   constructor(props) {
@@ -44,7 +45,13 @@ class Lobby extends Component {
       custHeight: 0,
       custBlocks: [],
       custMirrors: [],
-      custTitle: undefined
+      custTitle: undefined,
+
+      duration: 5,
+      cooldown: 6,
+      respawn: 3,
+      speed: 4,
+      size: 1,
 
     };
 
@@ -132,17 +139,26 @@ class Lobby extends Component {
 
   startGame() {
     if (this.state.creator) {
+      console.log(this.state.custTitle === undefined || this.state.standard);
       socket.emit("start-game", {
         room: this.props.code,
         settings: {
-          standard: this.state.standard || this.custTitle === undefined,
+          // map settings
+          standard: this.state.standard || this.state.custTitle === undefined,
           mirrorDensity: this.state.stdMirrorDensity,
           width: this.state.custWidth,
           height: this.state.custHeight,
           blocks: Array.from(this.state.custBlocks),
-          mirrors: Array.from(this.state.custMirrors)
+          mirrors: Array.from(this.state.custMirrors),
+
+          // game settings
+          speed: this.state.speed <= 4 ? this.state.speed / 4 : 2*(this.state.speed-4),
+          size: RADIUS[this.state.size],
+          respawn: this.state.respawn,
+
         }
       });
+      this.props.setDuration(this.state.duration);
     }
   }
 
@@ -248,7 +264,7 @@ class Lobby extends Component {
                           </div>
                         ) :
                         <div classname='Lobby-mapSettings'>
-                          <div className='Lobby-settingTitle'> Your Selected Custom Map: {this.state.custTitle} </div>
+                          <div className='Lobby-settingTitle'> Your Selected Custom Map: {this.state.custTitle === undefined ? 'NOT SELECTED YET' : this.state.custTitle} </div>
                           <div className='Lobby-gridContainer'>
                             {grid}
                           </div>
@@ -274,16 +290,16 @@ class Lobby extends Component {
                 this.state.display === 'GAME' && (
                   <div className='Lobby-settingContainer' style={{width: 404, paddingBottom: 32}}>
                     <div className='Lobby-settingHeading'> — Gameplay Settings — </div>
-
-                    <div className='Lobby-settingTitle'> Game Speed: {this.state.width} </div>
-                    <input className='Lobby-slider' type='range' id='width' name='width' min='1' max='50' value={this.state.width} onChange={this.changeWidth}></input>
-                    <div className='Lobby-settingTitle'> Kill Cooldown: {this.state.height} </div>
-                    <input className='Lobby-slider' type='range' id='height' name='height' min='1' max='50' value={this.state.height} onChange={this.changeHeight}></input>
-                    <div className='Lobby-settingTitle'> Respawn Rate: {this.state.height} </div>
-                    <input className='Lobby-slider' type='range' id='height' name='height' min='1' max='50' value={this.state.height} onChange={this.changeHeight}></input>
-                    <div className='Lobby-settingTitle'> Player Size: {this.state.height} </div>
-                    <input className='Lobby-slider' type='range' id='height' name='height' min='1' max='50' value={this.state.height} onChange={this.changeHeight}></input>
-
+                    <div className='Lobby-settingTitle'> Game Duration: {this.state.duration} min </div>
+                    <input className='Lobby-slider' type='range' min='1' max='15' value={this.state.duration} onChange={(e) => {this.setState({duration: e.target.value})}}></input>
+                    <div className='Lobby-settingTitle'> Kill Cooldown: {this.state.cooldown*5} sec </div>
+                    <input className='Lobby-slider' type='range' min='1' max='12' value={this.state.cooldown} onChange={(e) => {this.setState({cooldown: e.target.value})}}></input>
+                    <div className='Lobby-settingTitle'> Respawn Time: {this.state.respawn*5} sec </div>
+                    <input className='Lobby-slider' type='range'  min='1' max='12' value={this.state.respawn} onChange={(e) => {this.setState({respawn: e.target.value})}}></input>
+                    <div className='Lobby-settingTitle'> Player Size: {SIZE[this.state.size]} </div>
+                    <input className='Lobby-slider' type='range' min='0' max='2' value={this.state.size} onChange={(e) => {this.setState({size: e.target.value})}}></input>
+                    <div className='Lobby-settingTitle'> Player Speed: {this.state.speed <= 4 ? this.state.speed / 4 : 2*(this.state.speed-4)}x </div>
+                    <input className='Lobby-slider' type='range' min='1' max='6' value={this.state.speed} onChange={(e) => {this.setState({speed: e.target.value})}}></input>
                   </div>
                 )
               }

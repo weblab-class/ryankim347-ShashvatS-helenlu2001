@@ -27,9 +27,11 @@ class App extends Component {
       name: "",
       img: "",
       code: "",
+      gameDuration: 5,
     };
 
     this.changeRoom = this.changeRoom.bind(this);
+    this.setDuration = this.setDuration.bind(this);
   }
 
   componentDidMount() {
@@ -86,6 +88,10 @@ class App extends Component {
     });
   }
 
+  setDuration(duration) {
+    this.setState({gameDuration: duration});
+  }
+
   render() {
     return (
       <>
@@ -106,8 +112,8 @@ class App extends Component {
             />
 
             <Join path="/join" changeRoom={this.changeRoom} />
-            <Lobby code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} path="/lobby" />
-            <Game code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} path="/game" />
+            <Lobby code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} setDuration={this.setDuration} path="/lobby" />
+            <Game code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} duration={this.state.gameDuration} path="/game" />
             <Leaderboard path="/leaderboard" />
             <Custom path="/customize" userId={this.state.userId} name={this.state.name} />
 

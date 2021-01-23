@@ -102,7 +102,7 @@ class Game extends Component {
     return (
       <>
         <div className="Game-sidebar">
-          <Timer startTime={this.state.startTime} endGame={this.endGame} />
+          <Timer startTime={this.state.startTime} duration={this.props.duration} endGame={this.endGame} />
           <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color} />
         </div>
         <Canvas

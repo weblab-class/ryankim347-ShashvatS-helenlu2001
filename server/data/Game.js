@@ -43,6 +43,13 @@ class Game {
 
     // this.updateGameState = this.updateGameState.bind(this);
     this.gameLoop = this.gameLoop.bind(this);
+
+    this.settings = {
+      speed: 2,
+      respawn: 5,
+      size: 12, // radius of player
+
+    }
   }
 
   join(clientId, name) {
@@ -116,10 +123,24 @@ class Game {
     if (this.mode !== "lobby") return;
     this.mode = "playing";
 
+    if(settings.speed) {
+      this.settings.speed = settings.speed;
+    }
+
+    if(settings.size) {
+      this.settings.size = settings.size;
+    }
+
+    if(settings.respawn) {
+      this.settings.respawn = settings.respawn;
+    }
+
     this.initializeGameObjects(settings);
     this.initializePlayers();
 
     this.startTime = Date.now();
+
+
 
     io.in(this.code).emit("start-game", { startTime: this.startTime });
     this.gameLoop();
@@ -255,8 +276,10 @@ class Game {
         c[1] + 20,
         0,
         0,
-        colorMap[colors[this.id_to_color[player]]]
+        colorMap[colors[this.id_to_color[player]]],
+        this.settings
       );
+      console.log(this.playerInfo[player].r);
     }
   }
 

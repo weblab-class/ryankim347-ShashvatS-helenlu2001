@@ -20,7 +20,7 @@ class Timer extends Component {
     this.setState({
       setIntervalReturn: setInterval(() => {
         this.setState({
-          timeLeft: Math.round((5 * 60 * 1000 + this.props.startTime - Date.now()) / 1000),
+          timeLeft: Math.round((this.props.duration * 60 * 1000 + this.props.startTime - Date.now()) / 1000),
         });
         if (this.state.timeLeft === 0) {
           this.setState({ gameOver: true });

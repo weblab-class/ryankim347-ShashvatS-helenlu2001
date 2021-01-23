@@ -1,7 +1,7 @@
 const { bulletTimer } = require("../config");
 
 // const speed = 2;
-const respawnTime = 5;
+// const respawnTime = 5;
 
 const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   let ACx = xc - x1;
@@ -33,10 +33,10 @@ const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   return true;
 };
 class Player {
-  constructor(name, posX, posY, dodgeX, dodgeY, color) {
+  constructor(name, posX, posY, dodgeX, dodgeY, color, settings) {
     this.poseDist = 2
     this.name = name;
-    this.r = 12;
+    this.r = settings.size;
     this.x = posX;
     this.y = posY;
     this.color = color;
@@ -48,7 +48,7 @@ class Player {
 
     this.velX = 0;
     this.velY = 0;
-    this.speed = 2;
+    this.speed = settings.speed*2;
 
     this.powerups = {
       invisible: false,
@@ -56,6 +56,7 @@ class Player {
 
     this.isDead = false;
     this.ticksUntilAlive = -1;
+    this.respawnTime = settings.respawnTime;
 
     this.respawnPoints = [];
 
