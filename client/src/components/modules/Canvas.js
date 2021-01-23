@@ -168,6 +168,7 @@ class Canvas extends Component {
         color: playerInfo[player].color,
         points: playerInfo[player].points,
         name: playerInfo[player].name,
+        deaths: playerInfo[player].deaths
       });
 
       if (playerInfo[player].color === this.props.color) {

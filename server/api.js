@@ -200,6 +200,14 @@ router.get('/stats', (req, res) => {
     .then((data) => res.send(data));
 })
 
+router.post('/stats', (req, res) => {
+  User.findOneAndUpdate({_id: req.body.userId}, {
+    games: req.body.games,
+    points: req.body.points,
+    deaths: req.body.deaths,
+    wins: req.body.wins,
+  }).then((data) => res.send(data));
+})
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

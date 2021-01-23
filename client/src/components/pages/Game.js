@@ -22,6 +22,10 @@ class Game extends Component {
       color: this.props.location.state.color,
       leaderboardInfo: [],
       gameOver: false,
+      games: 0,
+      kills: 0,
+      deaths: 0,
+      wins: 0,
     };
 
     this.updateLeaderboard = this.updateLeaderboard.bind(this);
@@ -36,7 +40,21 @@ class Game extends Component {
   endGame() {
     setTimeout(() => {
       navigate("/leaderboard", {state: {leaderboardInfo: this.state.leaderboardInfo}});
-    }, 5*1000)
+    }, 5*1000);
+
+    let standings = this.state.leaderboardInfo.sort((a, b) => (a.points > b.points) ? -1 : 1);
+    for(let i = 0; i < standings.length; i++) {
+      if(standings[i].color === this.state.color) {
+        post('/api/stats', {
+          userId: this.props.userId,
+          games: this.state.games + 1,
+          wins: i === 0 ? this.state.wins + 1 : this.state.wins,
+          points: this.state.kills + standings[i].points,
+          deaths: this.state.deaths + standings[i].deaths,
+        });
+        break;
+      }
+    }
   }
 
   componentDidMount() {
@@ -55,6 +73,15 @@ class Game extends Component {
 
       return;
     }
+
+    get('/api/stats', {userId: this.props.userId}).then((data) => {
+      this.setState({
+        games: data.games,
+        kills: data.points,
+        deaths: data.deaths,
+        wins: data.wins
+      });
+    });
 
   }
 
