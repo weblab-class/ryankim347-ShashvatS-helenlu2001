@@ -17,11 +17,6 @@ class Custom extends Component {
       height: 25,
       description: 'walls block bullets; click a non-wall tile to place a wall, click again to remove',
 
-      elements: {
-        blocks: new Set(),
-        mirrors: new Set(),
-      },
-
       down: false,
 
       saved: false,
@@ -64,25 +59,18 @@ class Custom extends Component {
   clickTile(e) {
     this.setState({saved: false});
     if(this.state.mode === 'WALL') {
-      this.state.elements.mirrors.delete(e.target.id);
       e.target.style.borderColor = 'rgb(56, 56, 56)';
-
       if(e.target.style.backgroundColor === 'white') {
         e.target.style.backgroundColor = 'black';
-        this.state.elements.blocks.delete(e.target.id);
       } else {
         e.target.style.backgroundColor = 'white';
-        this.state.elements.blocks.add(e.target.id);
       }
     } else if (this.state.mode === 'MIRROR') {
-      this.state.elements.blocks.delete(e.target.id);
       e.target.style.backgroundColor = 'black';
       if(e.target.style.borderColor === 'white') {
         e.target.style.borderColor = 'rgb(56, 56, 56)';
-        this.state.elements.mirrors.delete(e.target.id);
       } else {
         e.target.style.borderColor = 'white';
-        this.state.elements.mirrors.add(e.target.id);
       }
 
     }
@@ -93,12 +81,24 @@ class Custom extends Component {
   }
 
   saveMap() {
-    let x = []
-    let y = []
-    this.state.elements.blocks.forEach((str) => {
-      x.push(parseInt(str.substring(0, str.indexOf(','))));
-      y.push(parseInt(str.substring(str.indexOf(',')+1)));
-    });
+    let x = [];
+    let y = [];
+    let mx = [];
+    let my = [];
+
+    for(let i = 0; i < this.state.height; i++) {
+      for(let j = 0; j < this.state.width; j++) {
+        let square = document.getElementById(i+','+j);
+        if(square.style.backgroundColor === 'white') {
+          x.push(i);
+          y.push(j);
+        }
+        if(square.style.borderColor === 'white') {
+          mx.push(i);
+          my.push(j);
+        }
+      }
+    }
 
     let req = {
       creatorID: this.props.userId,
@@ -108,6 +108,8 @@ class Custom extends Component {
       height: this.state.height,
       x: x,
       y: y,
+      mx: mx,
+      my: my,
       public: this.state.public
     }
 
@@ -126,7 +128,6 @@ class Custom extends Component {
         let square = document.getElementById(i+','+j);
         square.style.backgroundColor = 'black';
         square.style.borderColor = 'rgb(56, 56, 56)';
-
       }
     }
   }

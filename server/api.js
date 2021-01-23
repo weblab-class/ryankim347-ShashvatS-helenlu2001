@@ -183,6 +183,8 @@ router.post("/addMap", (req, res) => {
     height: req.body.height,
     x: req.body.x,
     y: req.body.y,
+    mx: req.body.mx,
+    my: req.body.my,
     public: req.body.public,
   });
   map.save().then((map) => {

@@ -14,6 +14,7 @@ class MapSelector extends Component {
       width: 0,
       height: 0,
       blocks: new Set(),
+      mirrors: new Set(),
       name: '',
 
       maps: [],
@@ -35,18 +36,23 @@ class MapSelector extends Component {
       blocks.add(map.x[i]+','+map.y[i]);
     }
 
+    let mirrors = new Set();
+    for(let i = 0; i < map.mx.length; i++) {
+      mirrors.add(map.mx[i]+','+map.my[i]);
+    }
+
     this.setState({
       currMap: mapID,
       name: map.name,
       width: map.width,
       height: map.height,
       blocks: blocks,
+      mirrors: mirrors,
       hide: (mapID !== this.state.currMap || !this.state.hide) && !(this.state.width === 0)
     });
   }
 
   render() {
-    console.log(this.state.maps);
     let entries = [];
     for(let i = 0; i < this.state.maps.length; i++) {
       let map = this.state.maps[i];
@@ -62,7 +68,13 @@ class MapSelector extends Component {
     for(let i = 0; i < this.state.height; i++) {
       let row = [];
       for(let j = 0; j < this.state.width; j++) {
-        row.push(<div className='Lobby-square' style={ this.state.blocks.has(i+','+j) ? {backgroundColor: 'white'} : {backgroundColor: 'black'}}> </div>)
+        let style = {};
+        if(this.state.blocks.has(i+','+j)) {
+          style = {backgroundColor: 'white'};
+        } else if(this.state.mirrors.has(i+','+j)) {
+          style = {borderColor: 'white'};
+        }
+        row.push(<div className='Lobby-square' style={style}> </div>)
       }
       grid.push(<div className='Lobby-row'> {row} </div>);
     }
@@ -79,7 +91,7 @@ class MapSelector extends Component {
             {!this.state.hide && grid}
           </div>
           <div className='u-spacer'> </div>
-          {<div className='Lobby-mapType u-button2' style={{width: '50%', margin: '0 auto'}} onClick={() => this.props.selectMap(this.state.name, this.state.width, this.state.height, this.state.blocks)}> Select this Map  </div>}
+          {<div className='Lobby-mapType u-button2' style={{width: '50%', margin: '0 auto'}} onClick={() => this.props.selectMap(this.state.name, this.state.width, this.state.height, this.state.blocks, this.state.mirrors)}> Select this Map  </div>}
 
         </div>
 

@@ -8,6 +8,8 @@ const CustomMapSchema = new mongoose.Schema({
   height: Number,
   x: [Number],
   y: [Number],
+  mx: [Number],
+  my: [Number],
   public: Boolean
 })
 

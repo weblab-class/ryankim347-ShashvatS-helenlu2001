@@ -43,6 +43,7 @@ class Lobby extends Component {
       custWidth: 0,
       custHeight: 0,
       custBlocks: [],
+      custMirrors: [],
       custTitle: ''
 
     };
@@ -151,13 +152,14 @@ class Lobby extends Component {
     this.setState({display: display});
   }
 
-  selectMap(title, width, height, blocks) {
+  selectMap(title, width, height, blocks,mirrors) {
     this.setState({
       browseMaps: title.length === 0,
       custTitle: title,
       custWidth: width,
       custHeight: height,
       custBlocks: blocks,
+      custMirrors: mirrors,
     })
   }
 
@@ -172,7 +174,13 @@ class Lobby extends Component {
     for(let i = 0; i < this.state.custHeight; i++) {
       let row = [];
       for(let j = 0; j < this.state.custWidth; j++) {
-        row.push(<div className='Lobby-square' style={ this.state.custBlocks.has(i+','+j) ? {backgroundColor: 'white'} : {backgroundColor: 'black'}}> </div>)
+        let style = {};
+        if(this.state.custBlocks.has(i+','+j)) {
+          style = {backgroundColor: 'white'};
+        } else if(this.state.custMirrors.has(i+','+j)) {
+          style = {borderColor: 'white'};
+        }
+        row.push(<div className='Lobby-square' style={style}> </div>)
       }
       grid.push(<div className='Lobby-row'> {row} </div>);
     }
