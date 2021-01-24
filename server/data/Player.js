@@ -257,38 +257,38 @@ class Player {
         }
       }
 
-      if (compY === top) {
-        if (compX === left || compX === left + side) {
-          this.y =
-            this.cornerCount[corner] === 1
-              ? compY - this.r / Math.sqrt(2)
-              : compY - Math.sqrt(this.r) / 2;
-        } else {
-          this.y = compY - this.r;
-        }
-      } else {
-        if (compX === left || compX === left + side) {
-          this.y =
-            this.cornerCount[corner] === 1
-              ? compY + this.r / Math.sqrt(2)
-              : compY + Math.sqrt(this.r) / 2;
-        } else {
-          this.y = compY + this.r;
-        }
+      // if (compY === top) {
+      //   if (compX === left || compX === left + side) {
+      //     this.y =
+      //       this.cornerCount[corner] === 1
+      //         ? compY - this.r / Math.sqrt(2)
+      //         : compY - Math.sqrt(this.r) / 2;
+      //   } else {
+      //     this.y = compY - this.r;
+      //   }
+      // } else {
+      //   if (compX === left || compX === left + side) {
+      //     this.y =
+      //       this.cornerCount[corner] === 1
+      //         ? compY + this.r / Math.sqrt(2)
+      //         : compY + Math.sqrt(this.r) / 2;
+      //   } else {
+      //     this.y = compY + this.r;
+      //   }
+      // }
+      // adjust x based on which edge we're comparing
+      if (compX == left) {
+        this.x = compX - this.r;
+      } else if (compX == left + side) {
+        this.x = compX + this.r;
       }
-      // // adjust x based on which edge we're comparing
-      // if (compX == left) {
-      //   this.x = compX - this.r;
-      // } else if (compX == left + side) {
-      //   this.x = compX + this.r;
-      // }
 
-      // // adjust y based on which edge we're comparing
-      // if (compY == top) {
-      //   this.y = compY - this.r;
-      // } else if (compY == top + side) {
-      //   this.y = compY + this.r;
-      // }
+      // adjust y based on which edge we're comparing
+      if (compY == top) {
+        this.y = compY - this.r;
+      } else if (compY == top + side) {
+        this.y = compY + this.r;
+      }
     }
   }
 
