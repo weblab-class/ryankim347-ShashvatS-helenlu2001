@@ -33,7 +33,7 @@ const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   return true;
 };
 class Player {
-  constructor(name, posX, posY, dodgeX, dodgeY, color, settings) {
+  constructor(name, posX, posY, dodgeX, dodgeY, color, settings, respawnPoints) {
     this.poseDist = 2
     this.name = name;
     this.r = settings.size;
@@ -58,17 +58,10 @@ class Player {
     this.ticksUntilAlive = -1;
     this.respawn = settings.respawn * 1000;
 
-    this.respawnPoints = [];
+    this.respawnPoints = respawnPoints;
 
     this.bulletTimer = Date.now();
     this.cooldown = settings.cooldown * 1000;
-
-    for (let i = 0; i < 15; i++) {
-      let px = Math.floor(Math.random() * 500);
-      let py = Math.floor(Math.random() * 500);
-
-      this.respawnPoints.push([px, py]);
-    }
 
     // //TODO: the way this is implemented needs to be changed
     // setInterval(() => {
@@ -96,6 +89,10 @@ class Player {
         this.isDead = false;
         this.velX = 0;
         this.velY = 0;
+
+        let idx = Math.floor(Math.random() * this.respawnPoints.length);
+        this.x = this.respawnPoints[idx][0];
+        this.y = this.respawnPoints[idx][1];
       } else {
         return;
       }

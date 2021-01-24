@@ -146,7 +146,7 @@ class Game {
     }
 
     this.initializeGameObjects(settings);
-    this.initializePlayers();
+    // this.initializePlayers();
 
     this.startTime = Date.now();
 
@@ -229,6 +229,8 @@ class Game {
         bullets: [],
         powerups: this.gameObjects.powerups,
       };
+
+      this.initializePlayers();
     } else {
       Map.findOne(query).then((map) => {
         let blockArray = [];
@@ -260,6 +262,9 @@ class Game {
           bullets: [],
           powerups: powerupArray,
         };
+
+        this.initializePlayers();
+
       });
     }
   }
@@ -272,6 +277,11 @@ class Game {
     // TODO: shuffle, and actually place people in better spots
     for (const player in this.playerNames) {
 
+      let respawnPoints = [];
+      for(let i = 0; i < 10; i++) {
+        respawnPoints.push(this.validCoords());
+      }
+
       let c = this.validCoords();
 
       this.playerInfo[player] = new Player(
@@ -281,9 +291,9 @@ class Game {
         0,
         0,
         colorMap[colors[this.id_to_color[player]]],
-        this.settings
+        this.settings,
+        respawnPoints
       );
-      console.log(this.playerInfo[player].r);
     }
   }
 
