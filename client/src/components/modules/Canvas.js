@@ -77,7 +77,7 @@ class Canvas extends Component {
     this.mouseX = event.pageX;
     this.mouseY = event.pageY;
     let dx = this.mouseX - window.innerWidth / 2;
-    let dy = this.mouseY - (window.innerHeight - this.poseHeight) / 2;
+    let dy = this.mouseY - window.innerHeight / 2;
     let mag = Math.sqrt(dx * dx + dy * dy);
     dx = dx / mag;
     dy = dy / mag;
@@ -98,7 +98,7 @@ class Canvas extends Component {
 
   eventLoop() {
     let dx = this.mouseX - window.innerWidth / 2;
-    let dy = this.mouseY - (window.innerHeight - this.poseHeight) / 2;
+    let dy = this.mouseY - window.innerHeight / 2;
     let mag = Math.sqrt(dx * dx + dy * dy);
     if (mag < 5) {
       events.push({
@@ -251,7 +251,7 @@ class Canvas extends Component {
           <canvas
             ref="canvas"
             width={window.innerWidth}
-            height={window.innerHeight - this.poseHeight}
+            height={window.innerHeight}
           />
         </div>
       </>

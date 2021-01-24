@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Timer from "../modules/Timer.js";
 import LiveLeaderboard from "../modules/LiveLeaderboard.js";
 import Canvas from "../modules/Canvas.js";
-// import PoseHandler from "../modules/PoseHandler.js";
+import PoseHandler from "../modules/PoseHandler.js";
 import "../../utilities.css";
 import "./Game.css";
 import { get, post } from "../../utilities.js";

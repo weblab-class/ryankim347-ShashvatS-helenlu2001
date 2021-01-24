@@ -66,7 +66,6 @@ class PoseHandler extends Component {
     };
     return (
       <PoseNet
-        style={{ height: 100 }}
         frameRate={10}
         className="PoseHandler-cam"
         onEstimate={passInfo}

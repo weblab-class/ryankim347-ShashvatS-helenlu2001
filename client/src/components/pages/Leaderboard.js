@@ -79,7 +79,7 @@ class Leaderboard extends Component {
             </div>
           </div>
           <hr style={{ marginTop: 32 }} />
-          <div className="Leaderboard-rest"></div>
+          <div className="Leaderboard-rest"> {rest} </div>
         </div>
         <div className="Leaderboard-button-container">
           {/* <div
