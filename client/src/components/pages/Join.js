@@ -39,6 +39,10 @@ class Join extends Component {
 
   onNameChange(e) {
     const name = e.target.value;
+    if (name.length > 8) {
+      name = name.substring(0, 8);
+    }
+
     this.setState({ name: name.toLowerCase(), errorResponse: '' });
   }
 
