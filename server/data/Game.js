@@ -145,16 +145,16 @@ class Game {
       this.settings.duration = settings.duration;
     }
 
-    this.initializeGameObjects(settings);
+    this.initializeGameObjects(settings, io);
     // this.initializePlayers();
 
-    this.startTime = Date.now();
+    // this.startTime = Date.now();
 
-    io.in(this.code).emit("start-game", { startTime: this.startTime , duration: this.settings.duration});
-    this.gameLoop();
+    // io.in(this.code).emit("start-game", { startTime: this.startTime , duration: this.settings.duration});
+    // this.gameLoop();
   }
 
-  initializeGameObjects(settings) {
+  initializeGameObjects(settings, io) {
     this.mapCount = 1;
     this.mapNum = Math.floor(Math.random() * this.mapCount) + 200;
     const query = { id: this.mapNum };
@@ -231,6 +231,11 @@ class Game {
       };
 
       this.initializePlayers();
+      this.startTime = Date.now();
+
+      io.in(this.code).emit("start-game", { startTime: this.startTime , duration: this.settings.duration});
+      this.gameLoop();
+
     } else {
       Map.findOne(query).then((map) => {
         let blockArray = [];
@@ -264,6 +269,10 @@ class Game {
         };
 
         this.initializePlayers();
+        this.startTime = Date.now();
+
+        io.in(this.code).emit("start-game", { startTime: this.startTime , duration: this.settings.duration});
+        this.gameLoop();
 
       });
     }
