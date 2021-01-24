@@ -65,7 +65,6 @@ class App extends Component {
         name: res.profileObj.name,
         img: res.profileObj.imageUrl,
       });
-      post("/api/initsocket", { socketid: socket.id });
     });
     navigate("/join");
   };
@@ -89,7 +88,7 @@ class App extends Component {
   }
 
   setDuration(duration) {
-    this.setState({gameDuration: duration});
+    this.setState({ gameDuration: duration });
   }
 
   render() {
@@ -112,8 +111,20 @@ class App extends Component {
             />
 
             <Join path="/join" changeRoom={this.changeRoom} />
-            <Lobby code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} setDuration={this.setDuration} path="/lobby" />
-            <Game code={this.state.code} changeRoom={this.changeRoom} userId={this.state.userId} duration={this.state.gameDuration} path="/game" />
+            <Lobby
+              code={this.state.code}
+              changeRoom={this.changeRoom}
+              userId={this.state.userId}
+              setDuration={this.setDuration}
+              path="/lobby"
+            />
+            <Game
+              code={this.state.code}
+              changeRoom={this.changeRoom}
+              userId={this.state.userId}
+              duration={this.state.gameDuration}
+              path="/game"
+            />
             <Leaderboard path="/leaderboard" />
             <Custom path="/customize" userId={this.state.userId} name={this.state.name} />
 

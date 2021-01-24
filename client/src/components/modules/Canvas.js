@@ -11,6 +11,8 @@ import "./Canvas.css";
 import { socket } from "../../client-socket.js";
 import Shrink from "./powerups/Shrink.js";
 
+import events from "./event";
+
 /**
  * @param userId specifies the id of the currently logged in user
  */
@@ -25,7 +27,8 @@ class Canvas extends Component {
     // Initialize Default State
     this.poseHeight = 100;
     this.running = true;
-    this.events = [];
+    // this.events = [];
+    events.splice(0, events.length);
     this.eventLoop = this.eventLoop.bind(this);
     this.drawLoop = this.drawLoop.bind(this);
     this.receiveUpdate = this.receiveUpdate.bind(this);
@@ -54,8 +57,9 @@ class Canvas extends Component {
 
   handleKeyDown(event) {
     if (event.code === "Space") {
-      console.log(this.me.x, this.me.dodgeX);
-      this.events.push({
+      // console.log(this.me.x, this.me.dodgeX);
+      console.log("space");
+      events.push({
         type: "bullet",
         dir: {
           dx: this.dx,
@@ -82,7 +86,7 @@ class Canvas extends Component {
     this.dy = dy;
 
     if ((dx != 0 || dy != 0) && mag > 5) {
-      this.events.push({
+      events.push({
         type: "movement",
         vel: {
           dx,
@@ -105,14 +109,15 @@ class Canvas extends Component {
         },
       });
     }
-    if (this.events.length > 0) {
+    if (events.length > 0) {
       socket.emit("game-events", {
         room: this.props.code,
-        events: [...this.events],
+        events: [...events],
       });
     }
 
-    this.events = [];
+    // this.events = [];
+    events.splice(0, events.length);
 
     if (this.running) {
       setTimeout(this.eventLoop, 60);

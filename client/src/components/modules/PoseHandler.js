@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import { socket } from "../../client-socket.js";
+// import { socket } from "../../client-socket.js";
 import PoseNet from "react-posenet";
 import "./PoseHandler.css";
+
+import events from "./event";
+
 /**
  * @param code specifies the code of the current game
  */
@@ -47,18 +50,19 @@ class PoseHandler extends Component {
       if (faceX) {
         let relX = (faceX - this.width / 2) / (this.width / 2);
         let relY = (faceY - this.height / 2) / (this.height / 2);
-        socket.emit("game-events", {
-          room: this.props.code,
-          events: [
-            {
-              type: "dodge",
-              pos: {
-                x: -relX,
-                y: relY,
-              },
-            },
-          ],
+
+        events.push({
+          type: "dodge",
+          pos: {
+            x: -relX,
+            y: relY,
+          },
         });
+
+        // socket.emit("game-events", {
+        //   room: this.props.code,
+        //   events: [],
+        // });
       } else {
         console.log("Face not found");
       }
