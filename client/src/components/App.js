@@ -27,11 +27,13 @@ class App extends Component {
       name: "",
       img: "",
       code: "",
+      username: '',
       gameDuration: 5,
     };
 
     this.changeRoom = this.changeRoom.bind(this);
     this.setDuration = this.setDuration.bind(this);
+    this.setUsername = this.setUsername.bind(this);
   }
 
   componentDidMount() {
@@ -91,6 +93,12 @@ class App extends Component {
     this.setState({ gameDuration: duration });
   }
 
+  setUsername(username) {
+    this.setState(
+      {username: username}
+    );
+  }
+
   render() {
     return (
       <>
@@ -110,12 +118,18 @@ class App extends Component {
               userId={this.state.userId}
             />
 
-            <Join path="/join" changeRoom={this.changeRoom} />
+            <Join
+              path="/join"
+              changeRoom={this.changeRoom}
+              setUsername={this.setUsername}
+            />
+
             <Lobby
               code={this.state.code}
               changeRoom={this.changeRoom}
               userId={this.state.userId}
               setDuration={this.setDuration}
+              username={this.state.username}
               path="/lobby"
             />
             <Game

@@ -52,8 +52,8 @@ class Join extends Component {
     });
 
     this.props.changeRoom(code);
-
-    navigate("/lobby", { state: { name: this.state.name } });
+    this.props.setUsername(this.state.name);
+    navigate("/lobby");
   }
 
   async onJoin(_e) {
@@ -71,7 +71,8 @@ class Join extends Component {
 
       if (response.success === true) {
         this.props.changeRoom(code);
-        navigate("/lobby", { state: { name: this.state.name } });
+        this.props.setUsername(this.state.name);
+        navigate("/lobby");
       } else {
         console.log("error in joining room");
         console.log(response.reason);

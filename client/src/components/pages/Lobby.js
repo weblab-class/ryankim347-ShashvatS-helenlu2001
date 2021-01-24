@@ -44,7 +44,7 @@ class Lobby extends Component {
       players: [],
       colors: undefined,
       playerNames: undefined,
-      myName: this.props.location.state.name,
+      myName: this.props.username,
       myColor: undefined,
       display: "LOBBY",
       browseMaps: false,
