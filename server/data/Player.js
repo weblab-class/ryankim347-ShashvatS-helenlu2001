@@ -33,7 +33,7 @@ const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   return true;
 };
 class Player {
-  constructor(name, posX, posY, dodgeX, dodgeY, color, settings, respawnPoints) {
+  constructor(name, posX, posY, dodgeX, dodgeY, color, settings, respawnPoints, cornerCount) {
     this.poseDist = 2
     this.name = name;
     this.r = settings.size;
@@ -59,6 +59,8 @@ class Player {
     this.respawn = settings.respawn * 1000;
 
     this.respawnPoints = respawnPoints;
+
+    this.cornerCount = cornerCount;
 
     this.bulletTimer = Date.now();
     this.cooldown = settings.cooldown * 1000;
@@ -219,19 +221,47 @@ class Player {
 
     // collision if this condition holds
     if (dx * dx + dy * dy < this.r * this.r) {
-      // adjust x based on which edge we're comparing
-      if (compX == left) {
-        this.x = compX - this.r;
-      } else if (compX == left + side) {
-        this.x = compX + this.r;
+      let corner = Math.floor(compX/40) + ',' + Math.floor(compY/40);
+      if(compX === left) {
+        if(compY === top || compY === top + side) {
+          this.x = this.cornerCount[corner] === 1 ? compX - this.r/Math.sqrt(2) : compX - Math.sqrt(this.r)/2;
+        } else {
+          this.x = compX - this.r;
+        }
+      } else {
+        if(compY === top || compY === top + side) {
+          this.x = this.cornerCount[corner] === 1 ? compX + this.r/Math.sqrt(2) : compX + Math.sqrt(this.r)/2;
+        } else {
+          this.x = compX + this.r;
+        }
       }
 
-      // adjust y based on which edge we're comparing
-      if (compY == top) {
-        this.y = compY - this.r;
-      } else if (compY == top + side) {
-        this.y = compY + this.r;
+      if(compY === top) {
+        if(compX === left || compX === left + side) {
+          this.y = this.cornerCount[corner] === 1 ? compY - this.r/Math.sqrt(2) : compY - Math.sqrt(this.r)/2;
+        } else {
+          this.y = compY - this.r;
+        }
+      } else {
+        if(compX === left || compX === left + side) {
+          this.y = this.cornerCount[corner] === 1 ? compY + this.r/Math.sqrt(2) : compY + Math.sqrt(this.r)/2;
+        } else {
+          this.y = compY + this.r;
+        }
       }
+      // // adjust x based on which edge we're comparing
+      // if (compX == left) {
+      //   this.x = compX - this.r;
+      // } else if (compX == left + side) {
+      //   this.x = compX + this.r;
+      // }
+
+      // // adjust y based on which edge we're comparing
+      // if (compY == top) {
+      //   this.y = compY - this.r;
+      // } else if (compY == top + side) {
+      //   this.y = compY + this.r;
+      // }
     }
   }
 
