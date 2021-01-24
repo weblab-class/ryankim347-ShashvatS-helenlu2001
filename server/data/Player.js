@@ -34,7 +34,7 @@ const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
 };
 class Player {
   constructor(name, posX, posY, dodgeX, dodgeY, color, settings, respawnPoints) {
-    this.poseDist = 2
+    this.poseDist = 2;
     this.name = name;
     this.r = settings.size;
     this.x = posX;
@@ -48,7 +48,7 @@ class Player {
 
     this.velX = 0;
     this.velY = 0;
-    this.speed = settings.speed*2;
+    this.speed = settings.speed * 2;
 
     this.powerups = {
       invisible: false,
@@ -78,14 +78,14 @@ class Player {
     //   }
     // }, 1000);
   }
-  setDodge(x,y) {
+  setDodge(x, y) {
     this.dodgeX = x;
     this.dodgeY = y;
   }
 
   move(blocks, players, bullets, points, powerups) {
-    if(this.isDead) {
-      if(Date.now() - this.respawnTimer > this.respawn) {
+    if (this.isDead) {
+      if (Date.now() - this.respawnTimer > this.respawn) {
         this.isDead = false;
         this.velX = 0;
         this.velY = 0;
@@ -160,8 +160,6 @@ class Player {
     return Date.now() - this.bulletTimer > this.cooldown && !this.isDead;
   }
 
-
-
   // TODO: need to handle case when we have a kabob when shooting -- should only kill the person that is closest
   shoot() {
     if (!this.canShoot()) {
@@ -183,8 +181,17 @@ class Player {
     let x2 = bullet.x + bullet.length * bullet.velX;
     let y2 = bullet.y + bullet.length * bullet.velY;
     if (
-      segmentCircleIntersect(x1, y1, x2, y2, this.x+this.dodgeX*this.r*this.poseDist, this.y+this.dodgeY*this.r*this.poseDist, this.r) &&
-      bullet.color != this.color && !this.isDead
+      segmentCircleIntersect(
+        x1,
+        y1,
+        x2,
+        y2,
+        this.x + this.dodgeX * this.r * this.poseDist,
+        this.y + this.dodgeY * this.r * this.poseDist,
+        this.r
+      ) &&
+      bullet.color != this.color &&
+      !this.isDead
     ) {
       this.killed();
       points.push(bullet.color);
@@ -199,8 +206,8 @@ class Player {
   // inspired by http://www.jeffreythompson.org/collision-detection/circle-rect.php
   // TODO: basically done, but small glitch at the corner
   checkBlockCollision(left, top, side, powerup = false) {
-    let compX = this.x+this.dodgeX*this.r*this.poseDist;
-    let compY = this.y+this.dodgeY*this.r*this.poseDist;
+    let compX = this.x + this.dodgeX * this.r * this.poseDist;
+    let compY = this.y + this.dodgeY * this.r * this.poseDist;
 
     if (compX < left) {
       compX = left;
@@ -240,8 +247,8 @@ class Player {
     if (other.isDead || this.isDead) {
       return;
     }
-    let dx = other.x - this.x-this.dodgeX*this.r*this.poseDist;
-    let dy = other.y - this.y-this.dodgeY*this.r*this.poseDist;
+    let dx = other.x - this.x - this.dodgeX * this.r * this.poseDist;
+    let dy = other.y - this.y - this.dodgeY * this.r * this.poseDist;
     let dist = Math.sqrt(dx * dx + dy * dy);
 
     if (dist < 24) {
@@ -256,8 +263,8 @@ class Player {
   }
 
   checkPowerUp(left, top, side) {
-    let compX = this.x+this.dodgeX*this.r*this.poseDist;
-    let compY = this.y+this.dodgeY*this.r*this.poseDist;
+    let compX = this.x + this.dodgeX * this.r * this.poseDist;
+    let compY = this.y + this.dodgeY * this.r * this.poseDist;
 
     if (compX < left) {
       compX = left;
