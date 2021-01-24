@@ -1,70 +1,69 @@
 import React, { Component } from "react";
 import { socket } from "../../client-socket.js";
-import PoseNet from "react-posenet"
+import PoseNet from "react-posenet";
 import "./PoseHandler.css";
 /**
  * @param code specifies the code of the current game
  */
 class PoseHandler extends Component {
   constructor(props) {
-    super(props)
-    this.events = []
-    this.height = 480
-    this.width = 640
-    this.getDims()
+    super(props);
+    this.events = [];
+    this.height = 480;
+    this.width = 640;
+    this.getDims();
   }
+
   getDims() {
-    navigator.mediaDevices.getUserMedia({video: true}).then((stream) => {
-      this.height = stream.getVideoTracks()[0].getSettings().height
-      this.width = stream.getVideoTracks()[0].getSettings().width
-      console.log(this.height,this.width)
-    })
+    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+      this.height = stream.getVideoTracks()[0].getSettings().height;
+      this.width = stream.getVideoTracks()[0].getSettings().width;
+      console.log(this.height, this.width);
+    });
   }
+
   average(array) {
     return array.reduce((a, b) => a + b) / array.length;
   }
+
   render() {
     const passInfo = (poses) => {
-      let faceX = null
-      let faceY = null
-      poses.forEach((pose) =>{
-        let keyX = []
-        let keyY = []
-        pose.keypoints.forEach((point)=> {
-          if (point.part==="nose" || point.part==="leftEye" || point.part==="rightEye"){
-            keyX.push(point.position.x)
-            keyY.push(point.position.y)
+      let faceX = null;
+      let faceY = null;
+      poses.forEach((pose) => {
+        let keyX = [];
+        let keyY = [];
+        pose.keypoints.forEach((point) => {
+          if (point.part === "nose" || point.part === "leftEye" || point.part === "rightEye") {
+            keyX.push(point.position.x);
+            keyY.push(point.position.y);
           }
-        })
+        });
         if (keyX.length > 0) {
-          faceX = this.average(keyX)
-          faceY = this.average(keyY)
+          faceX = this.average(keyX);
+          faceY = this.average(keyY);
         }
-      })
+      });
       if (faceX) {
-        let relX = (faceX-(this.width/2))/(this.width/2)
-        let relY = (faceY-(this.height/2))/(this.height/2)
+        let relX = (faceX - this.width / 2) / (this.width / 2);
+        let relY = (faceY - this.height / 2) / (this.height / 2);
         socket.emit("game-events", {
           room: this.props.code,
-          events: [{
-            type: "dodge",
-            pos: {
-              x: -relX,
-              y: relY
-            }
-          }],
+          events: [
+            {
+              type: "dodge",
+              pos: {
+                x: -relX,
+                y: relY,
+              },
+            },
+          ],
         });
       } else {
-        console.log("Face not found")
+        console.log("Face not found");
       }
-    }
-    return (
-      <PoseNet
-        style={{ height: 100 }}
-        className = "PoseHandler-cam"
-        onEstimate = {passInfo}
-      />
-    )
+    };
+    return <PoseNet style={{ height: 100 }} className="PoseHandler-cam" onEstimate={passInfo} />;
   }
 }
 
@@ -135,4 +134,4 @@ class PoseHandler extends Component {
 //     }
 //   }
 // }
-export default PoseHandler
+export default PoseHandler;

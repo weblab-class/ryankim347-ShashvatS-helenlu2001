@@ -49,8 +49,7 @@ class Game {
       respawn: 5, // in seconds
       size: 12, // radius of player
       cooldown: 0.5, // in seconds
-
-    }
+    };
   }
 
   join(clientId, name) {
@@ -124,19 +123,19 @@ class Game {
     if (this.mode !== "lobby") return;
     this.mode = "playing";
 
-    if(settings.speed) {
+    if (settings.speed) {
       this.settings.speed = settings.speed;
     }
 
-    if(settings.size) {
+    if (settings.size) {
       this.settings.size = settings.size;
     }
 
-    if(settings.respawn) {
+    if (settings.respawn) {
       this.settings.respawn = settings.respawn;
     }
 
-    if(settings.cooldown) {
+    if (settings.cooldown) {
       this.settings.cooldown = settings.cooldown;
     }
 
@@ -144,9 +143,6 @@ class Game {
     this.initializePlayers();
 
     this.startTime = Date.now();
-
-
-
     io.in(this.code).emit("start-game", { startTime: this.startTime });
     this.gameLoop();
   }
@@ -179,7 +175,6 @@ class Game {
         blockArray.push(new Block(xi * 40, yi * 40));
       }
 
-
       for (let i = 0; i < settings.mirrors.length; i++) {
         let mirror = settings.mirrors[i];
         let xi = mirror.substring(mirror.indexOf(",") + 1);
@@ -196,28 +191,28 @@ class Game {
       for (let i = -1; i < settings.width + 1; i++) {
         blockArray.push(new Block(i * 40, -40));
         if (Math.random() < 0.1) {
-          blockArray[blockArray.length-1].makeMirror();
+          blockArray[blockArray.length - 1].makeMirror();
         }
 
         blockArray.push(new Block(i * 40, settings.height * 40));
         if (Math.random() < 0.1) {
-          blockArray[blockArray.length-1].makeMirror();
+          blockArray[blockArray.length - 1].makeMirror();
         }
       }
 
       for (let i = 0; i < settings.height; i++) {
         blockArray.push(new Block(-40, 40 * i));
         if (Math.random() < 0.1) {
-          blockArray[blockArray.length-1].makeMirror();
+          blockArray[blockArray.length - 1].makeMirror();
         }
 
         blockArray.push(new Block(settings.width * 40, 40 * i));
         if (Math.random() < 0.1) {
-          blockArray[blockArray.length-1].makeMirror();
+          blockArray[blockArray.length - 1].makeMirror();
         }
       }
 
-      for(let i = 0; i < 9; i++) {
+      for (let i = 0; i < 9; i++) {
         this.pushNewPowerup();
       }
 
@@ -272,7 +267,6 @@ class Game {
 
     // TODO: shuffle, and actually place people in better spots
     for (const player in this.playerNames) {
-
       let c = this.validCoords();
 
       this.playerInfo[player] = new Player(
@@ -326,13 +320,13 @@ class Game {
         } else if (event.type === "bullet") {
           if (this.playerInfo[player].canShoot()) {
             this.playerInfo[player].shoot();
-            console.log('shooting')
+            console.log("shooting");
             this.gameObjects.bullets.push(
               new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
             );
           }
         } else if (event.type === "dodge") {
-          this.playerInfo[player].setDodge(event.pos.x,event.pos.y)
+          this.playerInfo[player].setDodge(event.pos.x, event.pos.y);
         }
       });
     }
@@ -442,19 +436,19 @@ class Game {
   }
 
   validCoords() {
-    let x = 2 + Math.floor(Math.random() * (this.mapWidth-4));
-    let y = 2 + Math.floor(Math.random() * (this.mapHeight-4));
+    let x = 2 + Math.floor(Math.random() * (this.mapWidth - 4));
+    let y = 2 + Math.floor(Math.random() * (this.mapHeight - 4));
 
-    while(this.occupiedCells.has(x+','+y)) {
+    while (this.occupiedCells.has(x + "," + y)) {
       x = Math.floor(Math.random() * this.mapWidth);
       y = Math.floor(Math.random() * this.mapHeight);
     }
 
-    this.occupiedCells.add(x+','+y);
-    if(!(x < this.mapWidth && x >= 0 && y < this.mapHeight && y >= 0)) {
-      console.log('out of bounds');
+    this.occupiedCells.add(x + "," + y);
+    if (!(x < this.mapWidth && x >= 0 && y < this.mapHeight && y >= 0)) {
+      console.log("out of bounds");
     }
-    return [x*40, y*40];
+    return [x * 40, y * 40];
   }
 
   gameLoop() {

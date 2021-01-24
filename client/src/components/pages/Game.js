@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Timer from "../modules/Timer.js";
 import LiveLeaderboard from "../modules/LiveLeaderboard.js";
 import Canvas from "../modules/Canvas.js";
-// import PoseHandler from "../modules/PoseHandler.js";
+import PoseHandler from "../modules/PoseHandler.js";
 import "../../utilities.css";
 import "./Game.css";
 import { get, post } from "../../utilities.js";
@@ -16,7 +16,7 @@ import { Route } from "react-router-dom";
 class Game extends Component {
   constructor(props) {
     super(props);
-    this.poseEnabled = false;
+    this.poseEnabled = true;
     // Initialize Default State
     this.state = {
       startTime: this.props.location.state.startTime,
@@ -86,10 +86,6 @@ class Game extends Component {
   }
 
   render() {
-    let pose = null;
-    if (this.poseEnabled) {
-      // pose = <PoseHandler code = {this.props.code}/>
-    }
     return (
       <>
         <div className="Game-sidebar">
@@ -107,7 +103,7 @@ class Game extends Component {
           updateLeaderboard={this.updateLeaderboard}
           className="Game-canvas"
         />
-        {/* {pose} */}
+        {this.poseEnabled && <PoseHandler code={this.props.code} />}
       </>
     );
   }
