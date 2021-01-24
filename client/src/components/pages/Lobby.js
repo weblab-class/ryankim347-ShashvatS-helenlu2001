@@ -204,12 +204,6 @@ class Lobby extends Component {
   }
 
   render() {
-    // makes the game code look prettier
-    let code = [];
-    for (let i = 0; i < this.props.code.length; i++) {
-      code.push(<span style={{ margin: 12 }}>{this.props.code[i]}</span>);
-    }
-
     let grid = [];
     for (let i = 0; i < this.state.custHeight; i++) {
       let row = [];
@@ -237,7 +231,9 @@ class Lobby extends Component {
             <div className="Lobby-contents">
               <div className="Lobby-header">
                 <div className="Lobby-heading"> Game Code </div>
-                <div className="Lobby-code"> {code} </div>
+                <div className="Lobby-code">
+                  <span style={{ letterSpacing: 24 }}>{this.props.code}</span>
+                </div>
               </div>
               {this.state.creator ? (
                 <SettingsBar display={this.state.display} updateDisplay={this.updateDisplay} />
