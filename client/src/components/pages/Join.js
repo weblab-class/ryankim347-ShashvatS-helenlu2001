@@ -16,6 +16,7 @@ class Join extends Component {
     this.state = {
       code: "",
       name: "",
+      errorResponse: '',
     };
 
     this.onChange = this.onChange.bind(this);
@@ -33,17 +34,19 @@ class Join extends Component {
     if (code.length > 6) {
       code = code.substring(0, 6);
     }
-    this.setState({ code: code.toUpperCase() });
+    this.setState({ code: code.toUpperCase(), errorResponse: '' });
   }
 
   onNameChange(e) {
     const name = e.target.value;
-    this.setState({ name: name.toLowerCase() });
+    this.setState({ name: name.toLowerCase(), errorResponse: '' });
   }
 
   async onCreate(_e) {
-    if (this.state.name.length == 0) return;
-
+    if (this.state.name.length == 0) {
+      this.setState({errorResponse: 'please enter a username'})
+      return;
+    }
     const { code } = await post("/api/create", {
       name: this.state.name,
     });
@@ -54,7 +57,10 @@ class Join extends Component {
   }
 
   async onJoin(_e) {
-    if (this.state.name.length == 0) return;
+    if (this.state.name.length == 0) {
+      this.setState({errorResponse: 'please enter a username'})
+      return;
+    }
 
     const code = this.state.code;
     if (code.length == 6) {
@@ -69,6 +75,7 @@ class Join extends Component {
       } else {
         console.log("error in joining room");
         console.log(response.reason);
+        this.setState({errorResponse: response.reason});
       }
     }
   }
@@ -84,6 +91,7 @@ class Join extends Component {
         <div className="Join-container">
           <div className="Join-fieldContainer">
             <div className="Join-titleContainer">
+              <div style={{margin: 8, fontSize: 20}}> {this.state.errorResponse} </div>
               <input
                 className="Join-input"
                 placeholder="name"

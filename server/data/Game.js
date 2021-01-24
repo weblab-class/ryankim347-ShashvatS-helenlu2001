@@ -49,6 +49,7 @@ class Game {
       respawn: 5, // in seconds
       size: 12, // radius of player
       cooldown: 0.5, // in seconds
+      duration: 5, // in minutes
     };
   }
 
@@ -118,8 +119,6 @@ class Game {
   }
 
   start(settings) {
-    const io = getIo();
-
     if (this.mode !== "lobby") return;
     this.mode = "playing";
 
@@ -139,11 +138,24 @@ class Game {
       this.settings.cooldown = settings.cooldown;
     }
 
-    this.initializeGameObjects(settings);
-    this.initializePlayers();
+    if (settings.duration) {
+      this.settings.duration = settings.duration;
+    }
 
+    this.initializeGameObjects(settings);
+  }
+
+  initializeEverythingElse() {
+    const io = getIo();
+
+    this.initializePlayers();
     this.startTime = Date.now();
-    io.in(this.code).emit("start-game", { startTime: this.startTime });
+
+    io.in(this.code).emit("start-game", {
+      startTime: this.startTime,
+      duration: this.settings.duration,
+    });
+
     this.gameLoop();
   }
 
@@ -221,18 +233,16 @@ class Game {
         bullets: [],
         powerups: this.gameObjects.powerups,
       };
+
+      this.initializeEverythingElse();
     } else {
       Map.findOne(query).then((map) => {
         let blockArray = [];
         for (let i = 0; i < map.x.length; i++) {
-          blockArray.push(new Block(map.x[i], map.y[i]));
+          blockArray.push(new Block(map.x[i] * 40, map.y[i] * 40));
 
-          let xi = Math.floor(map.x[i] / 40);
-          let yi = Math.floor(map.y[i] / 40);
-          this.occupiedCells.add(xi + "," + yi);
+          this.occupiedCells.add(map.x[i] + "," + map.y[i]);
 
-          //TODO: change this to another way of deciding which blocks are mirrors
-          // But this is prolly fine for now
           if (Math.random() < settings.mirrorDensity) {
             blockArray[i].makeMirror();
           }
@@ -256,6 +266,8 @@ class Game {
           bullets: [],
           powerups: powerupArray,
         };
+
+        this.initializeEverythingElse();
       });
     }
   }
@@ -267,6 +279,11 @@ class Game {
 
     // TODO: shuffle, and actually place people in better spots
     for (const player in this.playerNames) {
+      let respawnPoints = [];
+      for (let i = 0; i < 10; i++) {
+        respawnPoints.push(this.validCoords());
+      }
+
       let c = this.validCoords();
 
       this.playerInfo[player] = new Player(
@@ -276,9 +293,9 @@ class Game {
         0,
         0,
         colorMap[colors[this.id_to_color[player]]],
-        this.settings
+        this.settings,
+        respawnPoints
       );
-      console.log(this.playerInfo[player].r);
     }
   }
 
@@ -460,7 +477,7 @@ class Game {
     if (Math.random() < 1 / odds) {
       this.pushNewPowerup();
     }
-    if (elapsed < gameDuration) {
+    if (elapsed < this.settings.duration * 60 * 1000) {
       setTimeout(this.gameLoop, 1000 / fps);
     } else {
       this.mode = "finished";
