@@ -50,9 +50,8 @@ class Game {
       respawn: 5, // in seconds
       size: 12, // radius of player
       cooldown: 0.5, // in seconds
-      duration: 5 // in minutes
-
-    }
+      duration: 5, // in minutes
+    };
   }
 
   join(clientId, name) {
@@ -121,41 +120,47 @@ class Game {
   }
 
   start(settings) {
-    const io = getIo();
-
     if (this.mode !== "lobby") return;
     this.mode = "playing";
 
-    if(settings.speed) {
+    if (settings.speed) {
       this.settings.speed = settings.speed;
     }
 
-    if(settings.size) {
+    if (settings.size) {
       this.settings.size = settings.size;
     }
 
-    if(settings.respawn) {
+    if (settings.respawn) {
       this.settings.respawn = settings.respawn;
     }
 
-    if(settings.cooldown) {
+    if (settings.cooldown) {
       this.settings.cooldown = settings.cooldown;
     }
 
-    if(settings.duration) {
+    if (settings.duration) {
       this.settings.duration = settings.duration;
     }
 
-    this.initializeGameObjects(settings, io);
-    // this.initializePlayers();
-
-    // this.startTime = Date.now();
-
-    // io.in(this.code).emit("start-game", { startTime: this.startTime , duration: this.settings.duration});
-    // this.gameLoop();
+    this.initializeGameObjects(settings);
   }
 
-  initializeGameObjects(settings, io) {
+  initializeEverythingElse() {
+    const io = getIo();
+
+    this.initializePlayers();
+    this.startTime = Date.now();
+
+    io.in(this.code).emit("start-game", {
+      startTime: this.startTime,
+      duration: this.settings.duration,
+    });
+
+    this.gameLoop();
+  }
+
+  initializeGameObjects(settings) {
     this.mapCount = 1;
     this.mapNum = Math.floor(Math.random() * this.mapCount) + 200;
     const query = { id: this.mapNum };
@@ -184,7 +189,6 @@ class Game {
         this.addCorners(xi, yi);
       }
 
-
       for (let i = 0; i < settings.mirrors.length; i++) {
         let mirror = settings.mirrors[i];
         let xi = mirror.substring(mirror.indexOf(",") + 1);
@@ -202,28 +206,28 @@ class Game {
       for (let i = -1; i < settings.width + 1; i++) {
         blockArray.push(new Block(i * 40, -40));
         if (Math.random() < 0.1) {
-          blockArray[blockArray.length-1].makeMirror();
+          blockArray[blockArray.length - 1].makeMirror();
         }
 
         blockArray.push(new Block(i * 40, settings.height * 40));
         if (Math.random() < 0.1) {
-          blockArray[blockArray.length-1].makeMirror();
+          blockArray[blockArray.length - 1].makeMirror();
         }
       }
 
       for (let i = 0; i < settings.height; i++) {
         blockArray.push(new Block(-40, 40 * i));
         if (Math.random() < 0.1) {
-          blockArray[blockArray.length-1].makeMirror();
+          blockArray[blockArray.length - 1].makeMirror();
         }
 
         blockArray.push(new Block(settings.width * 40, 40 * i));
         if (Math.random() < 0.1) {
-          blockArray[blockArray.length-1].makeMirror();
+          blockArray[blockArray.length - 1].makeMirror();
         }
       }
 
-      for(let i = 0; i < 9; i++) {
+      for (let i = 0; i < 9; i++) {
         this.pushNewPowerup();
       }
 
@@ -233,12 +237,7 @@ class Game {
         powerups: this.gameObjects.powerups,
       };
 
-      this.initializePlayers();
-      this.startTime = Date.now();
-
-      io.in(this.code).emit("start-game", { startTime: this.startTime , duration: this.settings.duration});
-      this.gameLoop();
-
+      this.initializeEverythingElse();
     } else {
       Map.findOne(query).then((map) => {
         let blockArray = [];
@@ -271,12 +270,7 @@ class Game {
           powerups: powerupArray,
         };
 
-        this.initializePlayers();
-        this.startTime = Date.now();
-
-        io.in(this.code).emit("start-game", { startTime: this.startTime , duration: this.settings.duration});
-        this.gameLoop();
-
+        this.initializeEverythingElse();
       });
     }
   }
@@ -288,9 +282,8 @@ class Game {
 
     // TODO: shuffle, and actually place people in better spots
     for (const player in this.playerNames) {
-
       let respawnPoints = [];
-      for(let i = 0; i < 10; i++) {
+      for (let i = 0; i < 10; i++) {
         respawnPoints.push(this.validCoords());
       }
 
@@ -348,13 +341,13 @@ class Game {
         } else if (event.type === "bullet") {
           if (this.playerInfo[player].canShoot()) {
             this.playerInfo[player].shoot();
-            console.log('shooting')
+            console.log("shooting");
             this.gameObjects.bullets.push(
               new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
             );
           }
         } else if (event.type === "dodge") {
-          this.playerInfo[player].setDodge(event.pos.x,event.pos.y)
+          this.playerInfo[player].setDodge(event.pos.x, event.pos.y);
         }
       });
     }
@@ -464,19 +457,19 @@ class Game {
   }
 
   validCoords() {
-    let x = 2 + Math.floor(Math.random() * (this.mapWidth-4));
-    let y = 2 + Math.floor(Math.random() * (this.mapHeight-4));
+    let x = 2 + Math.floor(Math.random() * (this.mapWidth - 4));
+    let y = 2 + Math.floor(Math.random() * (this.mapHeight - 4));
 
-    while(this.occupiedCells.has(x+','+y)) {
+    while (this.occupiedCells.has(x + "," + y)) {
       x = Math.floor(Math.random() * this.mapWidth);
       y = Math.floor(Math.random() * this.mapHeight);
     }
 
-    this.occupiedCells.add(x+','+y);
-    if(!(x < this.mapWidth && x >= 0 && y < this.mapHeight && y >= 0)) {
-      console.log('out of bounds');
+    this.occupiedCells.add(x + "," + y);
+    if (!(x < this.mapWidth && x >= 0 && y < this.mapHeight && y >= 0)) {
+      console.log("out of bounds");
     }
-    return [x*40, y*40];
+    return [x * 40, y * 40];
   }
 
   addCorners(x, y) {
@@ -511,7 +504,7 @@ class Game {
     if (Math.random() < 1 / odds) {
       this.pushNewPowerup();
     }
-    if (elapsed < this.settings.duration*60*1000) {
+    if (elapsed < this.settings.duration * 60 * 1000) {
       setTimeout(this.gameLoop, 1000 / fps);
     } else {
       this.mode = "finished";

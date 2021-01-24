@@ -7,8 +7,6 @@ export const socket = socketIOClient(endpoint);
 
 socket.on("connect", () => {
   console.log("connecting yo");
-
-  post("/api/initsocket", { socketid: socket.id });
 });
 
 socket.on("disconnect", () => {
