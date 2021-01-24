@@ -16,7 +16,7 @@ class Custom extends Component {
       width: 25,
       height: 25,
       description: 'walls block bullets; click a non-wall tile to place a wall, click again to remove',
-
+      creatorName: '',
       down: false,
 
       saved: false,
@@ -102,7 +102,7 @@ class Custom extends Component {
 
     let req = {
       creatorID: this.props.userId,
-      creatorName: this.props.name,
+      creatorName: this.state.creatorName.length === 0 ? 'Anonymous' : this.state.creatorName,
       name: this.state.name,
       width: this.state.width,
       height: this.state.height,
@@ -160,6 +160,8 @@ class Custom extends Component {
             </div>
             <div className='Custom-settingsContainer'>
               <div className='u-heading u-textCenter' style={{marginBottom: 16}}> — SETTINGS — </div>
+                <div> Created By: </div>
+                <input className='Custom-name' value={this.state.creatorName} onChange={(e) => this.setState({creatorName: e.target.value})}/>
                 <div> Map Name: </div>
                 <input className='Custom-name' value={this.state.name} onChange={(e) => this.setState({name: e.target.value})}/>
                 <div> Map Width: {this.state.width} </div>

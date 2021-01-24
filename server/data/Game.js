@@ -37,6 +37,7 @@ class Game {
     this.startTime = undefined;
     this.gameObjects = { blocks: [], bullets: [], powerups: [] };
     this.occupiedCells = new Set();
+    this.cornerCount = {};
     this.playerInfo = undefined;
 
     this.events = {};
@@ -185,6 +186,7 @@ class Game {
 
         this.occupiedCells.add(xi + "," + yi);
         blockArray.push(new Block(xi * 40, yi * 40));
+        this.addCorners(xi, yi);
       }
 
       for (let i = 0; i < settings.mirrors.length; i++) {
@@ -198,6 +200,7 @@ class Game {
         this.occupiedCells.add(xi + "," + yi);
 
         blockArray.push(block);
+        this.addCorners(xi, yi);
       }
 
       for (let i = -1; i < settings.width + 1; i++) {
@@ -240,7 +243,7 @@ class Game {
         let blockArray = [];
         for (let i = 0; i < map.x.length; i++) {
           blockArray.push(new Block(map.x[i] * 40, map.y[i] * 40));
-
+          this.addCorners(map.x[i], map.y[i]);
           this.occupiedCells.add(map.x[i] + "," + map.y[i]);
 
           if (Math.random() < settings.mirrorDensity) {
@@ -294,7 +297,8 @@ class Game {
         0,
         colorMap[colors[this.id_to_color[player]]],
         this.settings,
-        respawnPoints
+        respawnPoints,
+        this.cornerCount
       );
     }
   }
@@ -466,6 +470,29 @@ class Game {
       console.log("out of bounds");
     }
     return [x * 40, y * 40];
+  }
+
+  addCorners(x, y) {
+    if(!((x + ',' + y) in this.cornerCount)) {
+      this.cornerCount[x + ',' + y] = 0;
+    }
+
+    if(!(((x+1) + ',' + y) in this.cornerCount)) {
+      this.cornerCount[(x+1) + ',' + y] = 0;
+    }
+
+    if(!((x + ',' + (y+1)) in this.cornerCount)) {
+      this.cornerCount[x + ',' + (1+y)] = 0;
+    }
+
+    if(!(((x+1) + ',' + (y+1)) in this.cornerCount)) {
+      this.cornerCount[(x+1) + ',' + (1+y)] = 0;
+    }
+
+    this.cornerCount[x + ',' + y] += 1;
+    this.cornerCount[(x+1) + ',' + y] += 1;
+    this.cornerCount[x + ',' + (1+y)] += 1;
+    this.cornerCount[(x+1) + ',' + (1+y)] += 1;
   }
 
   gameLoop() {
