@@ -36,6 +36,9 @@ class Game {
 
     this.startTime = undefined;
     this.gameObjects = { blocks: [], bullets: [], powerups: [] };
+
+    this.blockCoords = new Set();
+
     this.occupiedCells = new Set();
     this.cornerCount = {};
     this.playerInfo = undefined;
@@ -175,6 +178,8 @@ class Game {
         let yi = block.substring(0, block.indexOf(","));
 
         this.occupiedCells.add(xi + "," + yi);
+        this.blockCoords.add(xi + "," + yi);
+
         blockArray.push(new Block(xi * 40, yi * 40));
         this.addCorners(xi, yi);
       }
@@ -188,6 +193,7 @@ class Game {
         block.makeMirror();
 
         this.occupiedCells.add(xi + "," + yi);
+        this.blockCoords.add(xi + "," + yi);
 
         blockArray.push(block);
         this.addCorners(xi, yi);
@@ -235,6 +241,7 @@ class Game {
           blockArray.push(new Block(map.x[i] * 40, map.y[i] * 40));
           this.addCorners(map.x[i], map.y[i]);
           this.occupiedCells.add(map.x[i] + "," + map.y[i]);
+          this.blockCoords.add(map.x[i] + "," + map.y[i]);
 
           if (Math.random() < settings.mirrorDensity) {
             blockArray[i].makeMirror();
@@ -288,7 +295,8 @@ class Game {
         colorMap[colors[this.id_to_color[player]]],
         this.settings,
         respawnPoints,
-        this.cornerCount
+        this.cornerCount,
+        this.blockCoords
       );
     }
   }
@@ -347,7 +355,6 @@ class Game {
     let points = [];
     for (const player in this.playerInfo) {
       this.playerInfo[player].move(
-        this.gameObjects.blocks,
         Object.values(this.playerInfo),
         this.gameObjects.bullets,
         points,

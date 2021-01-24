@@ -7,7 +7,6 @@ import Join from "./pages/Join.js";
 import Login from "./pages/Login.js";
 import Lobby from "./pages/Lobby.js";
 import Stats from "./pages/Stats.js";
-import Instructions from "./pages/Instructions.js";
 import "../utilities.css";
 
 import { socket } from "../client-socket.js";
@@ -110,7 +109,6 @@ class App extends Component {
               handleLogout={this.handleLogout}
               userId={this.state.userId}
             />
-            <Instructions path="/howtoplay" />
             <Login
               path="/"
               handleLogin={this.handleLogin}

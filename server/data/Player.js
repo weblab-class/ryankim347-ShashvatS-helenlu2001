@@ -33,7 +33,7 @@ const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   return true;
 };
 class Player {
-  constructor(name, posX, posY, dodgeX, dodgeY, color, settings, respawnPoints, cornerCount) {
+  constructor(name, posX, posY, dodgeX, dodgeY, color, settings, respawnPoints, cornerCount, blockCoords) {
     this.poseDist = 2;
     this.name = name;
     this.r = 12;
@@ -63,6 +63,7 @@ class Player {
 
     this.respawnPoints = respawnPoints;
     this.cornerCount = cornerCount;
+    this.blockCoords = blockCoords;
 
   }
   setDodge(x, y) {
@@ -70,7 +71,9 @@ class Player {
     this.dodgeY = y;
   }
 
-  move(blocks, players, bullets, points, powerups) {
+  move(players, bullets, points, powerups) {
+
+    // if the player is dead, check if they can respawn
     if (this.isDead) {
       if (Date.now() - this.respawnTimer > this.respawn) {
         this.isDead = false;
@@ -85,13 +88,28 @@ class Player {
       }
     }
 
+    // calculate the next coordinate
     this.x += this.speed * this.velX;
     this.y += this.speed * this.velY;
 
-    for (let i = 0; i < blocks.length; i++) {
-      let block = blocks[i];
-      this.checkBlockCollision(block.topLeft()[0], block.topLeft()[1], block.side());
+    // check for collisions with nearby blocks
+    // for (let i = 0; i < blocks.length; i++) {
+    //   let block = blocks[i];
+    //   this.checkBlockCollision(block.topLeft()[0], block.topLeft()[1], block.side());
+    // }
+
+    let x = Math.floor(this.x / 40);
+    let y = Math.floor(this.y / 40);
+
+    for(let i = -1; i <= 1; i++) {
+      for(let j = -1; j <= 1; j++) {
+        if(this.blockCoords.has((x+i) + ',' + (y+j))) {
+          console.log('check!');
+          this.checkBlockCollision((x+i)*40, (y+j)*40, 40);
+        }
+      }
     }
+
 
     for (let i = 0; i < players.length; i++) {
       let player = players[i];
@@ -147,7 +165,6 @@ class Player {
     return Date.now() - this.bulletTimer > this.cooldown && !this.isDead;
   }
 
-  // TODO: need to handle case when we have a kabob when shooting -- should only kill the person that is closest
   shoot() {
     if (!this.canShoot()) {
       return;
