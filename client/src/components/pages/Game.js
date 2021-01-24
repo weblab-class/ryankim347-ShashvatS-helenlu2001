@@ -16,6 +16,7 @@ import { Route } from "react-router-dom";
 class Game extends Component {
   constructor(props) {
     super(props);
+
     this.poseEnabled = true;
     // Initialize Default State
     this.state = {
