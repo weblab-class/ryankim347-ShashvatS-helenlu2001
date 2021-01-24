@@ -1,4 +1,5 @@
 .PoseHandler-cam {
   display: flex;
-  align-items: center
+  align-items: center;
+  transform: scaleX(-1);
 }
