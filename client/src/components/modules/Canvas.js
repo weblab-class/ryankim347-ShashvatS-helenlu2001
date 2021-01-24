@@ -23,7 +23,7 @@ class Canvas extends Component {
   constructor(props) {
     super(props);
     // Initialize Default State
-    this.poseHeight = 100
+    this.poseHeight = 100;
     this.running = true;
     this.events = [];
     this.eventLoop = this.eventLoop.bind(this);
@@ -54,7 +54,7 @@ class Canvas extends Component {
 
   handleKeyDown(event) {
     if (event.code === "Space") {
-      console.log(this.me.x,this.me.dodgeX)
+      console.log(this.me.x, this.me.dodgeX);
       this.events.push({
         type: "bullet",
         dir: {
@@ -62,8 +62,8 @@ class Canvas extends Component {
           dy: this.dy,
         },
         pos: {
-          x: this.me.x+this.me.dodgeX*24,
-          y: this.me.y+this.me.dodgeY*24,
+          x: this.me.x + this.me.dodgeX * 24,
+          y: this.me.y + this.me.dodgeY * 24,
         },
         color: this.me.color,
       });
@@ -73,7 +73,7 @@ class Canvas extends Component {
     this.mouseX = event.pageX;
     this.mouseY = event.pageY;
     let dx = this.mouseX - window.innerWidth / 2;
-    let dy = this.mouseY - (window.innerHeight-this.poseHeight) / 2;
+    let dy = this.mouseY - (window.innerHeight - this.poseHeight) / 2;
     let mag = Math.sqrt(dx * dx + dy * dy);
     dx = dx / mag;
     dy = dy / mag;
@@ -94,7 +94,7 @@ class Canvas extends Component {
 
   eventLoop() {
     let dx = this.mouseX - window.innerWidth / 2;
-    let dy = this.mouseY - (window.innerHeight-this.poseHeight)/2;
+    let dy = this.mouseY - (window.innerHeight - this.poseHeight) / 2;
     let mag = Math.sqrt(dx * dx + dy * dy);
     if (mag < 5) {
       this.events.push({
@@ -122,7 +122,6 @@ class Canvas extends Component {
   drawLoop() {
     if (this.refs.canvas == undefined) {
       console.log("undefined");
-      this.props.triggerRefresh();
     } else {
       const ctx = this.refs.canvas.getContext("2d");
 
@@ -174,7 +173,7 @@ class Canvas extends Component {
         color: playerInfo[player].color,
         points: playerInfo[player].points,
         name: playerInfo[player].name,
-        deaths: playerInfo[player].deaths
+        deaths: playerInfo[player].deaths,
       });
 
       if (playerInfo[player].color === this.props.color) {
@@ -237,14 +236,18 @@ class Canvas extends Component {
 
   componentWillUnmount() {
     socket.off("game-update", this.receiveUpdate);
+    this.running = false;
   }
 
   render() {
     return (
       <>
         <div className="Canvas-container">
-          <div>{this.props.variableToTriggerRefresh}</div>
-          <canvas ref="canvas" width={window.innerWidth} height={window.innerHeight-this.poseHeight} />
+          <canvas
+            ref="canvas"
+            width={window.innerWidth}
+            height={window.innerHeight - this.poseHeight}
+          />
         </div>
       </>
     );

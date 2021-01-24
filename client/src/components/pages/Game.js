@@ -32,7 +32,6 @@ class Game extends Component {
 
     this.updateLeaderboard = this.updateLeaderboard.bind(this);
     this.endGame = this.endGame.bind(this);
-    this.triggerRefresh = this.triggerRefresh.bind(this);
   }
 
   updateLeaderboard(leaderboardInfo) {
@@ -41,8 +40,8 @@ class Game extends Component {
 
   endGame() {
     setTimeout(() => {
-      navigate("/leaderboard", {state: {leaderboardInfo: this.state.leaderboardInfo}});
-    }, 5*1000);
+      navigate("/leaderboard", { state: { leaderboardInfo: this.state.leaderboardInfo } });
+    }, 5 * 1000);
 
     // let standings = this.state.leaderboardInfo.sort((a, b) => (a.points > b.points) ? -1 : 1);
     // for(let i = 0; i < standings.length; i++) {
@@ -84,25 +83,21 @@ class Game extends Component {
     //     wins: data.wins
     //   });
     // });
-
-  }
-
-
-  triggerRefresh() {
-    this.setState({
-      variableToTriggerRefresh: this.state.variableToTriggerRefresh + 1,
-    });
   }
 
   render() {
-    let pose = null
+    let pose = null;
     if (this.poseEnabled) {
       // pose = <PoseHandler code = {this.props.code}/>
     }
     return (
       <>
         <div className="Game-sidebar">
-          <Timer startTime={this.state.startTime} duration={this.props.duration} endGame={this.endGame} />
+          <Timer
+            startTime={this.state.startTime}
+            duration={this.props.duration}
+            endGame={this.endGame}
+          />
           <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color} />
         </div>
         <Canvas
@@ -110,8 +105,6 @@ class Game extends Component {
           color={this.state.color}
           updatePoints={this.updatePoints}
           updateLeaderboard={this.updateLeaderboard}
-          triggerRefresh={this.triggerRefresh}
-          variableToTriggerRefresh={this.state.variableToTriggerRefresh}
           className="Game-canvas"
         />
         {/* {pose} */}
