@@ -140,7 +140,7 @@ router.post("/join", (req, res) => {
     return;
   }
 
-  res.json({ success: false, reason: "unable to join game" });
+  res.json({ success: false, reason: "unable to join, this could be because username is taken, game has started or is at capacity" });
 });
 
 router.post("/curRoom", (req, res) => {
