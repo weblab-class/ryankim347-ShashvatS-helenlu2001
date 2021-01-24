@@ -187,9 +187,9 @@ class Lobby extends Component {
 
   render() {
     // makes the game code look prettier
-    let code = "";
+    let code = [];
     for (let i = 0; i < this.props.code.length; i++) {
-      code += this.props.code[i] + " ";
+      code.push(<span style={{margin: 12}}>{this.props.code[i]}</span>);
     }
 
     let grid = [];
