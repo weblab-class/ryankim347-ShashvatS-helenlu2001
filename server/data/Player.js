@@ -206,11 +206,11 @@ class Player {
   // inspired by http://www.jeffreythompson.org/collision-detection/circle-rect.php
   // TODO: basically done, but small glitch at the corner
   checkBlockCollision(left, top, side, powerup = false) {
-    let compX = this.x + this.dodgeX * this.r * this.poseDist;
-    let compY = this.y + this.dodgeY * this.r * this.poseDist;
+    // let compX = this.x + this.dodgeX * this.r * this.poseDist;
+    // let compY = this.y + this.dodgeY * this.r * this.poseDist;
 
-    // let compX = this.x;
-    // let compY = this.y;
+    let compX = this.x;
+    let compY = this.y;
 
     if (compX < left) {
       compX = left;

@@ -59,15 +59,19 @@ class PoseHandler extends Component {
           },
         });
 
-        // socket.emit("game-events", {
-        //   room: this.props.code,
-        //   events: [],
-        // });
+        // console.log("I'm hereeeeee" + Date.now());
       } else {
         console.log("Face not found");
       }
     };
-    return <PoseNet style={{ height: 100 }} className="PoseHandler-cam" onEstimate={passInfo} />;
+    return (
+      <PoseNet
+        style={{ height: 100 }}
+        frameRate={10}
+        className="PoseHandler-cam"
+        onEstimate={passInfo}
+      />
+    );
   }
 }
 
