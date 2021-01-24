@@ -209,6 +209,9 @@ class Player {
     let compX = this.x + this.dodgeX * this.r * this.poseDist;
     let compY = this.y + this.dodgeY * this.r * this.poseDist;
 
+    // let compX = this.x;
+    // let compY = this.y;
+
     if (compX < left) {
       compX = left;
     } else if (compX > left + side) {

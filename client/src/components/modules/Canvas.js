@@ -101,7 +101,7 @@ class Canvas extends Component {
     let dy = this.mouseY - (window.innerHeight - this.poseHeight) / 2;
     let mag = Math.sqrt(dx * dx + dy * dy);
     if (mag < 5) {
-      this.events.push({
+      events.push({
         type: "movement",
         vel: {
           dx: 0,
