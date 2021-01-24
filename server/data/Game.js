@@ -233,14 +233,10 @@ class Game {
       Map.findOne(query).then((map) => {
         let blockArray = [];
         for (let i = 0; i < map.x.length; i++) {
-          blockArray.push(new Block(map.x[i], map.y[i]));
+          blockArray.push(new Block(map.x[i] * 40, map.y[i] * 40));
 
-          let xi = Math.floor(map.x[i] / 40);
-          let yi = Math.floor(map.y[i] / 40);
-          this.occupiedCells.add(xi + "," + yi);
+          this.occupiedCells.add(map.x[i] + "," + map.y[i]);
 
-          //TODO: change this to another way of deciding which blocks are mirrors
-          // But this is prolly fine for now
           if (Math.random() < settings.mirrorDensity) {
             blockArray[i].makeMirror();
           }
