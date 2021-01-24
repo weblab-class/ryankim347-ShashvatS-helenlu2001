@@ -36,7 +36,7 @@ class Player {
   constructor(name, posX, posY, dodgeX, dodgeY, color, settings, respawnPoints, cornerCount) {
     this.poseDist = 2;
     this.name = name;
-    this.r = settings.size;
+    this.r = 12;
     this.x = posX;
     this.y = posY;
     this.color = color;
@@ -48,8 +48,7 @@ class Player {
 
     this.velX = 0;
     this.velY = 0;
-    this.speed = settings.speed * 2;
-    this.speedMultiplier = 1;
+    this.speed = 2;
 
     this.powerups = {
       invisible: false,
@@ -59,27 +58,12 @@ class Player {
     this.ticksUntilAlive = -1;
     this.respawn = settings.respawn * 1000;
 
-    this.respawnPoints = respawnPoints;
-
-    this.cornerCount = cornerCount;
-
     this.bulletTimer = Date.now();
     this.cooldown = settings.cooldown * 1000;
 
-    // //TODO: the way this is implemented needs to be changed
-    // setInterval(() => {
-    //   this.ticksUntilAlive -= 1;
-    //   console.log(this.color + "'s ticks until alive:  " + this.ticksUntilAlive);
-    //   if (this.ticksUntilAlive === 0) {
-    //     this.isDead = false;
-    //     let idx = Math.floor(Math.random() * 15);
+    this.respawnPoints = respawnPoints;
+    this.cornerCount = cornerCount;
 
-    //     this.x = this.respawnPoints[idx][0];
-    //     this.y = this.respawnPoints[idx][1];
-    //     this.velX = 0;
-    //     this.velY = 0;
-    //   }
-    // }, 1000);
   }
   setDodge(x, y) {
     this.dodgeX = x;
@@ -143,19 +127,15 @@ class Player {
             }, 15 * 1000);
             break;
           case "speed":
-            if (this.speedMultiplier < 4) {
-              this.speed *= 2;
-              this.speedMultiplier *= 2;
-              setTimeout(() => {
-                this.speed /= 2;
-                this.speedMultiplier /= 2;
-              }, 15 * 1000);
-            }
+            this.speed = 4;
+            setTimeout(() => {
+              this.speed = 2;
+            }, 15 * 1000);
             break;
           case "shrink":
-            this.r -= 2;
+            this.r = 8;
             setTimeout(() => {
-              this.r += 2;
+              this.r = 12;
             }, 15 * 1000);
             break;
         }
@@ -212,7 +192,7 @@ class Player {
 
   // inspired by http://www.jeffreythompson.org/collision-detection/circle-rect.php
   // TODO: basically done, but small glitch at the corner
-  checkBlockCollision(left, top, side, powerup = false) {
+  checkBlockCollision(left, top, side) {
     // let compX = this.x + this.dodgeX * this.r * this.poseDist;
     // let compY = this.y + this.dodgeY * this.r * this.poseDist;
 
@@ -257,38 +237,38 @@ class Player {
         }
       }
 
-      // if (compY === top) {
-      //   if (compX === left || compX === left + side) {
-      //     this.y =
-      //       this.cornerCount[corner] === 1
-      //         ? compY - this.r / Math.sqrt(2)
-      //         : compY - Math.sqrt(this.r) / 2;
-      //   } else {
-      //     this.y = compY - this.r;
-      //   }
-      // } else {
-      //   if (compX === left || compX === left + side) {
-      //     this.y =
-      //       this.cornerCount[corner] === 1
-      //         ? compY + this.r / Math.sqrt(2)
-      //         : compY + Math.sqrt(this.r) / 2;
-      //   } else {
-      //     this.y = compY + this.r;
-      //   }
-      // }
-      // adjust x based on which edge we're comparing
-      if (compX == left) {
-        this.x = compX - this.r;
-      } else if (compX == left + side) {
-        this.x = compX + this.r;
+      if (compY === top) {
+        if (compX === left || compX === left + side) {
+          this.y =
+            this.cornerCount[corner] === 1
+              ? compY - this.r / Math.sqrt(2)
+              : compY - Math.sqrt(this.r) / 2;
+        } else {
+          this.y = compY - this.r;
+        }
+      } else {
+        if (compX === left || compX === left + side) {
+          this.y =
+            this.cornerCount[corner] === 1
+              ? compY + this.r / Math.sqrt(2)
+              : compY + Math.sqrt(this.r) / 2;
+        } else {
+          this.y = compY + this.r;
+        }
       }
+      // adjust x based on which edge we're comparing
+      // if (compX == left) {
+      //   this.x = compX - this.r;
+      // } else if (compX == left + side) {
+      //   this.x = compX + this.r;
+      // }
 
       // adjust y based on which edge we're comparing
-      if (compY == top) {
-        this.y = compY - this.r;
-      } else if (compY == top + side) {
-        this.y = compY + this.r;
-      }
+      // if (compY == top) {
+      //   this.y = compY - this.r;
+      // } else if (compY == top + side) {
+      //   this.y = compY + this.r;
+      // }
     }
   }
 

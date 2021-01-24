@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Timer from "../modules/Timer.js";
 import LiveLeaderboard from "../modules/LiveLeaderboard.js";
 import Canvas from "../modules/Canvas.js";
-import PoseHandler from "../modules/PoseHandler.js";
+// import PoseHandler from "../modules/PoseHandler.js";
 import "../../utilities.css";
 import "./Game.css";
 import { get, post } from "../../utilities.js";
@@ -17,7 +17,7 @@ class Game extends Component {
   constructor(props) {
     super(props);
 
-    this.poseEnabled = true;
+    this.poseEnabled = false;
     // Initialize Default State
     this.state = {
       startTime: this.props.location.state.startTime,
@@ -104,7 +104,7 @@ class Game extends Component {
           updateLeaderboard={this.updateLeaderboard}
           className="Game-canvas"
         />
-        {this.poseEnabled && <PoseHandler code={this.props.code} />}
+        {/* {this.poseEnabled && <PoseHandler code={this.props.code} />} */}
       </>
     );
   }

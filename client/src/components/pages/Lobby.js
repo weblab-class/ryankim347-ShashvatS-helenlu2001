@@ -63,8 +63,6 @@ class Lobby extends Component {
       duration: 5,
       cooldown: 2,
       respawn: 3,
-      speed: 4,
-      size: 1,
     };
 
     this.lobbyData = this.lobbyData.bind(this);
@@ -170,8 +168,6 @@ class Lobby extends Component {
           mirrors: Array.from(this.state.custMirrors),
 
           // game settings
-          speed: this.state.speed <= 4 ? this.state.speed / 4 : 2 * (this.state.speed - 4),
-          size: RADIUS[this.state.size],
           respawn: this.state.respawn * 5,
           cooldown:
             this.state.cooldown <= 4 ? this.state.cooldown / 4 : this.state.cooldown / 2 - 1,
@@ -396,34 +392,6 @@ class Lobby extends Component {
                     value={this.state.respawn}
                     onChange={(e) => {
                       this.setState({ respawn: e.target.value });
-                    }}
-                  ></input>
-                  <div className="Lobby-settingTitle"> Player Size: {SIZE[this.state.size]} </div>
-                  <input
-                    className="Lobby-slider"
-                    type="range"
-                    min="0"
-                    max="2"
-                    value={this.state.size}
-                    onChange={(e) => {
-                      this.setState({ size: e.target.value });
-                    }}
-                  ></input>
-                  <div className="Lobby-settingTitle">
-                    {" "}
-                    Player Speed:{" "}
-                    {this.state.speed <= 4
-                      ? this.state.speed / 4
-                      : 2 * (this.state.speed - 4)}x{" "}
-                  </div>
-                  <input
-                    className="Lobby-slider"
-                    type="range"
-                    min="1"
-                    max="6"
-                    value={this.state.speed}
-                    onChange={(e) => {
-                      this.setState({ speed: e.target.value });
                     }}
                   ></input>
                 </div>

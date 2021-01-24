@@ -46,9 +46,7 @@ class Game {
     this.gameLoop = this.gameLoop.bind(this);
 
     this.settings = {
-      speed: 2,
       respawn: 5, // in seconds
-      size: 12, // radius of player
       cooldown: 0.5, // in seconds
       duration: 5, // in minutes
     };
@@ -122,14 +120,6 @@ class Game {
   start(settings) {
     if (this.mode !== "lobby") return;
     this.mode = "playing";
-
-    if (settings.speed) {
-      this.settings.speed = settings.speed;
-    }
-
-    if (settings.size) {
-      this.settings.size = settings.size;
-    }
 
     if (settings.respawn) {
       this.settings.respawn = settings.respawn;
