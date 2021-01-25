@@ -65,6 +65,11 @@ class Player {
       invisible: false,
     };
 
+    this.cloakTimer = Date.now();
+    this.speedTimer = Date.now();
+    this.shrinkTimer = Date.now();
+
+
     this.isDead = false;
     this.respawn = settings.respawn * 1000;
     this.respawnTimer = Date.now();
@@ -113,7 +118,6 @@ class Player {
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
         if (this.blockCoords.has(x + i + "," + (y + j))) {
-          console.log("check!");
           this.checkBlockCollision((x + i) * 40, (y + j) * 40, 40);
         }
       }
@@ -148,24 +152,29 @@ class Player {
         switch (powerup.type) {
           case "cloak":
             this.powerups.invisible = true;
-            setTimeout(() => {
-              this.powerups.invisible = false;
-            }, 15 * 1000);
+            this.cloakTimer = Date.now();
             break;
           case "speed":
             this.speed = 8;
-            setTimeout(() => {
-              this.speed = 4;
-            }, 15 * 1000);
+            this.speedTimer = Date.now();
             break;
           case "shrink":
             this.r = 8;
-            setTimeout(() => {
-              this.r = 12;
-            }, 15 * 1000);
+            this.shrinkTimer = Date.now();
             break;
         }
       }
+    }
+
+    // remove any powerups that expired
+    if(Date.now() - this.cloakTimer > 15*1000) {
+      this.powerups.invisible = false;
+    }
+    if(Date.now() - this.speedTimer > 15*1000) {
+      this.speed = 4;
+    }
+    if(Date.now() - this.shrinkTimer > 15*1000) {
+      this.r = 12;
     }
   }
 
