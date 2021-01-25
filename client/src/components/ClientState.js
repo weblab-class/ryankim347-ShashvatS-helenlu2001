@@ -1,6 +1,8 @@
 const RENDER_DELAY = 100;
 
 function interpolate(cur, next, r) {
+  console.log("is it breaking here????");
+
   const ans = {
     time: cur.time * (1 - r) + next.time * r,
     host_id: cur.host_id,
