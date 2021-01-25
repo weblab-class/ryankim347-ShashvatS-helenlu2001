@@ -65,7 +65,7 @@ class Lobby extends Component {
 
       duration: 5,
       cooldown: 2,
-      respawn: 3,
+      respawn: 1,
     };
 
     this.lobbyData = this.lobbyData.bind(this);
@@ -415,8 +415,8 @@ class Lobby extends Component {
                   <input
                     className="Lobby-slider"
                     type="range"
-                    min="1"
-                    max="12"
+                    min="0"
+                    max="4"
                     value={this.state.respawn}
                     onChange={(e) => {
                       this.setState({ respawn: e.target.value });

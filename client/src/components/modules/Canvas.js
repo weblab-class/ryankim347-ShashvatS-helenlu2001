@@ -35,12 +35,11 @@ class Canvas extends Component {
     this.receiveUpdate = this.receiveUpdate.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
-
     socket.on("game-update", this.receiveUpdate);
 
     this.playerInfo = undefined;
     this.gameObjects = undefined;
-
+    // this.setState({deathMessage: "Outplayed :("})
     this.dx = undefined;
     this.dy = undefined;
     this.mouseX = 0;
@@ -123,7 +122,7 @@ class Canvas extends Component {
 
     // this.events = [];
     events.splice(0, events.length);
-
+    this.setState({deathMessageSeed: Math.floor(Math.random()*5)});
     if (this.running) {
       setTimeout(this.eventLoop, 60);
     }
@@ -282,16 +281,34 @@ class Canvas extends Component {
     console.log('respawn ' + this.respawn);
     console.log('respawn timer ' + this.me.respawnTimer);
     console.log('now ' + Date.now());
+    // if(this.me.isDead) {
+    //   let deathMessageSeed = Math.floor(Math.random()*5)
+    //   console.log('seed', deathMessageSeed)
+    //   switch(deathMessageSeed) {
+    //     case 0:
+    //       this.setState({deathMessage: "You got BLASTED!"})
+    //     case 1:
+    //       this.setState({deathMessage:  "Better luck next time..."})
+    //     case 2:
+    //       this.setState({deathMessage: "Oof, not quick enough!"})
+    //     case 3:
+    //       this.setState({deathMessage: "Gonna have to do better than that :P"})
+    //     case 4:
+    //       this.setState({deathMessage: "You'll get 'em next time!"})
+    //     default:
+    //       this.setState({deathMessage: "Outplayed lol"})
+    //   }
+    // }
     return (
       <>
         <div className="Canvas-container">
           <canvas ref="canvas" width={window.innerWidth} height={window.innerHeight} />
           {this.me.isDead && (
             <div className="Canvas-respawn">
-              <div> you are dead! </div>
+              <div> You got BLASTED!</div>
               <div>
                 {" "}
-                respawning in{" "}
+                Respawning in{" "}
                 {Math.max(
                   0,
                   Math.floor((this.respawn - (Date.now() - this.me.respawnTimer)) / 1000)
