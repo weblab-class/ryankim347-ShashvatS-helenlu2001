@@ -332,17 +332,26 @@ class Game {
       if (doesStop && doesMove) ignoreStop = true;
 
       events.forEach((event) => {
+        const p = this.playerInfo[player];
+
         if (event.type === "stop" && !ignoreStop) {
-          this.playerInfo[player].setVel(0, 0);
+          p.setVel(0, 0);
         } else if (event.type === "movement") {
-          this.playerInfo[player].setVel(event.vel.dx, event.vel.dy);
+          p.setVel(event.vel.dx, event.vel.dy);
         } else if (event.type === "bullet") {
           if (this.playerInfo[player].canShoot()) {
-            this.playerInfo[player].shoot();
+            p.shoot();
             console.log("shooting");
+
+            //TODO: should normalize the dx and dy to something (so that client side cannot make bullet arbitrarily fast)
+
             this.gameObjects.bullets.push(
-              new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
+              new Bullet(p.x, p.y, event.dir.dx, event.dir.dy, event.color)
             );
+
+            // Used to be
+            // new Bullet(event.pos.x, event.pos.y, event.dir.dx, event.dir.dy, event.color)
+            // But uses the client side to determine bullet position, which is a bug
           }
         } else if (event.type === "dodge") {
           this.playerInfo[player].setDodge(event.pos.x, event.pos.y);
@@ -470,26 +479,26 @@ class Game {
   }
 
   addCorners(x, y) {
-    if(!((x + ',' + y) in this.cornerCount)) {
-      this.cornerCount[x + ',' + y] = 0;
+    if (!(x + "," + y in this.cornerCount)) {
+      this.cornerCount[x + "," + y] = 0;
     }
 
-    if(!(((x+1) + ',' + y) in this.cornerCount)) {
-      this.cornerCount[(x+1) + ',' + y] = 0;
+    if (!(x + 1 + "," + y in this.cornerCount)) {
+      this.cornerCount[x + 1 + "," + y] = 0;
     }
 
-    if(!((x + ',' + (y+1)) in this.cornerCount)) {
-      this.cornerCount[x + ',' + (1+y)] = 0;
+    if (!(x + "," + (y + 1) in this.cornerCount)) {
+      this.cornerCount[x + "," + (1 + y)] = 0;
     }
 
-    if(!(((x+1) + ',' + (y+1)) in this.cornerCount)) {
-      this.cornerCount[(x+1) + ',' + (1+y)] = 0;
+    if (!(x + 1 + "," + (y + 1) in this.cornerCount)) {
+      this.cornerCount[x + 1 + "," + (1 + y)] = 0;
     }
 
-    this.cornerCount[x + ',' + y] += 1;
-    this.cornerCount[(x+1) + ',' + y] += 1;
-    this.cornerCount[x + ',' + (1+y)] += 1;
-    this.cornerCount[(x+1) + ',' + (1+y)] += 1;
+    this.cornerCount[x + "," + y] += 1;
+    this.cornerCount[x + 1 + "," + y] += 1;
+    this.cornerCount[x + "," + (1 + y)] += 1;
+    this.cornerCount[x + 1 + "," + (1 + y)] += 1;
   }
 
   gameLoop() {
