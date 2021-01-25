@@ -33,7 +33,18 @@ const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   return true;
 };
 class Player {
-  constructor(name, posX, posY, dodgeX, dodgeY, color, settings, respawnPoints, cornerCount, blockCoords) {
+  constructor(
+    name,
+    posX,
+    posY,
+    dodgeX,
+    dodgeY,
+    color,
+    settings,
+    respawnPoints,
+    cornerCount,
+    blockCoords
+  ) {
     this.poseDist = 2;
     this.name = name;
     this.r = 12;
@@ -48,7 +59,7 @@ class Player {
 
     this.velX = 0;
     this.velY = 0;
-    this.speed = 2;
+    this.speed = 4;
 
     this.powerups = {
       invisible: false,
@@ -64,7 +75,6 @@ class Player {
     this.respawnPoints = respawnPoints;
     this.cornerCount = cornerCount;
     this.blockCoords = blockCoords;
-
   }
   setDodge(x, y) {
     this.dodgeX = x;
@@ -72,7 +82,6 @@ class Player {
   }
 
   move(players, bullets, points, powerups) {
-
     // if the player is dead, check if they can respawn
     if (this.isDead) {
       if (Date.now() - this.respawnTimer > this.respawn) {
@@ -101,15 +110,14 @@ class Player {
     let x = Math.floor(this.x / 40);
     let y = Math.floor(this.y / 40);
 
-    for(let i = -1; i <= 1; i++) {
-      for(let j = -1; j <= 1; j++) {
-        if(this.blockCoords.has((x+i) + ',' + (y+j))) {
-          console.log('check!');
-          this.checkBlockCollision((x+i)*40, (y+j)*40, 40);
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (this.blockCoords.has(x + i + "," + (y + j))) {
+          console.log("check!");
+          this.checkBlockCollision((x + i) * 40, (y + j) * 40, 40);
         }
       }
     }
-
 
     for (let i = 0; i < players.length; i++) {
       let player = players[i];
@@ -145,9 +153,9 @@ class Player {
             }, 15 * 1000);
             break;
           case "speed":
-            this.speed = 4;
+            this.speed = 8;
             setTimeout(() => {
-              this.speed = 2;
+              this.speed = 4;
             }, 15 * 1000);
             break;
           case "shrink":

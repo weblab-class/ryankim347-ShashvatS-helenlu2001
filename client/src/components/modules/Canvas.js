@@ -12,6 +12,7 @@ import { socket } from "../../client-socket.js";
 import Shrink from "./powerups/Shrink.js";
 
 import events from "./event";
+import ClientState from "../ClientState.js";
 
 /**
  * @param userId specifies the id of the currently logged in user
@@ -47,6 +48,8 @@ class Canvas extends Component {
     this.me = new Player(0, 0, this.props.color);
     this.respawn = 5;
     this.eventLoop();
+
+    this.clientState = new ClientState();
   }
 
   componentDidMount() {
@@ -74,6 +77,7 @@ class Canvas extends Component {
       });
     }
   }
+
   handleMouseMove(event) {
     this.mouseX = event.pageX;
     this.mouseY = event.pageY;
@@ -126,6 +130,8 @@ class Canvas extends Component {
   }
 
   drawLoop() {
+    this.processUpdate(this.clientState.getState());
+
     if (this.refs.canvas == undefined) {
       console.log("undefined");
     } else {
@@ -138,7 +144,6 @@ class Canvas extends Component {
       } else {
         ctx.globalAlpha = 1;
       }
-
 
       ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
       let relX = this.me.x - window.innerWidth / 2;
@@ -164,7 +169,7 @@ class Canvas extends Component {
         this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
         this.gameObjects.powerups.forEach((powerup) => powerup.draw(ctx, relX, relY));
 
-        if(this.me.isDead) {
+        if (this.me.isDead) {
           ctx.globalAlpha = 0.9;
           ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
           ctx.globalAlpha = 1;
@@ -172,14 +177,17 @@ class Canvas extends Component {
       }
     }
 
-
-
     if (this.running) {
-      setTimeout(this.drawLoop, 1000 / 30);
+      setTimeout(this.drawLoop, 1000 / 60);
     }
   }
 
-  receiveUpdate(data) {
+  processUpdate(data) {
+    if (data == null) {
+      console.log("no state received yet...");
+      return;
+    }
+
     const { playerInfo, gameObjects, playerNames, colors } = data;
     this.playerInfo = {};
     let leaderboardInfo = [];
@@ -206,7 +214,9 @@ class Canvas extends Component {
           playerInfo[player].isDead,
           playerInfo[player].powerups,
           playerInfo[player].r,
-          playerInfo[player].respawnTimer === undefined ? Date.now() : playerInfo[player].respawnTimer
+          playerInfo[player].respawnTimer === undefined
+            ? Date.now()
+            : playerInfo[player].respawnTimer
         );
         this.respawn = playerInfo[player].respawn;
       }
@@ -259,6 +269,10 @@ class Canvas extends Component {
     this.props.updateLeaderboard(leaderboardInfo);
   }
 
+  receiveUpdate(data) {
+    this.clientState.newState(data);
+  }
+
   componentWillUnmount() {
     socket.off("game-update", this.receiveUpdate);
     this.running = false;
@@ -268,17 +282,20 @@ class Canvas extends Component {
     return (
       <>
         <div className="Canvas-container">
-          <canvas
-            ref="canvas"
-            width={window.innerWidth}
-            height={window.innerHeight-4}
-          />
-          {this.me.isDead &&
-            <div className='Canvas-respawn'>
+          <canvas ref="canvas" width={window.innerWidth} height={window.innerHeight} />
+          {this.me.isDead && (
+            <div className="Canvas-respawn">
               <div> you are dead! </div>
-              <div> respawning in {Math.max(0, Math.floor((this.respawn - (Date.now() - this.me.respawnTimer)) / 1000))} </div>
+              <div>
+                {" "}
+                respawning in{" "}
+                {Math.max(
+                  0,
+                  Math.floor((this.respawn - (Date.now() - this.me.respawnTimer)) / 1000)
+                )}{" "}
+              </div>
             </div>
-          }
+          )}
         </div>
       </>
     );

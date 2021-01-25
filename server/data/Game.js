@@ -440,6 +440,7 @@ class Game {
     const io = getIo();
 
     io.in(this.code).emit("game-update", {
+      time: Date.now(),
       host_id: this.host_id,
       players: this.players,
       playerNames: this.playerNames,
@@ -448,6 +449,7 @@ class Game {
       gameObjects: this.gameObjects,
     });
   }
+
   pushNewPowerup() {
     let powerUp = null;
     let pick = Math.floor(Math.random() * 3);

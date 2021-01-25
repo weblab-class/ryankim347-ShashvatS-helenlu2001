@@ -1,5 +1,21 @@
 class Player {
-  constructor(me, x, y, color, dodgeX=0, dodgeY=0, shoot, shootX, shootY, isDead, powerups, r, respawnTimer) {
+  // TODO: most (at least some) of these constructor arguements are not needed
+
+  constructor(
+    me,
+    x,
+    y,
+    color,
+    dodgeX = 0,
+    dodgeY = 0,
+    shoot,
+    shootX,
+    shootY,
+    isDead,
+    powerups,
+    r,
+    respawnTimer
+  ) {
     this.me = me;
     this.r = r;
     this.x = x;
@@ -20,25 +36,36 @@ class Player {
   }
 
   draw(ctx, playerX, playerY) {
-    if(this.isDead) {
+    if (this.isDead) {
       return;
     }
     ctx.beginPath();
     ctx.shadowBlur = 10;
-    ctx.shadowColor = this.color
-    if(this.me) {
-      ctx.fillStyle = this.powerups.invisible ? '#383838': this.color;
+    ctx.shadowColor = this.color;
+    if (this.me) {
+      ctx.fillStyle = this.powerups.invisible ? "#383838" : this.color;
     } else {
-      ctx.fillStyle = this.powerups.invisible ? 'black': this.color;
+      ctx.fillStyle = this.powerups.invisible ? "black" : this.color;
     }
-    ctx.arc(this.x-playerX+2*this.r*this.dodgeX, this.y-playerY+2*this.r*this.dodgeY, this.r, 0, 2 * Math.PI);
+    ctx.arc(
+      this.x - playerX + 2 * this.r * this.dodgeX,
+      this.y - playerY + 2 * this.r * this.dodgeY,
+      this.r,
+      0,
+      2 * Math.PI
+    );
     ctx.fill();
-    if(this.me) {
-      ctx.rect(this.x-playerX-3*this.r,this.y-playerY-3*this.r, 6*this.r,6*this.r)
-      ctx.strokeStyle = "this.color"
-      ctx.stroke()
+    if (this.me) {
+      ctx.rect(
+        this.x - playerX - 3 * this.r,
+        this.y - playerY - 3 * this.r,
+        6 * this.r,
+        6 * this.r
+      );
+      ctx.strokeStyle = "this.color";
+      ctx.stroke();
     }
-    ctx.shadowBlur = 0
+    ctx.shadowBlur = 0;
   }
 
   x() {
