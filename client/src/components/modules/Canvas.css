@@ -3,3 +3,16 @@
   height: 100%;
   overflow: hidden;
 }
+
+.Canvas-respawn {
+  width: 500px;
+  height: 50px;
+  background-color: black;
+
+  position: absolute;
+  left: calc(50% - 250px);
+  top: calc(30% - 25px);
+
+  text-align: center;
+  font-size: 40px;
+}

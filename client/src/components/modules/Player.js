@@ -1,5 +1,5 @@
 class Player {
-  constructor(me, x, y, color, dodgeX=0, dodgeY=0, shoot, shootX, shootY, isDead, powerups, r) {
+  constructor(me, x, y, color, dodgeX=0, dodgeY=0, shoot, shootX, shootY, isDead, powerups, r, respawnTimer) {
     this.me = me;
     this.r = r;
     this.x = x;
@@ -15,6 +15,8 @@ class Player {
 
     this.isDead = isDead;
     this.powerups = powerups;
+
+    this.respawnTimer = respawnTimer;
   }
 
   draw(ctx, playerX, playerY) {
