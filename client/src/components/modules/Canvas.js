@@ -99,7 +99,7 @@ class Canvas extends Component {
 
   eventLoop() {
     let dx = this.mouseX - window.innerWidth / 2;
-    let dy = this.mouseY - window.innerHeight / 2;
+    let dy = this.mouseY - window.innerHeight / 2 - 2;
     let mag = Math.sqrt(dx * dx + dy * dy);
     if (mag < 5) {
       events.push({
@@ -142,7 +142,7 @@ class Canvas extends Component {
 
       ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
       let relX = this.me.x - window.innerWidth / 2;
-      let relY = this.me.y - window.innerHeight / 2;
+      let relY = this.me.y - window.innerHeight / 2 - 2;
       if (this.playerInfo === undefined || this.gameObjects === undefined) {
         // Do nothing
       } else {
@@ -271,7 +271,7 @@ class Canvas extends Component {
           <canvas
             ref="canvas"
             width={window.innerWidth}
-            height={window.innerHeight}
+            height={window.innerHeight-4}
           />
           {this.me.isDead &&
             <div className='Canvas-respawn'>

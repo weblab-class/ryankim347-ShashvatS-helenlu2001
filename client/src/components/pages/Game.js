@@ -97,7 +97,54 @@ class Game extends Component {
             duration={this.props.duration}
             endGame={this.endGame}
           />
+          <div style={{height: 16}}> </div>
           <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color} />
+          <div style={{height: 16}}> </div>
+          <div className='u-textCenter'> — LEGEND — </div>
+          <div className='Game-legend'>
+              <span>
+                <div
+                  style={{
+                    border: "1px solid white",
+                    backgroundColor: "white",
+                    width: 8,
+                    height: 8,
+                    marginBottom: 0,
+                    marginRight: 8,
+                    display: "inline-block",
+                  }}
+                >
+                </div>
+              </span>
+              walls stop lasers
+          </div>
+          <div className='Game-legend'>
+            <span>
+              <div
+                style={{
+                  border: "1px solid white",
+                  width: 8,
+                  height: 8,
+                  marginBottom: 0,
+                  marginRight: 8,
+                  display: "inline-block",
+                }}
+              >
+              </div>
+            </span>
+            mirrors reflect lasers
+          </div>
+          <div className='Game-legend'>
+              shrink = red potion
+          </div>
+          <div className='Game-legend'>
+              invisibility = black cloak
+          </div>
+          <div className='Game-legend'>
+              super speed = lightning
+          </div>
+
+
         </div>
         <Canvas
           code={this.props.code}

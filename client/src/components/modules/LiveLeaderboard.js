@@ -18,7 +18,7 @@ class LiveLeaderboard extends Component {
     return (
       <>
         <div className="LiveLeaderboard-container">
-          <div className="LiveLeaderboard-title"> LEADERBOARD </div>
+          <div className="LiveLeaderboard-title"> — LEADERBOARD — </div>
           {this.props.leaderboardInfo.map((e) => {
             return (
               <div

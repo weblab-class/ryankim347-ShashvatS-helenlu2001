@@ -5,9 +5,10 @@
 
 .LiveLeaderboard-title {
   margin: 8px 0;
+  text-align: center;
 }
 
 .LiveLeaderboard-name {
-  width: 160px;
+  width: 180px;
   font-weight: 700;
 }
