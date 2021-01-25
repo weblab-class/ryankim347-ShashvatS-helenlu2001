@@ -1,4 +1,4 @@
-const speed = 10;
+const speed = 20;
 
 const segmentCircleIntersect = (x1, y1, x2, y2, xc, yc, r) => {
   let ACx = xc - x1;

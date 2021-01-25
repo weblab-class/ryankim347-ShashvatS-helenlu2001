@@ -35,5 +35,5 @@ module.exports = {
   colorMap: colorMap,
   numColors: 12,
   maxPlayers: 10,
-  fps: 60,
+  fps: 30,
 };
