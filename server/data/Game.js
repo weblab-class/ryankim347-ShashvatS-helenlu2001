@@ -136,6 +136,10 @@ class Game {
       this.settings.duration = settings.duration;
     }
 
+    if (settings.poseEnabled) {
+      this.settings.poseEnabled = settings.poseEnabled;
+    }
+
     this.initializeGameObjects(settings);
   }
 
@@ -148,6 +152,7 @@ class Game {
     io.in(this.code).emit("start-game", {
       startTime: this.startTime,
       duration: this.settings.duration,
+      poseEnabled: this.settings.poseEnabled
     });
 
     this.gameLoop();
@@ -354,7 +359,10 @@ class Game {
             // But uses the client side to determine bullet position, which is a bug
           }
         } else if (event.type === "dodge") {
-          this.playerInfo[player].setDodge(event.pos.x, event.pos.y);
+          //need this if statement in case people try to hack from the frontend
+          if(this.settings.poseEnabled) {
+            this.playerInfo[player].setDodge(event.pos.x, event.pos.y);
+          }
         }
       });
     }

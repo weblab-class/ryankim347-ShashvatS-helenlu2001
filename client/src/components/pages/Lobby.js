@@ -81,7 +81,7 @@ class Lobby extends Component {
   componentDidMount() {
     // remember -- api calls go here!
     socket.on("lobby-data", this.lobbyData);
-    socket.on("start-game", (data) => this.receiveStartGame(data.startTime, data.duration));
+    socket.on("start-game", (data) => this.receiveStartGame(data.startTime, data.duration, data.poseEnabled));
 
     if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
@@ -184,9 +184,10 @@ class Lobby extends Component {
     }
   }
 
-  receiveStartGame(startTime, duration) {
+  receiveStartGame(startTime, duration, pose) {
     this.props.setDuration(duration);
-    navigate("/game", { state: { startTime: startTime, color: this.state.myColor } });
+    console.log('lobby pose', pose)
+    navigate("/game", { state: { startTime: startTime, color: this.state.myColor, poseEnabled: pose } });
   }
 
   updateDisplay(display) {
@@ -432,7 +433,6 @@ class Lobby extends Component {
                     value={this.state.poseEnabled}
                     onChange={(e) => {
                       this.setState({ poseEnabled: e.target.checked });
-                      this.props.callbackPoseFunc(e.target.checked);
                     }}
                   ></input>
                 </div>
