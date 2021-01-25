@@ -24,6 +24,8 @@ class Player {
       return;
     }
     ctx.beginPath();
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = this.color
     if(this.me) {
       ctx.fillStyle = this.powerups.invisible ? '#383838': this.color;
     } else {
@@ -36,6 +38,7 @@ class Player {
       ctx.strokeStyle = "this.color"
       ctx.stroke()
     }
+    ctx.shadowBlur = 0
   }
 
   x() {

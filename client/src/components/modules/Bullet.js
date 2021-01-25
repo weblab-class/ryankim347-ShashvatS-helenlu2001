@@ -14,6 +14,8 @@ class Bullet {
       return;
     }
     let alpha = ctx.globalAlpha
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = this.color
     ctx.lineCap = "round"
     ctx.lineWidth = 4;
     ctx.beginPath();
@@ -26,6 +28,7 @@ class Bullet {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.globalAlpha = alpha
+    ctx.shadowBlur = 0
   }
 
   x() {

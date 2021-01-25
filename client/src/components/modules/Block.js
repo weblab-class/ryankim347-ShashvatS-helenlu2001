@@ -12,6 +12,8 @@ class Block {
 
   draw(ctx, playerX, playerY) {
     ctx.beginPath();
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = this.color
     ctx.fillStyle = this.color;
     if (this.mirror) {
       ctx.strokeStyle = this.color;
@@ -22,6 +24,7 @@ class Block {
     }
 
     ctx.fillStyle = "black";
+    ctx.shadowBlur = 0;
   }
 
   topLeft() {
