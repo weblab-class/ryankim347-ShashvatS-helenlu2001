@@ -40,13 +40,17 @@ class Player {
       return;
     }
     ctx.beginPath();
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = this.color;
     if (this.me) {
       ctx.fillStyle = this.powerups.invisible ? "#383838" : this.color;
     } else {
       ctx.fillStyle = this.powerups.invisible ? "black" : this.color;
     }
+
+    if(!this.powerups.invisible || this.me) {
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = this.color;
+    }
+
     ctx.arc(
       this.x - playerX + 2 * this.r * this.dodgeX,
       this.y - playerY + 2 * this.r * this.dodgeY,
