@@ -45,6 +45,7 @@ class Canvas extends Component {
     this.mouseX = 0;
     this.mouseY = 0;
     this.me = new Player(0, 0, this.props.color);
+    this.respawn = 5;
     this.eventLoop();
   }
 
@@ -137,6 +138,8 @@ class Canvas extends Component {
       } else {
         ctx.globalAlpha = 1;
       }
+
+
       ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
       let relX = this.me.x - window.innerWidth / 2;
       let relY = this.me.y - window.innerHeight / 2;
@@ -160,8 +163,16 @@ class Canvas extends Component {
         this.gameObjects.bullets.forEach((bullet) => bullet.draw(ctx, relX, relY));
         this.gameObjects.blocks.forEach((block) => block.draw(ctx, relX, relY));
         this.gameObjects.powerups.forEach((powerup) => powerup.draw(ctx, relX, relY));
+
+        if(this.me.isDead) {
+          ctx.globalAlpha = 0.9;
+          ctx.fillRect(0, 0, 2 * ctx.canvas.width, 2 * ctx.canvas.height);
+          ctx.globalAlpha = 1;
+        }
       }
     }
+
+
 
     if (this.running) {
       setTimeout(this.drawLoop, 1000 / 30);
@@ -188,8 +199,16 @@ class Canvas extends Component {
           playerInfo[player].y,
           playerInfo[player].color,
           playerInfo[player].dodgeX,
-          playerInfo[player].dodgeY
+          playerInfo[player].dodgeY,
+          playerInfo[player].shot,
+          playerInfo[player].velX,
+          playerInfo[player].velY,
+          playerInfo[player].isDead,
+          playerInfo[player].powerups,
+          playerInfo[player].r,
+          playerInfo[player].respawnTimer === undefined ? Date.now() : playerInfo[player].respawnTimer
         );
+        this.respawn = playerInfo[player].respawn;
       }
       this.playerInfo[player] = new Player(
         playerInfo[player].color === this.props.color,
@@ -203,7 +222,8 @@ class Canvas extends Component {
         playerInfo[player].velY,
         playerInfo[player].isDead,
         playerInfo[player].powerups,
-        playerInfo[player].r
+        playerInfo[player].r,
+        playerInfo[player].respawnTimer
       );
     }
 
@@ -253,6 +273,12 @@ class Canvas extends Component {
             width={window.innerWidth}
             height={window.innerHeight}
           />
+          {this.me.isDead &&
+            <div className='Canvas-respawn'>
+              <div> you are dead! </div>
+              <div> respawning in {Math.max(0, Math.floor((this.respawn - (Date.now() - this.me.respawnTimer)) / 1000))} </div>
+            </div>
+          }
         </div>
       </>
     );

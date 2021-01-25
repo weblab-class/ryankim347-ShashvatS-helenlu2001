@@ -55,8 +55,8 @@ class Player {
     };
 
     this.isDead = false;
-    this.ticksUntilAlive = -1;
     this.respawn = settings.respawn * 1000;
+    this.respawnTimer = Date.now();
 
     this.bulletTimer = Date.now();
     this.cooldown = settings.cooldown * 1000;
