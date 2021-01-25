@@ -102,7 +102,7 @@ module.exports = {
         const cookies = cookie.parse(socket.request.headers.cookie);
         const clientId = cookies["client-id"];
 
-        const { room , settings } = data;
+        const { room, settings } = data;
 
         if (games[room] == undefined) {
           return;

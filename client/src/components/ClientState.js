@@ -1,14 +1,12 @@
 const RENDER_DELAY = 100;
 
 function interpolate(cur, next, r) {
-  console.log("here...");
-
   const ans = {
     time: cur.time * (1 - r) + next.time * r,
-    host_id: this.host_id,
-    players: this.players,
-    playerNames: this.playerNames,
-    colors: this.color_to_id,
+    host_id: cur.host_id,
+    players: cur.players,
+    playerNames: cur.playerNames,
+    colors: cur.color_to_id,
   };
 
   //TODO: better interpolation of gameObjects
@@ -17,7 +15,6 @@ function interpolate(cur, next, r) {
   const gameObjects = r >= 0.5 ? next.gameObjects : cur.gameObjects;
 
   function interpolatePlayer(cur, next, r) {
-    console.log("here...");
     const ans = r >= 0.5 ? next : cur;
 
     const keys = ["x", "y", "dodgeX", "dodgeY", "shootX", "shootY", "r", "respawnTimer"];
@@ -31,11 +28,11 @@ function interpolate(cur, next, r) {
 
   const playerInfo = {};
   for (const player of Object.keys(cur.playerInfo)) {
-    playerInfo[player] = interpolatePlayer(cur.playerInfo[player], next.playerInfo[player]);
+    playerInfo[player] = interpolatePlayer(cur.playerInfo[player], next.playerInfo[player], r);
   }
 
-  ans[gameObjects] = gameObjects;
-  ans[playerInfo] = playerInfo;
+  ans.gameObjects = gameObjects;
+  ans.playerInfo = playerInfo;
 
   return ans;
 }
@@ -78,7 +75,6 @@ class ClientState {
 
   getState() {
     if (this.firstServerTimestamp === 0) {
-      console.log("here...", !this.firstServerTimeStamp);
       return null;
     }
 
