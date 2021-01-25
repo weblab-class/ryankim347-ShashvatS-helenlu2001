@@ -279,6 +279,9 @@ class Canvas extends Component {
   }
 
   render() {
+    console.log('respawn ' + this.respawn);
+    console.log('respawn timer ' + this.me.respawnTimer);
+    console.log('now ' + Date.now());
     return (
       <>
         <div className="Canvas-container">
