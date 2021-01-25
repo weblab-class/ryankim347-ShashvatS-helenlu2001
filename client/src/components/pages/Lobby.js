@@ -61,6 +61,8 @@ class Lobby extends Component {
       custMirrors: [],
       custTitle: undefined,
 
+      manualMirrorDensity: false,
+
       duration: 5,
       cooldown: 2,
       respawn: 3,
@@ -72,6 +74,8 @@ class Lobby extends Component {
     this.getColor = this.getColor.bind(this);
     this.updateDisplay = this.updateDisplay.bind(this);
     this.selectMap = this.selectMap.bind(this);
+    this.changeMirrorDensity = this.changeMirrorDensity.bind(this);
+    this.changeStandardMap = this.changeStandardMap.bind(this);
   }
 
   componentDidMount() {
@@ -200,6 +204,29 @@ class Lobby extends Component {
     });
   }
 
+  // Only call this on an actual user action
+  changeMirrorDensity(e) {
+    this.setState({
+      stdMirrorDensity: e.target.value,
+      manualMirrorDensity: true,
+    });
+  }
+
+  // Automatically sets mirror density to 0 when selecting a custom map unless
+  // the mirror density has been manually changed already
+  changeStandardMap(tf) {
+    let mirrorDensity = this.state.stdMirrorDensity;
+
+    if (!tf && !this.state.manualMirrorDensity) {
+      mirrorDensity = 0;
+    }
+
+    this.setState({
+      standard: tf,
+      stdMirrorDensity: mirrorDensity,
+    });
+  }
+
   render() {
     let grid = [];
     for (let i = 0; i < this.state.custHeight; i++) {
@@ -274,7 +301,7 @@ class Lobby extends Component {
                       <div
                         className="Lobby-mapType"
                         onClick={(e) => {
-                          this.setState({ standard: true });
+                          this.changeStandardMap(true);
                         }}
                         style={
                           this.state.standard
@@ -288,7 +315,7 @@ class Lobby extends Component {
                       <div
                         className="Lobby-mapType"
                         onClick={(e) => {
-                          this.setState({ standard: false });
+                          this.changeStandardMap(false);
                         }}
                         style={
                           !this.state.standard
@@ -318,7 +345,7 @@ class Lobby extends Component {
                           min="0"
                           max="50"
                           value={this.state.stdMirrorDensity}
-                          onChange={(e) => this.setState({ stdMirrorDensity: e.target.value })}
+                          onChange={this.changeMirrorDensity}
                         ></input>
                       </div>
                     ) : (
@@ -397,7 +424,7 @@ class Lobby extends Component {
                   ></input>
                   <div className="Lobby-settingTitle">
                     {" "}
-                    PoseNet Mode: {this.state.poseEnabled ? 'On' : 'Off'}{" "}
+                    PoseNet Mode: {this.state.poseEnabled ? "On" : "Off"}{" "}
                   </div>
                   <input
                     className="Lobby-checkbox"
@@ -405,7 +432,7 @@ class Lobby extends Component {
                     value={this.state.poseEnabled}
                     onChange={(e) => {
                       this.setState({ poseEnabled: e.target.checked });
-                      this.props.callbackPoseFunc(e.target.checked)
+                      this.props.callbackPoseFunc(e.target.checked);
                     }}
                   ></input>
                 </div>

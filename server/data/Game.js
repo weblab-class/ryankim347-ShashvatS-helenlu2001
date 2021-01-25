@@ -1,4 +1,4 @@
-const { colors, colorMap, numColors, maxPlayers, gameDuration, fps } = require("../config");
+const { colors, colorMap, numColors, maxPlayers, fps } = require("../config");
 const { getIo } = require("../server-socket");
 const { Block } = require("./Block");
 const { Player } = require("./Player");
