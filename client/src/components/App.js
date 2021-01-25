@@ -28,6 +28,7 @@ class App extends Component {
       code: "",
       username: '',
       gameDuration: 5,
+      poseEnabled: false
     };
 
     this.changeRoom = this.changeRoom.bind(this);
@@ -97,8 +98,13 @@ class App extends Component {
       {username: username}
     );
   }
-
+  callbackPose = (pose) => {
+    this.setState(
+      {poseEnabled: pose}
+    )
+  }
   render() {
+    console.log('pose enabled',this.state.poseEnabled)
     return (
       <>
         <div className="App-container">
@@ -129,6 +135,7 @@ class App extends Component {
               setDuration={this.setDuration}
               username={this.state.username}
               path="/lobby"
+              callbackPoseFunc = {this.callbackPose}
             />
             <Game
               code={this.state.code}
@@ -136,6 +143,7 @@ class App extends Component {
               userId={this.state.userId}
               duration={this.state.gameDuration}
               path="/game"
+              poseEnabled={this.state.poseEnabled}
             />
             <Leaderboard path="/leaderboard" />
             <Custom path="/customize" userId={this.state.userId} name={this.state.name} />

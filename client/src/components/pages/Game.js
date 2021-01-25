@@ -17,7 +17,7 @@ class Game extends Component {
   constructor(props) {
     super(props);
 
-    this.poseEnabled = false;
+
     // Initialize Default State
     this.state = {
       startTime: this.props.location.state.startTime,
@@ -29,6 +29,7 @@ class Game extends Component {
       deaths: 0,
       wins: 0,
       variableToTriggerRefresh: 0,
+      poseEnabled: this.props.poseEnabled
     };
 
     this.updateLeaderboard = this.updateLeaderboard.bind(this);
@@ -61,6 +62,7 @@ class Game extends Component {
 
   componentDidMount() {
     // remember -- api calls go here!
+    this.setState({poseEnabled: this.props.poseEnabled})
     if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
         const { room } = data;
@@ -104,7 +106,7 @@ class Game extends Component {
           updateLeaderboard={this.updateLeaderboard}
           className="Game-canvas"
         />
-        {/* {this.poseEnabled && <PoseHandler code={this.props.code} />} */}
+        {this.state.poseEnabled && <PoseHandler code={this.props.code} />}
       </>
     );
   }

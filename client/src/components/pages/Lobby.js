@@ -54,6 +54,7 @@ class Lobby extends Component {
       stdWidth: 25,
       stdWallDensity: 25,
       stdMirrorDensity: 5,
+      poseEnabled: false,
       custWidth: 0,
       custHeight: 0,
       custBlocks: [],
@@ -166,7 +167,7 @@ class Lobby extends Component {
           height: this.state.custHeight,
           blocks: Array.from(this.state.custBlocks),
           mirrors: Array.from(this.state.custMirrors),
-
+          poseEnabled: this.state.poseEnabled,
           // game settings
           respawn: this.state.respawn * 5,
           cooldown:
@@ -392,6 +393,19 @@ class Lobby extends Component {
                     value={this.state.respawn}
                     onChange={(e) => {
                       this.setState({ respawn: e.target.value });
+                    }}
+                  ></input>
+                  <div className="Lobby-settingTitle">
+                    {" "}
+                    PoseNet Mode: {this.state.poseEnabled ? 'On' : 'Off'}{" "}
+                  </div>
+                  <input
+                    className="Lobby-checkbox"
+                    type="checkbox"
+                    value={this.state.poseEnabled}
+                    onChange={(e) => {
+                      this.setState({ poseEnabled: e.target.checked });
+                      this.props.callbackPoseFunc(e.target.checked)
                     }}
                   ></input>
                 </div>
