@@ -122,7 +122,7 @@ class Canvas extends Component {
 
     // this.events = [];
     events.splice(0, events.length);
-    this.setState({ deathMessageSeed: Math.floor(Math.random() * 5) });
+    // this.setState({ deathMessageSeed: Math.floor(Math.random() * 5) });
     if (this.running) {
       setTimeout(this.eventLoop, 60);
     }
