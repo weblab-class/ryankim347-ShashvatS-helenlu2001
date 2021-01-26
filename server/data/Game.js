@@ -361,7 +361,13 @@ class Game {
             //TODO: should normalize the dx and dy to something (so that client side cannot make bullet arbitrarily fast)
 
             this.gameObjects.bullets.push(
-              new Bullet(p.x + p.dodgeX, p.y + p.dodgeY, event.dir.dx, event.dir.dy, p.color)
+              new Bullet(
+                p.x + p.dodgeX * p.r * p.poseDist,
+                p.y + p.dodgeY * p.r * p.poseDist,
+                event.dir.dx,
+                event.dir.dy,
+                p.color
+              )
             );
 
             // Used to be
