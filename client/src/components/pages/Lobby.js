@@ -141,10 +141,7 @@ class Lobby extends Component {
       colors: data.colors,
     });
 
-    let playerID = Object.keys(data.playerNames).find(
-      (key) => data.playerNames[key] === this.state.myName
-    );
-    let colorKey = Object.keys(data.colors).find((key) => data.colors[key] === playerID);
+    let colorKey = Object.keys(data.colors).find((key) => data.colors[key] === myId());
     this.setState({ myColor: COLORS[colorKey] });
   }
 
