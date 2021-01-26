@@ -19,7 +19,7 @@
 .Stats-pic {
     border: 1px solid white;
     background-size: cover;
-    width: 220px;
+    min-width: 220px;
     height: 220px;
 }
 

@@ -39,7 +39,7 @@ class Login extends Component {
 
         <div className="Login-container">
           <div className="Login-titleContainer">
-            <div className="Login-title"> A S T R O B L A S T E R </div>
+            <div className="Login-title"> P L A S M A B L A S T E R </div>
             <div className="Login-buttonContainer">
               {this.props.userId ? (
                 <Link to="/join" className="u-responsiveButton Login-specialLink">

@@ -46,8 +46,7 @@ class Stats extends Component {
               {" "}
             </div>
             <div className="Stats-profContainer">
-              <div className="Stats-user u-hollow"> H E L U </div>
-              <div className="Stats-name"> {this.props.name} </div>
+              <div className="Stats-user u-hollow"> {this.props.name.toUpperCase()} </div>
             </div>
           </div>
           <hr />
