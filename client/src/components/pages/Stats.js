@@ -31,7 +31,6 @@ class Stats extends Component {
         deaths: data.deaths,
         wins: data.wins
       });
-      console.log(data);
     });
   }
 
@@ -45,7 +44,7 @@ class Stats extends Component {
               {" "}
             </div>
             <div className="Stats-profContainer">
-              <div className="Stats-user u-hollow"> {this.props.name.toUpperCase()} </div>
+              <div className="Stats-user u-hollow"> { this.props.userId ? this.props.name.toUpperCase() : 'ANONYMOUS'} </div>
             </div>
           </div>
           <hr />
