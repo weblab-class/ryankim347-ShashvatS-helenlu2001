@@ -6,6 +6,7 @@ class Player {
     x,
     y,
     color,
+    poseEnabled,
     dodgeX = 0,
     dodgeY = 0,
     shoot,
@@ -21,7 +22,7 @@ class Player {
     this.x = x;
     this.y = y;
     this.color = color;
-
+    this.poseEnabled = poseEnabled;
     this.shoot = shoot;
     this.shootX = shootX;
     this.shootY = shootY;
@@ -59,7 +60,7 @@ class Player {
       2 * Math.PI
     );
     ctx.fill();
-    if (this.me) {
+    if (this.me && this.poseEnabled) {
       ctx.rect(
         this.x - playerX - 3 * this.r,
         this.y - playerY - 3 * this.r,
