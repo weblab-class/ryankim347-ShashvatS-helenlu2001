@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { GoogleLogout } from "react-google-login";
 import NavBar from "../modules/NavBar.js";
-
+import { get, post } from "../../utilities.js";
 import "../../utilities.css";
 import "./Stats.css";
 /**
@@ -24,16 +24,15 @@ class Stats extends Component {
 
   componentDidMount() {
     // remember -- api calls go here!
-    console.log(this.props);
-    console.log("hello");
-    // get('/api/stats', {userId: this.props.userId}).then((data) => {
-    //   this.setState({
-    //     games: data.games,
-    //     kills: data.points,
-    //     deaths: data.deaths,
-    //     wins: data.wins
-    //   });
-    // });
+    get('/api/stats', {userId: this.props.userId}).then((data) => {
+      this.setState({
+        games: data.games,
+        kills: data.points,
+        deaths: data.deaths,
+        wins: data.wins
+      });
+      console.log(data);
+    });
   }
 
   render() {
@@ -61,11 +60,11 @@ class Stats extends Component {
             </div>
             <div className="Stats-stat">
               <div className="Stats-number">
-                {this.state.deaths === 0 || this.state.deaths === undefined
+                {this.state.deaths === 0 || this.state.deaths === undefined || this.state.deaths === null
                   ? 0
                   : this.state.kills / this.state.deaths}
               </div>
-              <div className="Stats-category"> k-d ratio </div>
+              <div className="Stats-category" style={{maxWidth: 150}}> kill-death ratio </div>
             </div>
           </div>
 
