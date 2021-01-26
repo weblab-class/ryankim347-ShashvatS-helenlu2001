@@ -143,16 +143,18 @@ class Join extends Component {
                 <li>
                   press <span className="Join-spacebar"> SPACEBAR</span> to shoot your laser
                 </li>
+                <li> move side to side to dodge lasers in POSENET MODE </li>
               </ul>
+              <div style={{textAlign: 'center', fontSize: 12}}> note: POSENET MODE is in beta testing and requires webcam </div>
             </div>
             <hr style={{ margin: 0, marginTop: 4, height: 0.5, border: "none" }} />
             <div className="Join-row">
               <div className="Join-field" style={{ flexGrow: 1, borderRight: "1px solid white" }}>
                 <div className="Join-fieldTitle"> Powerups </div>
                 <ul>
-                  <li> invisiblity </li>
-                  <li> speed up </li>
-                  <li> shrink</li>
+                  <li style={{color: 'grey'}}> invisiblity </li>
+                  <li style={{color: "var(--nyellow)"}}> speed up </li>
+                  <li style={{color: 'red'}}> shrink</li>
                 </ul>
               </div>
               <div className="Join-field" style={{ flexGrow: 1 }}>
