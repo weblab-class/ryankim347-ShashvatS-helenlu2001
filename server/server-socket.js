@@ -116,8 +116,6 @@ module.exports = {
       });
 
       socket.on("start-game-information", (data) => {
-        console.log("I am over here...");
-
         if (socket.request.headers.cookie === undefined) {
           return;
         }

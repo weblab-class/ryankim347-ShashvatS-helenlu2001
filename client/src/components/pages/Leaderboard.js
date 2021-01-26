@@ -51,7 +51,14 @@ class Leaderboard extends Component {
           <div className="Leaderboard-title"> L E A D E R B O A R D </div>
           <div className="Leaderboard-top3container">
             <div className="Leaderboard-place">
-              <div className="Leaderboard-name" style={this.state.leaderboardInfo[1] === undefined ? {color: 'white'} : {color: this.state.leaderboardInfo[1].color}}>
+              <div
+                className="Leaderboard-name"
+                style={
+                  this.state.leaderboardInfo[1] === undefined
+                    ? { color: "white" }
+                    : { color: this.state.leaderboardInfo[1].color }
+                }
+              >
                 {" "}
                 {this.state.leaderboardInfo[1]
                   ? this.state.leaderboardInfo[1].name.toUpperCase()
@@ -60,7 +67,14 @@ class Leaderboard extends Component {
               <div className="Leaderboard-second Leaderboard-top3"> 2ND </div>
             </div>
             <div className="Leaderboard-place">
-              <div className="Leaderboard-name" style={this.state.leaderboardInfo[0] === undefined ? {color: 'white'} : {color: this.state.leaderboardInfo[0].color}}>
+              <div
+                className="Leaderboard-name"
+                style={
+                  this.state.leaderboardInfo[0] === undefined
+                    ? { color: "white" }
+                    : { color: this.state.leaderboardInfo[0].color }
+                }
+              >
                 {" "}
                 {this.state.leaderboardInfo[0]
                   ? this.state.leaderboardInfo[0].name.toUpperCase()
@@ -69,7 +83,14 @@ class Leaderboard extends Component {
               <div className="Leaderboard-first Leaderboard-top3"> 1ST </div>
             </div>
             <div className="Leaderboard-place">
-              <div className="Leaderboard-name" style={this.state.leaderboardInfo[2] === undefined ? {color: 'white'} : {color: this.state.leaderboardInfo[2].color}}>
+              <div
+                className="Leaderboard-name"
+                style={
+                  this.state.leaderboardInfo[2] === undefined
+                    ? { color: "white" }
+                    : { color: this.state.leaderboardInfo[2].color }
+                }
+              >
                 {" "}
                 {this.state.leaderboardInfo[2]
                   ? this.state.leaderboardInfo[2].name.toUpperCase()
@@ -82,7 +103,7 @@ class Leaderboard extends Component {
           <div className="Leaderboard-rest"> {rest} </div>
         </div>
         <div className="Leaderboard-button-container">
-          {/* <div
+          <div
             className="Leaderboard-button"
             onClick={() => {
               navigate("/lobby");
@@ -91,7 +112,7 @@ class Leaderboard extends Component {
             {" "}
             A G A I N{" "}
           </div>
-          <div className="Leaderboard-spacer"> </div> */}
+          <div className="Leaderboard-spacer"> </div>
           <div
             className="Leaderboard-button"
             onClick={() => {
