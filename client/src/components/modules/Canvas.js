@@ -307,15 +307,15 @@ class Canvas extends Component {
           <canvas ref="canvas" width={window.innerWidth} height={window.innerHeight} />
           {this.me.isDead && (
             <div className="Canvas-respawn">
-              <div> You got BLASTED!</div>
-              <div>
+              <div> You just got BLASTED!</div>
+              {/* <div>
                 {" "}
                 Respawning in{" "}
                 {Math.max(
                   0,
                   Math.floor((this.respawn - (Date.now() - this.me.respawnTimer)) / 1000)
                 )}{" "}
-              </div>
+              </div> */}
             </div>
           )}
         </div>
