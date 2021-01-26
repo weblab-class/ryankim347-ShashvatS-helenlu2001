@@ -2,7 +2,6 @@ import React, { Component } from "react";
 // import { socket } from "../../client-socket.js";
 import PoseNet from "react-posenet";
 import "./PoseHandler.css";
-
 import events from "./event";
 
 /**
@@ -15,6 +14,12 @@ class PoseHandler extends Component {
     this.height = 480;
     this.width = 640;
     this.getDims();
+    this.setState({
+      pointsX: null,
+      pointsY: null,
+      loaded: false
+    })
+    this.running = true
   }
 
   getDims() {
@@ -28,7 +33,28 @@ class PoseHandler extends Component {
   average(array) {
     return array.reduce((a, b) => a + b) / array.length;
   }
-
+  componentDidMount() {
+    const canvas2 = this.refs.canvas2
+    const ctx = canvas2.getContext("2d")
+    this.drawLoop()
+  }
+  drawLoop() {
+    if (this.refs.canvas2) {
+      const canvas2 = this.refs.canvas2
+      const ctx = canvas2.getContext("2d")
+      // ctx.beginPath();
+      // ctx.strokeStyle = "white"
+      // ctx.lineWidth = "6";
+      // ctx.rect(0,0,150,150*this.height/this.width)
+      // ctx.stroke()
+    }
+    if(this.running) {
+      setTimeout(this.drawLoop, 1000 / 60);
+    }
+  }
+  componentWillUnmount() {
+    this.running = false;
+  }
   render() {
     const passInfo = (poses) => {
       let faceX = null;
@@ -46,6 +72,10 @@ class PoseHandler extends Component {
           faceX = this.average(keyX);
           faceY = this.average(keyY);
         }
+        this.setState({
+          pointsX: keyX,
+          pointsY: keyY
+        })
       });
       if (faceX) {
         let relX = (faceX - this.width / 2) / (this.width / 2);
@@ -58,18 +88,21 @@ class PoseHandler extends Component {
             y: relY,
           },
         });
-
-        // console.log("I'm hereeeeee" + Date.now());
       } else {
         console.log("Face not found");
       }
+      this.setState({loaded:true})
     };
     return (
-      <PoseNet
-        frameRate={10}
-        className="PoseHandler-cam"
-        onEstimate={passInfo}
-      />
+
+      <div>
+        <PoseNet
+          frameRate={10}
+          className="PoseHandler-cam"
+          onEstimate={passInfo}
+        />
+        <canvas ref="canvas2" className = "PoseHandler-visualizer" width={150} height={150*this.height/this.width} />
+      </div>
     );
   }
 }
