@@ -45,12 +45,7 @@ class Stats extends Component {
               {" "}
             </div>
             <div className="Stats-profContainer">
-<<<<<<< HEAD
-              <div className="Stats-user u-hollow"> Login to view stats! </div>
-              <div className="Stats-name"> {this.props.name} </div>
-=======
               <div className="Stats-user u-hollow"> {this.props.name.toUpperCase()} </div>
->>>>>>> 4ed4aad800b9f4d13930254dfc806e5d6e1e651f
             </div>
           </div>
           <hr />
