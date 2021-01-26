@@ -26,14 +26,11 @@ class App extends Component {
       name: "",
       img: "",
       code: "",
-      username: '',
       gameDuration: 5,
-      poseEnabled: false
+      poseEnabled: false,
     };
 
     this.changeRoom = this.changeRoom.bind(this);
-    this.setDuration = this.setDuration.bind(this);
-    this.setUsername = this.setUsername.bind(this);
   }
 
   componentDidMount() {
@@ -89,17 +86,8 @@ class App extends Component {
     });
   }
 
-  setDuration(duration) {
-    this.setState({ gameDuration: duration });
-  }
-
-  setUsername(username) {
-    this.setState(
-      {username: username}
-    );
-  }
   render() {
-    console.log('pose enabled',this.state.poseEnabled)
+    console.log("pose enabled", this.state.poseEnabled);
     return (
       <>
         <div className="App-container">
@@ -117,25 +105,18 @@ class App extends Component {
               userId={this.state.userId}
             />
 
-            <Join
-              path="/join"
-              changeRoom={this.changeRoom}
-              setUsername={this.setUsername}
-            />
+            <Join path="/join" changeRoom={this.changeRoom} />
 
             <Lobby
               code={this.state.code}
               changeRoom={this.changeRoom}
               userId={this.state.userId}
-              setDuration={this.setDuration}
-              username={this.state.username}
               path="/lobby"
             />
             <Game
               code={this.state.code}
               changeRoom={this.changeRoom}
               userId={this.state.userId}
-              duration={this.state.gameDuration}
               path="/game"
             />
             <Leaderboard path="/leaderboard" />

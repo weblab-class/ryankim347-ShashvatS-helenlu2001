@@ -115,6 +115,29 @@ module.exports = {
         }
       });
 
+      socket.on("start-game-information", (data) => {
+        console.log("I am over here...");
+
+        if (socket.request.headers.cookie === undefined) {
+          return;
+        }
+
+        const cookies = cookie.parse(socket.request.headers.cookie);
+        const clientId = cookies["client-id"];
+
+        const { room } = data;
+
+        console.log(room);
+
+        if (games[room] == undefined) {
+          return;
+        }
+
+        const game = games[room];
+
+        game.startGameInformation(socket, clientId);
+      });
+
       socket.on("game-events", (data) => {
         if (socket.request.headers.cookie === undefined) {
           return;

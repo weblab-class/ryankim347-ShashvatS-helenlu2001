@@ -16,7 +16,7 @@ class Join extends Component {
     this.state = {
       code: "",
       name: "",
-      errorResponse: '',
+      errorResponse: "",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -34,7 +34,7 @@ class Join extends Component {
     if (code.length > 6) {
       code = code.substring(0, 6);
     }
-    this.setState({ code: code.toUpperCase(), errorResponse: '' });
+    this.setState({ code: code.toUpperCase(), errorResponse: "" });
   }
 
   onNameChange(e) {
@@ -43,12 +43,12 @@ class Join extends Component {
       name = name.substring(0, 8);
     }
 
-    this.setState({ name: name.toLowerCase(), errorResponse: '' });
+    this.setState({ name: name.toLowerCase(), errorResponse: "" });
   }
 
   async onCreate(_e) {
     if (this.state.name.length == 0) {
-      this.setState({errorResponse: 'please enter a username'})
+      this.setState({ errorResponse: "please enter a username" });
       return;
     }
     const { code } = await post("/api/create", {
@@ -56,13 +56,12 @@ class Join extends Component {
     });
 
     this.props.changeRoom(code);
-    this.props.setUsername(this.state.name);
     navigate("/lobby");
   }
 
   async onJoin(_e) {
     if (this.state.name.length == 0) {
-      this.setState({errorResponse: 'please enter a username'})
+      this.setState({ errorResponse: "please enter a username" });
       return;
     }
 
@@ -75,12 +74,11 @@ class Join extends Component {
 
       if (response.success === true) {
         this.props.changeRoom(code);
-        this.props.setUsername(this.state.name);
         navigate("/lobby");
       } else {
         console.log("error in joining room");
         console.log(response.reason);
-        this.setState({errorResponse: response.reason});
+        this.setState({ errorResponse: response.reason });
       }
     }
   }
@@ -96,7 +94,7 @@ class Join extends Component {
         <div className="Join-container">
           <div className="Join-fieldContainer">
             <div className="Join-titleContainer">
-              <div style={{margin: 8, fontSize: 20}}> {this.state.errorResponse} </div>
+              <div style={{ margin: 8, fontSize: 20 }}> {this.state.errorResponse} </div>
               <input
                 className="Join-input"
                 placeholder="name"

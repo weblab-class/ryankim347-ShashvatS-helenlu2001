@@ -143,6 +143,16 @@ class Game {
     this.initializeGameObjects(settings);
   }
 
+  startGameInformation(socket, clientId) {
+    socket.emit("start-game-information", {
+      startTime: this.startTime,
+      duration: this.settings.duration,
+      poseEnabled: this.settings.poseEnabled,
+      name: this.playerNames[clientId],
+      color: this.id_to_color[clientId],
+    });
+  }
+
   initializeEverythingElse() {
     const io = getIo();
 
@@ -152,7 +162,7 @@ class Game {
     io.in(this.code).emit("start-game", {
       startTime: this.startTime,
       duration: this.settings.duration,
-      poseEnabled: this.settings.poseEnabled
+      poseEnabled: this.settings.poseEnabled,
     });
 
     this.gameLoop();
@@ -360,7 +370,7 @@ class Game {
           }
         } else if (event.type === "dodge") {
           //need this if statement in case people try to hack from the frontend
-          if(this.settings.poseEnabled) {
+          if (this.settings.poseEnabled) {
             this.playerInfo[player].setDodge(event.pos.x, event.pos.y);
           }
         }

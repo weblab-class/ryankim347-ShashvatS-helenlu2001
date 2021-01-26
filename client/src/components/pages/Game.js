@@ -7,7 +7,23 @@ import "../../utilities.css";
 import "./Game.css";
 import { get, post } from "../../utilities.js";
 import { navigate } from "@reach/router";
-import { Route } from "react-router-dom";
+
+import { socket } from "../../client-socket";
+
+const COLORS = [
+  "#FF00D0",
+  "#FFFF00",
+  "#00FF00",
+  "#00D0FF",
+  "#FFAA00",
+  "#BB00FF",
+  "#FED4FF",
+  "#FFFFAB",
+  "#C4FFC4",
+  "#C2F4FF",
+  "#FFE1A6",
+  "#D1D1D1",
+];
 
 /**
  * @param userId specifies the id of the currently logged in user
@@ -17,11 +33,10 @@ class Game extends Component {
   constructor(props) {
     super(props);
 
-    console.log('pose ', this.props.location.state.poseEnabled)
     // Initialize Default State
     this.state = {
-      startTime: this.props.location.state.startTime,
-      color: this.props.location.state.color,
+      startTime: undefined,
+      color: undefined,
       leaderboardInfo: [],
       gameOver: false,
       games: 0,
@@ -29,11 +44,14 @@ class Game extends Component {
       deaths: 0,
       wins: 0,
       variableToTriggerRefresh: 0,
-      poseEnabled: this.props.location.state.poseEnabled
+      poseEnabled: undefined,
     };
 
     this.updateLeaderboard = this.updateLeaderboard.bind(this);
     this.endGame = this.endGame.bind(this);
+    this.startGameInfo = this.startGameInfo.bind(this);
+
+    socket.on("start-game-information", this.startGameInfo);
   }
 
   updateLeaderboard(leaderboardInfo) {
@@ -44,20 +62,6 @@ class Game extends Component {
     setTimeout(() => {
       navigate("/leaderboard", { state: { leaderboardInfo: this.state.leaderboardInfo } });
     }, 5 * 1000);
-
-    // let standings = this.state.leaderboardInfo.sort((a, b) => (a.points > b.points) ? -1 : 1);
-    // for(let i = 0; i < standings.length; i++) {
-    //   if(standings[i].color === this.state.color) {
-    //     post('/api/stats', {
-    //       userId: this.props.userId,
-    //       games: this.state.games + 1,
-    //       wins: i === 0 ? this.state.wins + 1 : this.state.wins,
-    //       points: this.state.kills + standings[i].points,
-    //       deaths: this.state.deaths + standings[i].deaths,
-    //     });
-    //     break;
-    //   }
-    // }
   }
 
   componentDidMount() {
@@ -75,16 +79,34 @@ class Game extends Component {
       });
 
       return;
+    } else {
+      socket.emit("start-game-information", {
+        room: this.props.code,
+      });
     }
+  }
 
-    // get('/api/stats', {userId: this.props.userId}).then((data) => {
-    //   this.setState({
-    //     games: data.games,
-    //     kills: data.points,
-    //     deaths: data.deaths,
-    //     wins: data.wins
-    //   });
-    // });
+  componentDidUpdate(prevProps) {
+    if (this.props.code !== prevProps.code) {
+      socket.emit("join-room", {
+        room: this.props.code,
+      });
+
+      socket.emit("start-game-information", {
+        room: this.props.code,
+      });
+    }
+  }
+
+  startGameInfo(data) {
+    console.log("received some stuff...");
+
+    this.setState({
+      startTime: data.startTime,
+      poseEnabled: data.poseEnabled,
+      color: COLORS[data.color],
+      duration: data.duration,
+    });
   }
 
   render() {
@@ -93,31 +115,30 @@ class Game extends Component {
         <div className="Game-sidebar">
           <Timer
             startTime={this.state.startTime}
-            duration={this.props.duration}
+            duration={this.state.duration}
             endGame={this.endGame}
           />
-          <div style={{height: 16}}> </div>
+          <div style={{ height: 16 }}> </div>
           <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color} />
-          <div style={{height: 16}}> </div>
-          <div className='u-textCenter'> — LEGEND — </div>
-          <div className='Game-legend'>
-              <span>
-                <div
-                  style={{
-                    border: "1px solid white",
-                    backgroundColor: "white",
-                    width: 8,
-                    height: 8,
-                    marginBottom: 0,
-                    marginRight: 8,
-                    display: "inline-block",
-                  }}
-                >
-                </div>
-              </span>
-              walls stop lasers
+          <div style={{ height: 16 }}> </div>
+          <div className="u-textCenter"> — LEGEND — </div>
+          <div className="Game-legend">
+            <span>
+              <div
+                style={{
+                  border: "1px solid white",
+                  backgroundColor: "white",
+                  width: 8,
+                  height: 8,
+                  marginBottom: 0,
+                  marginRight: 8,
+                  display: "inline-block",
+                }}
+              ></div>
+            </span>
+            walls stop lasers
           </div>
-          <div className='Game-legend'>
+          <div className="Game-legend">
             <span>
               <div
                 style={{
@@ -128,22 +149,13 @@ class Game extends Component {
                   marginRight: 8,
                   display: "inline-block",
                 }}
-              >
-              </div>
+              ></div>
             </span>
             mirrors reflect lasers
           </div>
-          <div className='Game-legend'>
-              shrink = red potion
-          </div>
-          <div className='Game-legend'>
-              invisibility = black cloak
-          </div>
-          <div className='Game-legend'>
-              super speed = lightning
-          </div>
-
-
+          <div className="Game-legend">shrink = red potion</div>
+          <div className="Game-legend">invisibility = black cloak</div>
+          <div className="Game-legend">super speed = lightning</div>
         </div>
         <Canvas
           code={this.props.code}
@@ -151,7 +163,7 @@ class Game extends Component {
           updatePoints={this.updatePoints}
           updateLeaderboard={this.updateLeaderboard}
           className="Game-canvas"
-          poseEnabled= {this.state.poseEnabled}
+          poseEnabled={this.state.poseEnabled}
         />
         {this.state.poseEnabled && <PoseHandler code={this.props.code} />}
       </>

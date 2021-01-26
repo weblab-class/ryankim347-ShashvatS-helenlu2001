@@ -122,7 +122,7 @@ class Canvas extends Component {
 
     // this.events = [];
     events.splice(0, events.length);
-    this.setState({deathMessageSeed: Math.floor(Math.random()*5)});
+    this.setState({ deathMessageSeed: Math.floor(Math.random() * 5) });
     if (this.running) {
       setTimeout(this.eventLoop, 60);
     }
@@ -280,9 +280,9 @@ class Canvas extends Component {
   }
 
   render() {
-    console.log('respawn ' + this.respawn);
-    console.log('respawn timer ' + this.me.respawnTimer);
-    console.log('now ' + Date.now());
+    // console.log("respawn " + this.respawn);
+    // console.log('respawn timer ' + this.me.respawnTimer);
+    // console.log("now " + Date.now());
     // if(this.me.isDead) {
     //   let deathMessageSeed = Math.floor(Math.random()*5)
     //   console.log('seed', deathMessageSeed)

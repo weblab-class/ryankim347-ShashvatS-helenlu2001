@@ -12,6 +12,7 @@ import "./Lobby.css";
 import { get, post } from "../../utilities.js";
 
 import { socket } from "../../client-socket";
+
 function myId() {
   return cookie.parse(document.cookie)["client-id"];
 }
@@ -44,8 +45,7 @@ class Lobby extends Component {
       players: [],
       colors: undefined,
       playerNames: undefined,
-      myName: this.props.username,
-      myColor: undefined,
+      myName: undefined,
       display: "LOBBY",
       browseMaps: false,
 
@@ -81,7 +81,7 @@ class Lobby extends Component {
   componentDidMount() {
     // remember -- api calls go here!
     socket.on("lobby-data", this.lobbyData);
-    socket.on("start-game", (data) => this.receiveStartGame(data.startTime, data.duration, data.poseEnabled));
+    socket.on("start-game", this.receiveStartGame);
 
     if (this.props.code == "" || this.props.code === undefined) {
       post("/api/curRoom").then((data) => {
@@ -139,13 +139,8 @@ class Lobby extends Component {
       players: players,
       playerNames: data.playerNames,
       colors: data.colors,
+      myName: data.playerNames[myId()],
     });
-
-    let playerID = Object.keys(data.playerNames).find(
-      (key) => data.playerNames[key] === this.state.myName
-    );
-    let colorKey = Object.keys(data.colors).find((key) => data.colors[key] === playerID);
-    this.setState({ myColor: COLORS[colorKey] });
   }
 
   getColor(value) {
@@ -180,14 +175,11 @@ class Lobby extends Component {
           duration: this.state.duration,
         },
       });
-      this.props.setDuration(this.state.duration);
     }
   }
 
-  receiveStartGame(startTime, duration, pose) {
-    this.props.setDuration(duration);
-    console.log('lobby pose', pose)
-    navigate("/game", { state: { startTime: startTime, color: this.state.myColor, poseEnabled: pose } });
+  receiveStartGame() {
+    navigate("/game");
   }
 
   updateDisplay(display) {
