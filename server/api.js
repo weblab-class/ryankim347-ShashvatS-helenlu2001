@@ -196,15 +196,24 @@ router.get("/stats", (req, res) => {
 });
 
 router.post("/stats", (req, res) => {
-  User.findOneAndUpdate(
-    { _id: req.body.userId },
-    {
-      games: req.body.games,
-      points: req.body.points,
-      deaths: req.body.deaths,
-      wins: req.body.wins,
+  User.findOne({_id: req.body.userId}).then(
+    (data) => {
+      console.log('data for user with id ' + req.body.userId + ' '  + data);
+      if(data) {
+        console.log('updating...');
+        let toUpdate = {
+          games: data.games === undefined || data.games === null ? 1 : data.games + 1,
+          points: data.points === undefined || data.points === null ? req.body.points : data.points + req.body.points,
+          deaths: data.deaths === undefined || data.deaths === null ? req.body.deaths : data.deaths + req.body.deaths,
+          wins: data.wins === undefined || data.wins === null ? req.body.wins : data.wins + req.body.wins,
+        }
+        User.findOneAndUpdate({_id: req.body.userId}, toUpdate).then((data2) => {
+          console.log(data2);
+          res.send(data2);
+        })
+      }
     }
-  ).then((data) => res.send(data));
+  )
 });
 
 // anything else falls to this "not found" case
