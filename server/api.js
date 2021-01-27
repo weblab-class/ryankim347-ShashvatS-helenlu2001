@@ -133,7 +133,11 @@ router.post("/join", (req, res) => {
     return;
   }
 
-  res.json({ success: false, reason: "unable to join, this could be because username is taken, game has started or is at capacity" });
+  res.json({
+    success: false,
+    reason:
+      "unable to join, this could be because username is taken, game has started or is at capacity",
+  });
 });
 
 router.post("/curRoom", (req, res) => {
@@ -192,31 +196,67 @@ router.get("/customMaps", (req, res) => {
 });
 
 router.get("/stats", (req, res) => {
-  if(req.query.userId) {
-    User.findById(req.query.userId).then((data) => res.send(data));
+  if (req.query.userId) {
+    User.findById(req.query.userId)
+      .then((data) => res.send(data))
+      .catch((err) => {
+        console.log("error when fetching stats");
+        console.log(err);
+
+        res.send({
+          games: 0,
+          kills: 0,
+          deaths: 0,
+          wins: 0,
+        });
+      });
+  } else {
+    res.send({});
   }
 });
 
 router.post("/stats", (req, res) => {
-  if(req.body.userId) {
-    User.findOne({_id: req.body.userId}).then(
-      (data) => {
-        console.log('data for user with id ' + req.body.userId + ' '  + data);
-        if(data) {
-          console.log('updating...');
+  if (req.body.userId) {
+    User.findOne({ _id: req.body.userId })
+      .then((data) => {
+        console.log("data for user with id " + req.body.userId + " " + data);
+        if (data) {
+          console.log("updating...");
           let toUpdate = {
             games: data.games === undefined || data.games === null ? 1 : data.games + 1,
-            points: data.points === undefined || data.points === null ? req.body.points : data.points + req.body.points,
-            deaths: data.deaths === undefined || data.deaths === null ? req.body.deaths : data.deaths + req.body.deaths,
-            wins: data.wins === undefined || data.wins === null ? req.body.wins : data.wins + req.body.wins,
-          }
-          User.findOneAndUpdate({_id: req.body.userId}, toUpdate).then((data2) => {
+            points:
+              data.points === undefined || data.points === null
+                ? req.body.points
+                : data.points + req.body.points,
+            deaths:
+              data.deaths === undefined || data.deaths === null
+                ? req.body.deaths
+                : data.deaths + req.body.deaths,
+            wins:
+              data.wins === undefined || data.wins === null
+                ? req.body.wins
+                : data.wins + req.body.wins,
+          };
+          User.findOneAndUpdate({ _id: req.body.userId }, toUpdate).then((data2) => {
             console.log(data2);
             res.send(data2);
-          })
+          });
         }
-      }
-    );
+      })
+      .catch((err) => {
+        console.log("error when updating the stats");
+        console.log(err);
+
+        res.send({
+          success: false,
+          reason: "database update failed",
+        });
+      });
+  } else {
+    res.send({
+      success: false,
+      reason: "no userId given",
+    });
   }
 });
 
