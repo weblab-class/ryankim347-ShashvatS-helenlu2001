@@ -161,7 +161,7 @@ class Join extends Component {
                 </div>
                 <div className='Join-powerup'>
                   <div className='Join-shrink Join-icon'> </div>
-                  <div> Srhink (15 sec) </div>
+                  <div> Shrink (15 sec) </div>
                 </div>
               </div>
               <div className="Join-field" style={{ flexGrow: 1 }}>
