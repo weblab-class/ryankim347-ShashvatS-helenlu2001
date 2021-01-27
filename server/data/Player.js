@@ -166,7 +166,7 @@ class Player {
     }
 
     // remove any powerups that expired
-    if (Date.now() - this.cloakTimer > 15 * 1000) {
+    if (Date.now() - this.cloakTimer > 10 * 1000) {
       this.powerups.invisible = false;
     }
     if (Date.now() - this.speedTimer > 15 * 1000) {

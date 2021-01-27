@@ -128,7 +128,7 @@ class Join extends Component {
             <div className="Join-row">
               <div className="Join-field" style={{ flexGrow: 2, borderRight: "1px solid white" }}>
                 <div className="Join-fieldTitle"> Goal </div>
-                <div> win as many points as possible by tagging others with your laser </div>
+                <div> Win as many points as possible by tagging others with your laser! </div>
               </div>
               <div className="Join-field">
                 <div className="Join-fieldTitle"> Players </div>
@@ -139,22 +139,22 @@ class Join extends Component {
             <div className="Join-field">
               <div className="Join-fieldTitle"> Gameplay </div>
               <ul>
-                <li>point mouse in the direction to move towards</li>
+                <li>Your avatar moves toward where your mouse is</li>
                 <li>
-                  press <span className="Join-spacebar"> SPACEBAR</span> to shoot your laser
+                  Press <span className="Join-spacebar"> SPACEBAR</span> to shoot your laser
                 </li>
-                <li> move side to side to dodge lasers in POSENET MODE </li>
+                <li> In POSENET MODE in game settings, move side to side in your webcam's view to dodge bullets</li>
               </ul>
-              <div style={{textAlign: 'center', fontSize: 12}}> note: POSENET MODE is in beta testing and requires webcam </div>
+              <div style={{textAlign: 'center', fontSize: 12}}> Note: POSENET MODE is in beta testing and requires webcam access</div>
             </div>
             <hr style={{ margin: 0, marginTop: 4, height: 0.5, border: "none" }} />
             <div className="Join-row">
               <div className="Join-field" style={{ flexGrow: 1, borderRight: "1px solid white" }}>
                 <div className="Join-fieldTitle"> Powerups </div>
                 <ul>
-                  <li style={{color: 'grey'}}> invisiblity </li>
-                  <li style={{color: "var(--nyellow)"}}> speed up </li>
-                  <li style={{color: 'red'}}> shrink</li>
+                  <li style={{color: 'grey'}}> Invisiblity (10 sec)</li>
+                  <li style={{color: "var(--nyellow)"}}> Speed (15 sec) </li>
+                  <li style={{color: 'red'}}> Shrink (15 sec)</li>
                 </ul>
               </div>
               <div className="Join-field" style={{ flexGrow: 1 }}>

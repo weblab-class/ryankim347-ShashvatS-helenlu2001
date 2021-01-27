@@ -169,7 +169,7 @@ class Game {
   }
 
   initializeGameObjects(settings) {
-    this.mapCount = 1;
+    this.mapCount = 3;
     this.mapNum = Math.floor(Math.random() * this.mapCount) + 200;
     const query = { id: this.mapNum };
     this.gameObjects = {
