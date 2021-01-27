@@ -58,16 +58,18 @@ class Game extends Component {
   }
 
   endGame() {
-    for(let i = 0; i < this.state.leaderboardInfo.length; i++) {
-      if(this.state.leaderboardInfo[i].color === this.state.color) {
-        let me = this.state.leaderboardInfo[i];
-        post('/api/stats', {
-          userId: this.props.userId,
-          deaths: me.deaths,
-          points: me.points,
-          wins: i === 0 ? 1 : 0
-        }).then((data) => console.log(data));
-        break;
+    if(this.props.userId) {
+      for(let i = 0; i < this.state.leaderboardInfo.length; i++) {
+        if(this.state.leaderboardInfo[i].color === this.state.color) {
+          let me = this.state.leaderboardInfo[i];
+          post('/api/stats', {
+            userId: this.props.userId,
+            deaths: me.deaths,
+            points: me.points,
+            wins: i === 0 ? 1 : 0
+          }).then((data) => console.log(data));
+          break;
+        }
       }
     }
 
