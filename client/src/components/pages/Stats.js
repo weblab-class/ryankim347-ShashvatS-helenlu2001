@@ -61,7 +61,7 @@ class Stats extends Component {
               <div className="Stats-number">
                 {this.state.deaths === 0 || this.state.deaths === undefined || this.state.deaths === null
                   ? 0
-                  : this.state.kills / this.state.deaths}
+                  : (this.state.kills / this.state.deaths).toFixed(3)}
               </div>
               <div className="Stats-category" style={{maxWidth: 150}}> kill-death ratio </div>
             </div>
