@@ -24,14 +24,16 @@ class Stats extends Component {
 
   componentDidMount() {
     // remember -- api calls go here!
-    get('/api/stats', {userId: this.props.userId}).then((data) => {
-      this.setState({
-        games: data.games,
-        kills: data.points,
-        deaths: data.deaths,
-        wins: data.wins
+    if(this.props.userId) {
+      get('/api/stats', {userId: this.props.userId}).then((data) => {
+        this.setState({
+          games: data.games,
+          kills: data.points,
+          deaths: data.deaths,
+          wins: data.wins
+        });
       });
-    });
+    }
   }
 
   render() {

@@ -284,27 +284,6 @@ class Canvas extends Component {
   }
 
   render() {
-    // console.log("respawn " + this.respawn);
-    // console.log('respawn timer ' + this.me.respawnTimer);
-    // console.log("now " + Date.now());
-    // if(this.me.isDead) {
-    //   let deathMessageSeed = Math.floor(Math.random()*5)
-    //   console.log('seed', deathMessageSeed)
-    //   switch(deathMessageSeed) {
-    //     case 0:
-    //       this.setState({deathMessage: "You got BLASTED!"})
-    //     case 1:
-    //       this.setState({deathMessage:  "Better luck next time..."})
-    //     case 2:
-    //       this.setState({deathMessage: "Oof, not quick enough!"})
-    //     case 3:
-    //       this.setState({deathMessage: "Gonna have to do better than that :P"})
-    //     case 4:
-    //       this.setState({deathMessage: "You'll get 'em next time!"})
-    //     default:
-    //       this.setState({deathMessage: "Outplayed lol"})
-    //   }
-    // }
     return (
       <>
         <div className="Canvas-container">

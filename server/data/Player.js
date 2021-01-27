@@ -166,7 +166,7 @@ class Player {
     }
 
     // remove any powerups that expired
-    if (Date.now() - this.cloakTimer > 15 * 1000) {
+    if (Date.now() - this.cloakTimer > 10 * 1000) {
       this.powerups.invisible = false;
     }
     if (Date.now() - this.speedTimer > 15 * 1000) {
@@ -191,6 +191,9 @@ class Player {
 
   killed() {
     this.deaths += 1;
+    this.powerups.invisible = false;
+    this.speed = 4;
+    this.r = 12;
     this.isDead = true;
     this.respawnTimer = Date.now();
   }
