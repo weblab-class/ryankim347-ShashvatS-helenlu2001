@@ -46,6 +46,8 @@ class Canvas extends Component {
     this.mouseY = 0;
     this.me = new Player(0, 0, this.props.color);
     this.respawn = 5;
+    this.lastUpdate = Date.now();
+
     this.eventLoop();
 
     this.clientState = new ClientState();
@@ -187,7 +189,9 @@ class Canvas extends Component {
       return;
     }
 
-    const { playerInfo, gameObjects, playerNames, colors } = data;
+    this.lastUpdate = data.time;
+
+    const { playerInfo, gameObjects } = data;
     this.playerInfo = {};
     let leaderboardInfo = [];
 
@@ -308,14 +312,14 @@ class Canvas extends Component {
           {this.me.isDead && (
             <div className="Canvas-respawn">
               <div> You just got BLASTED!</div>
-              {/* <div>
+              <div>
                 {" "}
                 Respawning in{" "}
                 {Math.max(
                   0,
-                  Math.floor((this.respawn - (Date.now() - this.me.respawnTimer)) / 1000)
+                  Math.floor((this.respawn - (this.lastUpdate - this.me.respawnTimer)) / 1000)
                 )}{" "}
-              </div> */}
+              </div>
             </div>
           )}
         </div>

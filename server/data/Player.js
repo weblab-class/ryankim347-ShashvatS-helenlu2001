@@ -69,7 +69,6 @@ class Player {
     this.speedTimer = Date.now();
     this.shrinkTimer = Date.now();
 
-
     this.isDead = false;
     this.respawn = settings.respawn * 1000;
     this.respawnTimer = Date.now();
@@ -167,13 +166,13 @@ class Player {
     }
 
     // remove any powerups that expired
-    if(Date.now() - this.cloakTimer > 15*1000) {
+    if (Date.now() - this.cloakTimer > 15 * 1000) {
       this.powerups.invisible = false;
     }
-    if(Date.now() - this.speedTimer > 15*1000) {
+    if (Date.now() - this.speedTimer > 15 * 1000) {
       this.speed = 4;
     }
-    if(Date.now() - this.shrinkTimer > 15*1000) {
+    if (Date.now() - this.shrinkTimer > 15 * 1000) {
       this.r = 12;
     }
   }
