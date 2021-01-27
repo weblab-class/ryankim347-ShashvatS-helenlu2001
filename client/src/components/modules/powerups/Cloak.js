@@ -14,7 +14,7 @@ class Cloak {
   draw(ctx, playerX, playerY) {
     let img = new Image();
     img.src = cloak;
-    ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
+    ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width*0.0204, img.height*0.0204);
     // ctx.fillStyle = this.color;
     // ctx.fillRect(this.x-playerX, this.y-playerY, this.s, this.s);
     // ctx.fillStyle = 'black';

@@ -15,7 +15,7 @@ class Speed {
 
     let img = new Image();
     img.src = bolt;
-    ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width, img.height);
+    ctx.drawImage(img, this.x-playerX, this.y-playerY, img.width*0.0204, img.height*0.0204);
 
     // ctx.beginPath();
     // ctx.fillStyle = this.color;
