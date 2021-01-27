@@ -151,55 +151,31 @@ class Join extends Component {
             <div className="Join-row">
               <div className="Join-field" style={{ flexGrow: 1, borderRight: "1px solid white" }}>
                 <div className="Join-fieldTitle"> Powerups </div>
-                <ul>
-                  <li style={{color: 'grey'}}> Invisiblity (10 sec)</li>
-                  <li style={{color: "var(--nyellow)"}}> Speed (15 sec) </li>
-                  <li style={{color: 'red'}}> Shrink (15 sec)</li>
-                </ul>
+                <div className='Join-powerup'>
+                  <div className='Join-invisibility Join-icon'> </div>
+                  <div> Invisibility (10 sec) </div>
+                </div>
+                <div className='Join-powerup'>
+                  <div className='Join-speed Join-icon'> </div>
+                  <div> Speed (15 sec) </div>
+                </div>
+                <div className='Join-powerup'>
+                  <div className='Join-shrink Join-icon'> </div>
+                  <div> Srhink (15 sec) </div>
+                </div>
               </div>
               <div className="Join-field" style={{ flexGrow: 1 }}>
                 <div className="Join-fieldTitle"> Map Elements </div>
-                <ul>
-                  <li>
-                    {" "}
-                    <span>
-                      {" "}
-                      <div
-                        style={{
-                          border: "1px solid white",
-                          backgroundColor: "white",
-                          width: 8,
-                          height: 8,
-                          marginBottom: 0,
-                          marginRight: 4,
-                          display: "inline-block",
-                        }}
-                      >
-                        {" "}
-                      </div>{" "}
-                    </span>{" "}
-                    walls stop lasers{" "}
-                  </li>
-                  <li>
-                    {" "}
-                    <span>
-                      {" "}
-                      <div
-                        style={{
-                          border: "1px solid white",
-                          width: 8,
-                          height: 8,
-                          marginBottom: 0,
-                          marginRight: 4,
-                          display: "inline-block",
-                        }}
-                      >
-                        {" "}
-                      </div>{" "}
-                    </span>{" "}
-                    mirrors reflect lasers{" "}
-                  </li>
-                </ul>
+                <div className='Join-powerup'>
+                  <div className='Join-wall' style={{border: '1px solid white'}}> </div>
+                  <div> Walls stop lasers </div>
+                </div>
+                <div className='Join-powerup'>
+                  <div className='Join-mirror' style={{border: '1px solid white'}}> </div>
+                  <div> Mirrors reflect lasers </div>
+                </div>
+
+
               </div>
             </div>
           </div>

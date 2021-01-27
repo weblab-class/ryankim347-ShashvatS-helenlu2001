@@ -5,6 +5,8 @@ import Canvas from "../modules/Canvas.js";
 import PoseHandler from "../modules/PoseHandler.js";
 import "../../utilities.css";
 import "./Game.css";
+import "./Join.css";
+
 import { get, post } from "../../utilities.js";
 import { navigate } from "@reach/router";
 
@@ -135,41 +137,28 @@ class Game extends Component {
           <div style={{ height: 16 }}> </div>
           <LiveLeaderboard leaderboardInfo={this.state.leaderboardInfo} color={this.state.color} />
           <div style={{ height: 16 }}> </div>
-          <div className="u-textCenter"> — LEGEND — </div>
-          <div className="Game-legend">
-            <span>
-              <div
-                style={{
-                  border: "1px solid white",
-                  backgroundColor: "white",
-                  width: 8,
-                  height: 8,
-                  marginBottom: 0,
-                  marginRight: 8,
-                  display: "inline-block",
-                }}
-              ></div>
-            </span>
-            walls stop lasers
+          <div className="u-textCenter" style={{marginBottom: 4}}> — LEGEND — </div>
+          <div className='Join-powerup Game-legend'>
+            <div className='Join-wall' style={{border: '1px solid white'}}> </div>
+            <div> Walls stop lasers </div>
           </div>
-          <div className="Game-legend">
-            <span>
-              <div
-                style={{
-                  border: "1px solid white",
-                  width: 8,
-                  height: 8,
-                  marginBottom: 0,
-                  marginRight: 8,
-                  display: "inline-block",
-                }}
-              ></div>
-            </span>
-            mirrors reflect lasers
+          <div className='Join-powerup Game-legend'>
+            <div className='Join-mirror' style={{border: '1px solid white'}}> </div>
+            <div> Mirrors reflect lasers </div>
           </div>
-          <div className="Game-legend">shrink = red potion</div>
-          <div className="Game-legend">invisibility = black cloak</div>
-          <div className="Game-legend">super speed = lightning</div>
+          <div className='Join-powerup Game-legend'>
+            <div className='Join-invisibility Join-icon'> </div>
+            <div> Invisibility (10 sec) </div>
+          </div>
+          <div className='Join-powerup Game-legend'>
+            <div className='Join-speed Join-icon'> </div>
+            <div> Speed (15 sec) </div>
+          </div>
+          <div className='Join-powerup Game-legend'>
+            <div className='Join-shrink Join-icon'> </div>
+            <div> Srhink (15 sec) </div>
+          </div>
+
         </div>
         <Canvas
           code={this.props.code}

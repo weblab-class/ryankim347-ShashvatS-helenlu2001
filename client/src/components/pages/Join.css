@@ -100,3 +100,53 @@ input:focus {
   li {
       margin: 8px;
   }
+
+  .Join-invisibility {
+      background-image: url('../modules/powerups/cloak.png');
+  }
+
+  .Join-speed {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-size: cover;
+    background-image: url('../modules/powerups/thunderbolt.png');
+}
+
+.Join-shrink {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-size: cover;
+    background-image: url('../modules/powerups/potion.png');
+}
+
+.Join-powerup {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.Join-icon {
+    margin: 4px;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    background-size: cover;
+}
+
+.Join-mirror {
+    margin: 8px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: cover;
+}
+
+.Join-wall {
+    margin: 8px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-color: white;
+}
