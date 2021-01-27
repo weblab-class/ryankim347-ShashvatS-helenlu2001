@@ -191,6 +191,9 @@ class Player {
 
   killed() {
     this.deaths += 1;
+    this.powerups.invisible = false;
+    this.speed = 4;
+    this.r = 12;
     this.isDead = true;
     this.respawnTimer = Date.now();
   }
