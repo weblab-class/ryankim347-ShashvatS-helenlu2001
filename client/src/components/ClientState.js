@@ -1,5 +1,7 @@
 const RENDER_DELAY = 100;
 
+// Code here is adapted from https://victorzhou.com/blog/build-an-io-game-part-1/
+
 function interpolate(cur, next, r) {
   console.log("is it breaking here????");
 
